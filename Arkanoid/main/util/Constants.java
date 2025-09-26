@@ -22,5 +22,5 @@ public final class Constants {
     public static final int BRICK_WIDTH = 50;
     public static final int BRICK_HEIGHT = 20;
 
-    
+
 }
