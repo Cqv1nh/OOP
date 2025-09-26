@@ -21,11 +21,10 @@ public class Game {
             render.display();
 
             try {
-                // Pause the program for 2000 milliseconds (2 seconds)
+
                 Thread.sleep(500);
             } catch (InterruptedException e) {
-                // This block is executed if another thread interrupts this one while it's sleeping.
-                // For simple games, you can often just print the stack trace.
+
                 e.printStackTrace();
             }
 
