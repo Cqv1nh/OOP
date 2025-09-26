@@ -1,8 +1,10 @@
-public abstract class GameObject1 {
+package main.entities;
+
+public abstract class GameObject {
     private double x;
     private double y;
-    private int width;
-    private int height;
+    private double width;
+    private double height;
 
     /**
      * Constructor .
@@ -11,7 +13,7 @@ public abstract class GameObject1 {
      * @param width chieu rong 
      * @param height chieu ngang
      */
-    public GameObject1(double x, double y, int width, int height) {
+    public GameObject(double x, double y, double width, double height) {
         this.x = x;
         this.y = y;
         this.width = width;
@@ -31,11 +33,11 @@ public abstract class GameObject1 {
         return y;
     }
 
-    public int getWidth() {
+    public double getWidth() {
         return width;
     }
 
-    public int getHeight() {
+    public double getHeight() {
         return height;
     }
 
