@@ -4,8 +4,8 @@ import java.awt.Color;
 import java.awt.Font;
 
 public final class Constants {
-    private static final int SCREEN_WIDTH = 800;
-    private static final int SCREEN_HEIGHT = 600;
+    public static final int SCREEN_WIDTH = 800;
+    public static final int SCREEN_HEIGHT = 600;
     public static final String SCREEN_TITLE = "Arkaniod";
 
     public static final int PADDLE_WIDTH = 100;
