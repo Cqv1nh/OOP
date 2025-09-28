@@ -1,7 +1,7 @@
-package main.entities;
+package entities;
 
 public class Paddle extends MovableObject {
-    private double speed = 2.0; // Speed la toc do, khong co huong
+    private double speed = 1.0; // Speed la toc do, khong co huong
     private String currentPowerUp;
 
     public Paddle(double x, double y, double width,
@@ -31,7 +31,7 @@ public class Paddle extends MovableObject {
     }
 
     public void moveLeft() {
-        setDx( -speed);
+        setDx(-speed);
         move();
     }
 
@@ -40,17 +40,30 @@ public class Paddle extends MovableObject {
         move();
     }
     @Override
-    public void update() {
+    public void update(String input) {
         // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'update'");
+        if ("a".equalsIgnoreCase(input)) {
+            moveLeft();  // Sang trai
+        }
+        else if ("d".equalsIgnoreCase(input)) {
+            moveRight(); // Sang phai
+        } else {
+            setDx(0);   // Dung yen dx = 0
+        }
     }
 
     @Override
     public void render() {
         // TODO Auto-generated method stub
-        System.out.println("===");
-        throw new UnsupportedOperationException("Unimplemented method 'render'");
+        for (int i = 0; i < getX(); i++) {
+            System.out.print(" ");
+        }
+        for (int i = 0; i < getWidth(); i++) {
+            System.out.println("=");
+        }
+        System.out.println();
     }
+
     public boolean applyPowerUp() {
         return false;
     }
