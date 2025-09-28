@@ -25,11 +25,11 @@ public class StrongBrick extends Brick{
     public void render() {
         for (int i = 0; i < getHeight(); i++) {
             // Di chuyen con tro den (y+i,x)
-            System.out.println("\033[" + ((int)getY() + i + 1) + ";" + ((int)getX()+1) + "H");
+            System.out.print("\033[" + ((int)getY() + i + 1) + ";" + ((int)getX()+1) + "H");
             for (int j = 0; j < getWidth(); j++) {
-                System.out.println("%");
+                System.out.print("$");
             }
         }
-        System.out.println("\033[0;0H");
+        System.out.print("\033[0;0H");
     }  
 }

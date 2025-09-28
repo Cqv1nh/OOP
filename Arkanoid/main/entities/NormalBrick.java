@@ -24,18 +24,12 @@ public class NormalBrick extends Brick {
 
     @Override
     public void render() {
-        for(int i = 0; i < (int)getY() ; i++) {
-            System.out.println();
-        }
-        
         for(int i = 0; i < getHeight(); i++) {
-            for(int j = 0; j < (int)getX(); j++) {
-                System.out.print(" ");
-            }
-            for(int j = 0; j < getWidth(); j++) {
+            System.out.print("\033["+((int)getY() + i + 1) + ";" + ((int)getX() + 1) + "H");
+            for (int j = 0; j < getWidth(); j++) {
                 System.out.print("#");
-            }
-            System.out.println();
+            } 
         }
+        System.out.print("\033[0;0H");
     }  
 }

@@ -1,4 +1,4 @@
-package main.entities;
+package entities;
 
 public class ExpandPaddlePowerUp extends PowerUp {
     //Constructor có tham số.
