@@ -4,7 +4,7 @@ public abstract class Brick extends GameObject {
     private int hitPoints; // So lam va cham de gach bi pha huy
     private String type; // Loai gach
 
-    public Brick(double x, double y, double width, double height,int hitPoints, String type) {
+    public Brick(double x, double y, double width, double height, int hitPoints, String type) {
         super(x, y, width, height);
         this.hitPoints = hitPoints;
         this.type = type;
