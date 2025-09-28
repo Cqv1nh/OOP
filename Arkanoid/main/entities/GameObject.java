@@ -1,4 +1,4 @@
-package main.entities;
+package entities;
 
 public abstract class GameObject {
     private double x;
@@ -53,6 +53,6 @@ public abstract class GameObject {
         this.height = height;
     }
 
-    public abstract void update(); // Cap nhat vi tri theo phim bam
+    public abstract void update(String input); // Cap nhat vi tri theo phim bam
     public abstract void render(); // Ve doi tuong trong man hinh terminal
 } 

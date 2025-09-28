@@ -1,4 +1,4 @@
-package main.entities;
+package entities;
 
 public abstract class MovableObject extends GameObject {
     private double dx; // Toc do di chuyen theo truc x
