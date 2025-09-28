@@ -6,7 +6,7 @@ public class BrickType {
     public static final String EXPLOSIVE = "EXPLOSIVE";
     public static final String UNBREAKABLE  = "UNBREAKBLE";
     private BrickType() {
-
+        
     }
     // Khong cho tao hang so khac.
 }

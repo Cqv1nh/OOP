@@ -5,7 +5,7 @@ public class Paddle extends MovableObject {
     private String currentPowerUp;
 
     public Paddle(double x, double y, double width, double height ,
-                  double dx) {
+                  double dx, double dy, String currentPowerUp) {
         super(x, y, width, height, dx, dy);
         this.currentPowerUp = currentPowerUp;
     }
@@ -24,6 +24,7 @@ public class Paddle extends MovableObject {
     public String getCurrentPowerUp() {
         return currentPowerUp;
     }
+    
     @Override
     public void move() { // DI chuyen den toa do X moi
         setX(getX()+getDx());

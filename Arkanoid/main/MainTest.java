@@ -4,7 +4,7 @@ import entities.Paddle;
 public class MainTest {
     public static void main(String[] args) {
         NormalBrick b = new NormalBrick(1, 1, 2, 2);
-        Paddle p = new Paddle(4, 4, 5, 1,0);
+        Paddle p = new Paddle(4, 4, 5, 1, 0, 0, null);
 
         // In Brick
         b.render();
