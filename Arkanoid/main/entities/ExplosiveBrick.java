@@ -33,7 +33,7 @@ public class ExplosiveBrick extends Brick{
                 System.out.print("%");
             } 
         }
-        System.out.print("\033[0;0H");
+       
     }
     
     public void explode(List<Brick> Brick) {

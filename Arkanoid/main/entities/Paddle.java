@@ -54,16 +54,11 @@ public class Paddle extends MovableObject {
 
     @Override
     public void render() {
-        for(int i = 0; i < (int) getY(); i++) {
-            System.out.println();
-        }
-        for(int i = 0; i< (int)getX(); i++) {
-            System.out.print(" ");
-        }
-        for(int i = 0; i< getWidth(); i++) {
+        System.out.print("\033["+((int)getY()+1) + ";" + ((int)getX()+1) + "H");
+        for(int i = 0; i < getWidth(); i++) {
             System.out.print("=");
         }
-        System.out.println();
+            
     }
 
     public boolean applyPowerUp() {

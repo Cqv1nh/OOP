@@ -30,6 +30,5 @@ public class StrongBrick extends Brick{
                 System.out.print("$");
             }
         }
-        System.out.print("\033[0;0H");
     }  
 }
