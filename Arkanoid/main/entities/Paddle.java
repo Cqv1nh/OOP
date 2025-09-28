@@ -4,8 +4,8 @@ public class Paddle extends MovableObject {
     private double speed = 1.0; // Speed la toc do, khong co huong
     private String currentPowerUp;
 
-    public Paddle(double x, double y, double width,
-                  double height, double dx, double dy,
+    public Paddle(double x, double y, double width, double height ,
+                  double dx, double dy,
                   String currentPowerUp) {
         super(x, y, width, height, dx, dy);
         this.currentPowerUp = currentPowerUp;
@@ -54,12 +54,14 @@ public class Paddle extends MovableObject {
 
     @Override
     public void render() {
-        // TODO Auto-generated method stub
-        for (int i = 0; i < getX(); i++) {
+        for(int i = 0; i < (int) getY(); i++) {
+            System.out.println();
+        }
+        for(int i = 0; i< (int)getX(); i++) {
             System.out.print(" ");
         }
-        for (int i = 0; i < getWidth(); i++) {
-            System.out.println("=");
+        for(int i = 0; i< getWidth(); i++) {
+            System.out.print("=");
         }
         System.out.println();
     }
