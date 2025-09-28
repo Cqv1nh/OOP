@@ -1,4 +1,4 @@
-package util
+package util;
 
 import java.awt.Color;
 import java.awt.Font;
@@ -17,7 +17,7 @@ public final class Constants {
     public static final int BALL_DIAMETER = 16;
 
     public static final int INIT_BALL_X = (SCREEN_WIDTH - PADDLE_WIDTH) / 2;
-    public static final int INIT_PADDLE_Y = 80;
+    public static final int INIT_BALL_Y = 80;
 
     public static final int BRICK_WIDTH = 50;
     public static final int BRICK_HEIGHT = 20;

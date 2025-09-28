@@ -5,8 +5,7 @@ public class Paddle extends MovableObject {
     private String currentPowerUp;
 
     public Paddle(double x, double y, double width, double height ,
-                  double dx, double dy,
-                  String currentPowerUp) {
+                  double dx) {
         super(x, y, width, height, dx, dy);
         this.currentPowerUp = currentPowerUp;
     }

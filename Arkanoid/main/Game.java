@@ -1,6 +1,6 @@
 import entities.Paddle;
-import renderer.RendererConsole;
-import utils.Constants;
+import ui.RendererConsole;
+import util.Constants;
 
 
 

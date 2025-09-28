@@ -1,7 +1,7 @@
-package renderer;
+package ui;
 
 import entities.Paddle;
-import utils.Constants;
+import util.Constants;
 
 import java.util.Arrays;
 
