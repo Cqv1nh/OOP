@@ -8,7 +8,7 @@ public class Ball extends MovableObject {
 
     //Constructor mặc định
     public Ball() {
-        super(19, 17, 1, 1, 0, 0);
+        super(19, 17, 1, 1, 0, 0); //x=19 (giữa màn 40), y=17 (trên paddle), width=1, height=1.
         this.speed = 1.0;
         this.directionX = 1.0;
         this.directionY = -1.0;
@@ -94,6 +94,17 @@ public class Ball extends MovableObject {
 
     //Phương thức khi chạm paddle, brick, gạch.
     public void bounceOff(GameObject other) {
+        //Tình tọa độ tâm vật thể.
+        centreballX = this.getX() + this.getWidth() / 2;
+        centreballY = this.getY() + this.getHeight() / 2;
+        centreotherX = other.getX() + other.getWidth() / 2;
+        centreotherY = other.getY() + other.getHeight() / 2;
 
+        //Khoảng cách giữa bóng và vật khác.
+        distanceX = centreballX - centreotherX;
+        distanceY = centreballY - centreotherY;
+
+        //Khoảng cách để 2 vật tiếp xúc nhau.
+        distanceminX = 
     }
 }
