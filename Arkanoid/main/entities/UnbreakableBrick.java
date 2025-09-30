@@ -10,7 +10,6 @@ public class UnbreakableBrick extends Brick {
 
     @Override
     public void takeHit() {
-        setHitPoints(getHitPoints());
     }
 
     @Override
@@ -28,8 +27,8 @@ public class UnbreakableBrick extends Brick {
          for (int i = 0; i < getHeight(); i++) {
             // Di chuyen con tro den (y+i,x)
             System.out.print("\033[" + ((int)getY() + i + 1) + ";" + ((int)getX()+1) + "H");
-            for (int j = 0; j < getWidth(); j++) {
-                System.out.print("^");
+            for (int j = 0; j < (int) getWidth(); j++) {
+                System.out.print("█");
             }
         }
     }
