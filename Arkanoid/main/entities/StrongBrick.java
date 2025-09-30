@@ -27,7 +27,7 @@ public class StrongBrick extends Brick{
             // Di chuyen con tro den (y+i,x)
             System.out.print("\033[" + ((int)getY() + i + 1) + ";" + ((int)getX()+1) + "H");
             for (int j = 0; j < getWidth(); j++) {
-                System.out.print("$");
+                System.out.print("%");
             }
         }
     }  
