@@ -1,10 +1,17 @@
 package main.entities;
 
+import entities.MovableObject;
+import entities.GameObject;
+
 public class Ball extends MovableObject {
     private double speed; //Tốc độ bóng.
-    private double directionX; //Hướng đi của bóng.
-    private double directionY;
+    private double directionX; //Hướng đi của bóng theo chiều ngang.
+    private double directionY; //Hướng đi của bóng theo chiều dọc.
     private char symbol = 'O'; //Quy ước terminal.
+
+    //Lưu vị trí ban đầu của bóng để reset khi bóng rơi.
+    private double initialX;
+    private double initialY;
 
     //Constructor mặc định
     public Ball() {
@@ -14,6 +21,8 @@ public class Ball extends MovableObject {
         this.directionY = -1.0;
         this.setDx(speed * directionX);
         this.setDy(speed * directionY);
+        this.initialX = this.getX(); //Lưu vị trí ban đầu bằng tọa độ x.
+        this.initialY = this.getY(); //Lưu vị trí ban đầu bằng tọa độ y.
     }
 
     //Constructor với speed, directionX, directionY
@@ -24,16 +33,20 @@ public class Ball extends MovableObject {
         this.directionY = directionY;
         this.setDx(speed * directionX);
         this.setDy(speed * directionY);
+        this.initialX = this.getX();
+        this.initialY = this.getY();
     }
 
     //Đặt bóng trên thanh:
     public Ball(double paddleX, double paddleY, double paddleWidth, int level) {
-        super(paddleX + paddleWidth / 2, paddleY - 1, 1, 1, 0, 0);
+        super(paddleX + paddleWidth / 2.0, paddleY - 1.0, 1, 1, 0, 0);
         this.speed = level * 1.0;
         this.directionX = 1.0;
         this.directionY = -1.0;
         this.setDx(speed * directionX);
         this.setDy(speed * directionY);
+        this.initialX = this.getX();
+        this.initialY = this.getY();
     }
 
     //Getter, setter cho 4 thuộc tính: speed, directionX, directionY, symbol
@@ -43,6 +56,8 @@ public class Ball extends MovableObject {
 
     public void setSpeed(double speed) {
         this.speed = speed;
+        this.setDx(speed * directionX); //Khi tốc độ thay đổi, cập nhật tốc độ di chuyển theo chiều x.
+        this.setDy(speed * directionY); //Khi tốc độ thay đổi, cập nhật tốc độ di chuyển theo chiều y.
     }
 
     public double getDirectionX() {
@@ -51,6 +66,7 @@ public class Ball extends MovableObject {
 
     public void setDirectionX(double directionX) {
         this.directionX = directionX;
+        this.setDx(speed * directionX); //Thay đổi directionX thì setDx cx thay đổi theo.
     }
 
     public double getDirectionY() {
@@ -59,6 +75,7 @@ public class Ball extends MovableObject {
 
     public void setDirectionY(double directionY) {
         this.directionY = directionY;
+        this.setDy(speed * directionY);
     }
 
     public char getSymbol() {
@@ -92,19 +109,68 @@ public class Ball extends MovableObject {
         }
     }
 
-    //Phương thức khi chạm paddle, brick, gạch.
+    //Phương thức khi chạm paddle, brick, tường.
     public void bounceOff(GameObject other) {
-        //Tình tọa độ tâm vật thể.
-        centreballX = this.getX() + this.getWidth() / 2;
-        centreballY = this.getY() + this.getHeight() / 2;
-        centreotherX = other.getX() + other.getWidth() / 2;
-        centreotherY = other.getY() + other.getHeight() / 2;
+        //Chọn tường trái/phải.
+        if (other.getX() == 0 || other.getX() == 39) {
+            this.directionX = -this.directionX;
+            this.setDx(speed * directionX);
+        } else if (other.getY() == 0) {
+            //Chạm tường trên.
+            this.directionY = -this.directionY;
+            this.setDy(speed * directionY);
+        } else {
+        /*Chạm vào brick hoặc paddle.
+        Tình tọa độ tâm vật thể.*/
+            centreballX = this.getX() + this.getWidth() / 2.0;
+            centreballY = this.getY() + this.getHeight() / 2.0;
+            centreotherX = other.getX() + other.getWidth() / 2.0;
+            centreotherY = other.getY() + other.getHeight() / 2.0;
 
-        //Khoảng cách giữa bóng và vật khác.
-        distanceX = centreballX - centreotherX;
-        distanceY = centreballY - centreotherY;
+            //Khoảng cách giữa bóng và vật khác.
+            distanceX = centreballX - centreotherX;
+            distanceY = centreballY - centreotherY;
 
-        //Khoảng cách để 2 vật tiếp xúc nhau.
-        distanceminX = 
+            //Kiểm tra và quyết định hướng bóng mới là ngang/dọc.
+            if (Math.abs(distanceX) > Math.abs(distanceY)) {
+                //Va chạm ngang
+                this.directionX = -this.directionX;
+                if (this.directionX == 0) {
+                    if (distanceX >= 0) {
+                        this.directionX = 1.0;
+                    } else {
+                        this.directionX = -1.0;
+                    }
+                }
+                this.setDx(speed * directionX);
+            } else if (Math.abs(distanceX) < Math.abs(distanceY)) {
+                //Va chạm dọc
+                this.directionY = -this.directionY;
+                if (this.directionY == 0) {
+                    if (distanceY >= 0) {
+                        this.directionY = 1.0;
+                    } else {
+                        this.directionY = -1.0;
+                    }
+                }
+                this.setDy(speed * directionY);
+            } else {
+                //Trường hợp chạm góc.
+                this.directionX = -this.directionX;
+                this.directionY = -this.directionY;
+                this.setDx(speed * directionX);
+                this.setDy(speed * directionY);
+            }
+        }
+    }
+
+    //Khi bóng rơi vực, reset lại vị trí ban đầu của bóng.
+    public void resetToInitial() {
+        this.setX(initialX); //Set vị trí tọa độ.
+        this.setY(initialY);
+        this.directionX = 1.0; //Set lại hướng bóng.
+        this.directionY = -1.0;
+        this.setDx(speed * directionX);
+        this.setDy(speed * directionY);
     }
 }

@@ -3,10 +3,7 @@ package entities;
 public abstract class PowerUp extends GameObject {
     private double duration; //Thời gian hiệu lực
     private String type; //Loại powerup
-
-    /*Constructor không có tham số.
-    public PowerUp() {
-    } */
+    private double fallSpeed = 1.0; //Tốc độ rơi vật phẩm đặc biệt là 1
 
     //Constructor có tham số.
     public PowerUp(double x, double y, double width, double height, String type, double duration) {
@@ -34,13 +31,18 @@ public abstract class PowerUp extends GameObject {
     }
 
     //Áp dụng hiệu ứng:
-    public void applyEffect(Paddle paddle) {
-
-    }
+    public abstract void applyEffect(Paddle paddle);
 
     //Gỡ bỏ hiệu ứng:
-    public void removeEffect(Paddle paddle) {
+    public abstract void removeEffect(Paddle paddle);
 
+    //Kiểm tra Hiệu ứng đã ra khỏi màn hỉnh (tụt xuống đày chưa)
+    public boolean isOutOfBounds (int worldHeight) {
+        if (this.getY() < worldHeight) {
+            return false;
+        } else {
+            return true;
+        }
     }
 
     @Override
