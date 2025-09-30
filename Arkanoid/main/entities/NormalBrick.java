@@ -32,6 +32,7 @@ public class NormalBrick extends Brick {
             for (int j = 0; j < getWidth(); j++) {
                 System.out.print("#");
             }
+
         }
     }
 

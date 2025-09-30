@@ -30,7 +30,7 @@ public class ExplosiveBrick extends Brick{
         for(int i = 0; i < getHeight(); i++) {
             System.out.print("\033["+((int)getY() + i + 1) + ";" + ((int)getX() + 1) + "H");
             for (int j = 0; j < getWidth(); j++) {
-                System.out.print("%");
+                System.out.print("*");
             } 
         }
        

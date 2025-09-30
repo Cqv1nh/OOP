@@ -5,7 +5,6 @@ public class UnbreakableBrick extends Brick {
 
     public UnbreakableBrick(double x, double y, double width, double height) {
         super(x, y, width, height, 1, BrickType.UNBREAKABLE);
-        //TODO Auto-generated constructor stub
     }
 
     @Override
