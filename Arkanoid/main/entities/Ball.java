@@ -122,14 +122,14 @@ public class Ball extends MovableObject {
         } else {
         /*Chạm vào brick hoặc paddle.
         Tình tọa độ tâm vật thể.*/
-            centreballX = this.getX() + this.getWidth() / 2.0;
-            centreballY = this.getY() + this.getHeight() / 2.0;
-            centreotherX = other.getX() + other.getWidth() / 2.0;
-            centreotherY = other.getY() + other.getHeight() / 2.0;
+            double centreballX = this.getX() + this.getWidth() / 2.0;
+            double centreballY = this.getY() + this.getHeight() / 2.0;
+            double centreotherX = other.getX() + other.getWidth() / 2.0;
+            double centreotherY = other.getY() + other.getHeight() / 2.0;
 
             //Khoảng cách giữa bóng và vật khác.
-            distanceX = centreballX - centreotherX;
-            distanceY = centreballY - centreotherY;
+            double distanceX = centreballX - centreotherX;
+            double distanceY = centreballY - centreotherY;
 
             //Kiểm tra và quyết định hướng bóng mới là ngang/dọc.
             if (Math.abs(distanceX) > Math.abs(distanceY)) {
