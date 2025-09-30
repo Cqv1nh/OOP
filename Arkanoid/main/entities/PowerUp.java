@@ -1,4 +1,4 @@
-package main.entities;
+package entities;
 
 public abstract class PowerUp extends GameObject {
     private double duration; //Thời gian hiệu lực
