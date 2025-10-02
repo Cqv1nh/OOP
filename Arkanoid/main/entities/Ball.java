@@ -1,4 +1,4 @@
-package main.entities;
+package entities;
 
 import entities.MovableObject;
 import entities.GameObject;

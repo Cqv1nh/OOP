@@ -1,5 +1,7 @@
 package entities;
 
+import util.Constants;
+
 public class Paddle extends MovableObject {
     private double speed = 1.0; // Speed la toc do, khong co huong
     private String currentPowerUp;
@@ -41,7 +43,15 @@ public class Paddle extends MovableObject {
     
     @Override
     public void move() { // DI chuyen den toa do X moi
-        setX(getX()+getDx());
+        double destX = this.getX() + this.getDx() * 20;
+        if (destX < Constants.PADDLE_WIDTH / 2){
+            this.setX(Constants.PADDLE_WIDTH / 2);
+        } else if (destX > Constants.SCREEN_WIDTH - Constants.PADDLE_WIDTH / 2) {
+            this.setX(Constants.SCREEN_WIDTH - Constants.PADDLE_WIDTH / 2);
+        }
+        else {
+            this.setX(destX);
+        }
     }
 
     public void moveLeft() {
