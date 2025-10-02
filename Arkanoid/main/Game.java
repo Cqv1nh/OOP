@@ -31,7 +31,7 @@ public class Game {
                     0, 0, "None"
             );
 
-            Ball ball = new Ball (5,5);
+            Ball ball = new Ball (1, 5, 5);
 
             RendererConsole render = new RendererConsole();
 

@@ -11,25 +11,25 @@ public class CollisionDetector {
     public static boolean checkWallCollision (Ball ball) {
 
         if (ball.getX() < Constants.BALL_DIAMETER) {
-           ball.setX(10);
+           ball.setX(20);
            ball.setDx(-ball.getDx());
            return true;
         }
 
         if (ball.getX() > Constants.SCREEN_WIDTH - Constants.BALL_DIAMETER) {
-            ball.setX(Constants.SCREEN_WIDTH - 10);
+            ball.setX(Constants.SCREEN_WIDTH - 20);
             ball.setDx(-ball.getDx());
             return true;
         }
 
         if (ball.getY() < Constants.BALL_DIAMETER) {
-            ball.setY(10);
+            ball.setY(20);
             ball.setDy(-ball.getDy());
             return true;
         }
 
         if (ball.getY() > Constants.SCREEN_HEIGHT - Constants.BALL_DIAMETER ) {
-            ball.setY(Constants.SCREEN_HEIGHT - 10);
+            ball.setY(Constants.SCREEN_HEIGHT - 20);
             ball.setDy(-ball.getDy());
             return true;
         }
