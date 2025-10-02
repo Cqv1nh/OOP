@@ -1,14 +1,29 @@
 import javax.swing.*;
+
+import entities.Ball;
+import entities.Brick;
+import entities.NormalBrick;
+import entities.Paddle;
+import util.Constants;
+
 import java.awt.*;
+import java.util.ArrayList;
 
 public class GameWindow extends JFrame {
 
     public GameWindow() {
+        Paddle paddle = new Paddle(Constants.INIT_PADDLE_X,Constants.INIT_PADDLE_Y,
+        Constants.PADDLE_WIDTH,Constants.PADDLE_HEIGHT,0,0,null);
+
+        Ball ball = new Ball(paddle.getX(), paddle.getY(), paddle.getWidth(), 1);
+        
+        ArrayList<Brick> brickList = new ArrayList<>();
+        brickList.add(new NormalBrick(40, 40,Constants.BRICK_WIDTH,Constants.BRICK_HEIGHT));
         // Đặt tiêu đề cho cửa sổ
-        setTitle();
+        setTitle(Constants.SCREEN_TITLE);
 
         // Kích thước cửa sổ
-        setSize(800, 600);
+        setSize(Constants.SCREEN_WIDTH, Constants.SCREEN_HEIGHT);
 
         // Thoát khi bấm nút X
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -25,6 +40,25 @@ public class GameWindow extends JFrame {
                 // Vẽ nền màu đen
                 g.setColor(Color.BLACK);
                 g.fillRect(0, 0, getWidth(), getHeight());
+
+                g.setColor(Color.WHITE);
+                g.fillRect(
+                    (int) paddle.getX(), 
+                    (int) paddle.getY(), 
+                    (int) paddle.getWidth(), 
+                    (int) paddle.getHeight());
+
+                g.setColor(Color.RED);
+                g.fillOval(Constants.INIT_BALL_X, Constants.INIT_BALL_Y, Constants.BALL_DIAMETER, Constants.BALL_DIAMETER);
+                
+                for( Brick b : brickList) {
+                    g.setColor(Color.GREEN);
+                    g.fillRect((int) b.getX(), 
+                    (int) b.getY(), 
+                    (int) b.getWidth(), 
+                    (int) b.getHeight());
+                }
+
             }
         };
 
