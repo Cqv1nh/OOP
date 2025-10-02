@@ -6,6 +6,20 @@ public class Paddle extends MovableObject {
     private double speed = 1.0; // Speed la toc do, khong co huong
     private String currentPowerUp;
 
+    /*Thêm code: Thêm object ball vào class Paddle:*/
+    private Ball ball;
+
+    /*Getter cho Ball:*/
+    public Ball getBall() {
+        return ball;
+    }
+
+    /*Setter cho Ball*/
+    public void setBall(Ball ball) {
+        this.ball = ball;
+    }
+    /*Hết thêm code.*/
+
     public Paddle(double x, double y, double width, double height ,
                   double dx, double dy, String currentPowerUp) {
         super(x, y, width, height, dx, dy);
