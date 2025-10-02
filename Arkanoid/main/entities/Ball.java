@@ -8,6 +8,7 @@ public class Ball extends MovableObject {
     private double directionX; //Hướng đi của bóng theo chiều ngang.
     private double directionY; //Hướng đi của bóng theo chiều dọc.
     private char symbol = 'O'; //Quy ước terminal.
+    private double radius; //Bán kính của bóng.
 
     //Lưu vị trí ban đầu của bóng để reset khi bóng rơi.
     private double initialX;
@@ -23,10 +24,11 @@ public class Ball extends MovableObject {
         this.setDy(speed * directionY);
         this.initialX = this.getX(); //Lưu vị trí ban đầu bằng tọa độ x.
         this.initialY = this.getY(); //Lưu vị trí ban đầu bằng tọa độ y.
+        this.radius = 0.5;
     }
 
     //Constructor với speed, directionX, directionY
-    public Ball(double speed, double directionX, double directionY) {
+    public Ball(double speed, double directionX, double directionY, double radius) {
         super(19, 17, 1, 1, speed * directionX, speed * directionY);
         this.speed = speed;
         this.directionX = directionX;
@@ -35,6 +37,7 @@ public class Ball extends MovableObject {
         this.setDy(speed * directionY);
         this.initialX = this.getX();
         this.initialY = this.getY();
+        this.radius = radius;
     }
 
     //Đặt bóng trên thanh:
@@ -49,7 +52,7 @@ public class Ball extends MovableObject {
         this.initialY = this.getY();
     }
 
-    //Getter, setter cho 4 thuộc tính: speed, directionX, directionY, symbol
+    //Getter, setter cho 5 thuộc tính: speed, directionX, directionY, symbol, radius.
     public double getSpeed() {
         return speed;
     }
@@ -80,6 +83,15 @@ public class Ball extends MovableObject {
 
     public char getSymbol() {
         return symbol;
+    }
+
+    //Getter và setter cho radius.
+    public double getRadius() {
+        return radius;
+    }
+
+    public void setRadius(double radius) {
+        this.radius = radius;
     }
 
     //sửa đổi phương thức move
