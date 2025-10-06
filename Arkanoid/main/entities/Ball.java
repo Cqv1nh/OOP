@@ -1,6 +1,8 @@
 package entities;
 
 import entities.MovableObject;
+import util.Constants;
+
 import entities.GameObject;
 
 public class Ball extends MovableObject {
@@ -15,29 +17,18 @@ public class Ball extends MovableObject {
     private double initialY;
 
     //Constructor mặc định
+    // Thinh thay doi phu hop voi gameWindow
     public Ball() {
-        super(19, 17, 1, 1, 0, 0); //x=19 (giữa màn 40), y=17 (trên paddle), width=1, height=1.
-        this.speed = 1.0;
+        super(Constants.INIT_BALL_X, Constants.INIT_BALL_Y, 
+        Constants.BALL_DIAMETER, Constants.BALL_DIAMETER, 0, 0); //x=19 (giữa màn 40), y=17 (trên paddle), width=1, height=1.
+        this.speed = 5.0;
         this.directionX = 1.0;
         this.directionY = -1.0;
         this.setDx(speed * directionX);
         this.setDy(speed * directionY);
         this.initialX = this.getX(); //Lưu vị trí ban đầu bằng tọa độ x.
         this.initialY = this.getY(); //Lưu vị trí ban đầu bằng tọa độ y.
-        this.radius = 0.5;
-    }
-
-    //Constructor với speed, directionX, directionY
-    public Ball(double speed, double directionX, double directionY, double radius) {
-        super(19, 17, 1, 1, speed * directionX, speed * directionY);
-        this.speed = speed;
-        this.directionX = directionX;
-        this.directionY = directionY;
-        this.setDx(speed * directionX);
-        this.setDy(speed * directionY);
-        this.initialX = this.getX();
-        this.initialY = this.getY();
-        this.radius = radius;
+        this.radius = Constants.BALL_DIAMETER / 2;
     }
 
     //Đặt bóng trên thanh:
@@ -52,6 +43,18 @@ public class Ball extends MovableObject {
         this.initialY = this.getY();
     }
 
+    //Constructor với speed, directionX, directionY
+    public Ball(double speed, double directionX, double directionY, double radius) {
+        super(19, 17, 1, 1, speed * directionX, speed * directionY);
+        this.speed = speed;
+        this.directionX = directionX;
+        this.directionY = directionY;
+        this.setDx(speed * directionX);
+        this.setDy(speed * directionY);
+        this.initialX = this.getX();
+        this.initialY = this.getY();
+        this.radius = radius;
+    }
     //Getter, setter cho 5 thuộc tính: speed, directionX, directionY, symbol, radius.
     public double getSpeed() {
         return speed;
