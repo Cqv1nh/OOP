@@ -18,7 +18,13 @@ public class GameWindow extends JFrame {
         Ball ball = new Ball(paddle.getX(), paddle.getY(), paddle.getWidth(), 1);
         
         ArrayList<Brick> brickList = new ArrayList<>();
-        brickList.add(new NormalBrick(40, 40,Constants.BRICK_WIDTH,Constants.BRICK_HEIGHT));
+
+        for (int i = 40; i <= 121; i= i + Constants.BRICK_HEIGHT) {
+            for(int j = 40; j <= 680; j = j + Constants.BRICK_WIDTH ) {
+                brickList.add(new NormalBrick(j, i, Constants.BRICK_WIDTH, Constants.BRICK_HEIGHT));
+            }
+        }
+    
         // Đặt tiêu đề cho cửa sổ
         setTitle(Constants.SCREEN_TITLE);
 
