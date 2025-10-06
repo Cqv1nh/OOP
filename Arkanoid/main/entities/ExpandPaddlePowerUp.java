@@ -34,6 +34,7 @@ public class ExpandPaddlePowerUp extends PowerUp {
     @Override
     //Vẽ đối tượng ra màn hình.
     public void render(){
-        System.out.println("EX tại (" + getX() + ", " + getY() + ")"); //EX = tăng độ dài thanh
+        // Vẽ ký tự '*' tại vị trí (x, y) theo ANSI escape code
+        System.out.print("\033[" + ((int)getY() + 1) + ";" + ((int)getX() + 1) + "H*");
     }
 }
