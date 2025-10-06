@@ -1,11 +1,11 @@
 import javax.swing.*;
-import java.awt.*;
 import java.awt.event.*;
 import entities.Ball;
 import entities.Brick;
 import entities.NormalBrick;
 import entities.Paddle;
 import util.Constants;
+import util.GameState;
 
 import java.util.ArrayList;
 
@@ -13,21 +13,16 @@ public class GameWindow extends JFrame {
     private Paddle paddle; // Thanh truot
     private Ball ball; // Ball 
     private ArrayList<Brick> brickList; // Danh sach gach
-    private boolean ballLaunched = false; // Bong con dinh tren paddle hay da di chuyen 
+    private boolean ballLaunched = false; // Bong con dinh tren paddle hay da di chuyen
+    private String gameState = GameState.GAMESTART;
+    private GamePanel gamePanel;
     public GameWindow() {
         paddle = new Paddle(Constants.INIT_PADDLE_X,Constants.INIT_PADDLE_Y,
         Constants.PADDLE_WIDTH,Constants.PADDLE_HEIGHT,0,0,null);
 
         ball = new Ball();
         paddle.setBall(ball);
-        brickList = new ArrayList<>();
-
-        // Dat cac vien gach cach nhau
-        for (int i = 60; i <= 120; i= i + Constants.BRICK_HEIGHT + 5) {
-            for(int j = 60; j <= 680; j = j + Constants.BRICK_WIDTH + 5) {
-                brickList.add(new NormalBrick(j, i, Constants.BRICK_WIDTH, Constants.BRICK_HEIGHT));
-            }
-        }
+        createBricks();
         
         // Đặt tiêu đề cho cửa sổ
         setTitle(Constants.SCREEN_TITLE);
@@ -41,55 +36,37 @@ public class GameWindow extends JFrame {
         // Không cho resize
         setResizable(false);
 
-        // Tạo panel chính (màn hình game)
-        JPanel gamePanel = new JPanel() {
-            @Override
-            protected void paintComponent(Graphics g) {
-                super.paintComponent(g);
-
-                // Vẽ nền màu đen
-                g.setColor(Color.BLACK);
-                g.fillRect(0, 0, getWidth(), getHeight());
-
-                g.setColor(Color.WHITE);
-                g.fillRect(
-                    (int) paddle.getX(), 
-                    (int) paddle.getY(), 
-                    (int) paddle.getWidth(), 
-                    (int) paddle.getHeight());
-
-                g.setColor(Color.RED);
-                g.fillOval((int) ball.getX(), 
-                (int) ball.getY(), (int) ball.getRadius() * 2, 
-                (int) ball.getRadius() * 2);
-                
-                for( Brick b : brickList) {
-                    g.setColor(Color.GREEN);
-                    g.fillRect((int) b.getX(), 
-                    (int) b.getY(), 
-                    (int) b.getWidth(), 
-                    (int) b.getHeight());
-                }
-
-            }
-        };
+        gamePanel = new GamePanel(this);
+        add(gamePanel);
 
         // GAME LOOP 60 FPS
         Timer timer = new Timer(16, e -> {
+            // Neu chua vao game thi k chay Timer
+            if (!gameState.equals(GameState.GAMEPLAYING)) {
+                gamePanel.repaint();
+                return;
+            }
+
             if (ballLaunched) {
                 ball.move();
                 double speed = ball.getSpeed();
             // va cham voi tuong
-                if (ball.getX() <= 0 || ball.getX() + ball.getRadius() * 2 >= Constants.SCREEN_WIDTH) {
-                    ball.setDirectionX(-ball.getDirectionX());
-                    ball.setDx(speed * ball.getDirectionX());
+                if (ball.getX() <= 0) {
+                    ball.setX(0);
+                    ball.setDirectionX(Math.abs(ball.getDirectionX())); // Bat sang phai
+                    ball.setDx(ball.getSpeed() * ball.getDirectionX());
+                }
+                if (ball.getX() + ball.getRadius() * 2 >= Constants.SCREEN_WIDTH) {
+                    ball.setX(Constants.SCREEN_WIDTH - ball.getRadius() * 2);
+                    ball.setDirectionX(-Math.abs(ball.getDirectionX())); // Bat sang trai
+                    ball.setDx(ball.getSpeed() * ball.getDirectionX());
                 }
                 if (ball.getY() <= 0) {
-                    ball.setDirectionY(-ball.getDirectionY());
-                    ball.setDy(speed * ball.getDirectionY()); // De qua bong roi xuong
+                    ball.setY(0);
+                    ball.setDirectionY(Math.abs(ball.getDirectionY())); // Bat xuong duoi
+                    ball.setDy(ball.getSpeed() * ball.getDirectionY()); // De qua bong roi xuong
                 }
 
-                
                 // Va cham voi paddle
                 if (ball.getY() + ball.getRadius() * 2 >= paddle.getY() 
                     && ball.getX() + ball.getRadius() * 2 >= paddle.getX() 
@@ -151,9 +128,13 @@ public class GameWindow extends JFrame {
                     }
                 }
                 brickList.removeAll(bricksToRemove);
+                if (brickList.isEmpty()) {
+                    gameState = GameState.LEVELCLEAR;
+                }
 
                 if (ball.getY() > Constants.SCREEN_HEIGHT) {
-                    ballLaunched = false;
+                    // ballLaunched = false;
+                    gameState = GameState.GAMEEND;
                 }
             } else {
                 // Khi chua ban, ball nam tren paddle
@@ -171,6 +152,27 @@ public class GameWindow extends JFrame {
             @Override
             public void keyPressed(KeyEvent e) {
                 int key = e.getKeyCode();
+                // Trang thai vao game
+                if (gameState.equals(GameState.GAMESTART)) {
+                    if (key == KeyEvent.VK_SPACE) {
+                        gameState = GameState.GAMEPLAYING; // Playing game
+                        ballLaunched = false;
+                    }
+                    return;
+                }
+                if (gameState.equals(GameState.GAMEEND)) {
+                    if (key == KeyEvent.VK_SPACE) {
+                        restartGame();
+                    }
+                    return;
+                }
+
+                if (gameState.equals(GameState.LEVELCLEAR)) {
+                    if (key == KeyEvent.VK_ENTER) {
+                        nextLevel();
+                    }
+                    return;
+                }
                 // Di chuyen paddle
                 if (key == KeyEvent.VK_LEFT || key == KeyEvent.VK_A) {
                     paddle.moveLeft();
@@ -184,13 +186,54 @@ public class GameWindow extends JFrame {
             }
         });
 
-        // Thêm panel vào cửa sổ
-        add(gamePanel);
-
         // Hiển thị cửa sổ
         setVisible(true);
     }
+    // Ham tao gach 
+    private void createBricks() {
+        brickList = new ArrayList<>();
+        // Dat cac vien gach cach nhau
+        for (int i = 60; i <= 120; i= i + Constants.BRICK_HEIGHT + 5) {
+            for(int j = 60; j <= 680; j = j + Constants.BRICK_WIDTH + 5) {
+                brickList.add(new NormalBrick(j, i, Constants.BRICK_WIDTH, Constants.BRICK_HEIGHT));
+            }
+        }
+    }
+    // Ham reset Game 
+    private void restartGame() {
+        createBricks();
+        ballLaunched = false;
+        gameState = GameState.GAMESTART;
+        paddle = new Paddle(Constants.INIT_PADDLE_X,Constants.INIT_PADDLE_Y,
+        Constants.PADDLE_WIDTH,Constants.PADDLE_HEIGHT,0,0,null);
+        ball = new Ball();
+        paddle.setBall(ball);
+    }
+    private void nextLevel() {
+        createBricks(); // Có thể tăng độ khó sau này
+        gameState = GameState.GAMESTART;
+        ballLaunched = false;
+        paddle = new Paddle(Constants.INIT_PADDLE_X,Constants.INIT_PADDLE_Y,
+        Constants.PADDLE_WIDTH,Constants.PADDLE_HEIGHT,0,0,null);
+        ball = new Ball();
+        paddle.setBall(ball);
+    }
 
+    public String getGameState() {
+        return gameState;
+    }
+
+    public Paddle getPaddle() {
+        return paddle;
+    }
+
+    public Ball getBall() {
+        return ball;
+    }
+
+    public ArrayList<Brick> getBricks() {
+        return brickList;
+    }
     public static void main(String[] args) {
         // Tạo cửa sổ trên luồng giao diện
         SwingUtilities.invokeLater(() -> new GameWindow());
