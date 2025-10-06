@@ -11,6 +11,24 @@ public class MultiBallPowerUp extends PowerUp {
     //Áp dụng hiệu ứng.
     @Override
     public void applyEffect(Paddle paddle) {
+        //Tạo ball mới dựa trên Ball hiện tại của Paddle.
+        Ball currentBall = paddle.getBall();
+
+        //Tạo ball mới gần ball hiện tại, hướng ngẫu nhiên.
+        Ball addBall = new Ball(
+                currentBall.getSpeed(),
+                -currentBall.getDirectionX(), //Lấy hướng x ngược với Ball cũ.
+                currentBall.getDirectionY(),
+                currentBall.getRadius()
+        );
+
+        //Đặt vị trí ban đầu cho Ball mới.
+        addBall.setX(currentBall.getX());
+        addBall.setY(currentBall.getY());
+
+        /* **CHÚ Ý**: Cần thêm ball này vào GameManager
+        Thêm: gameManager.addBall(newBall);
+        Hoặc: balls.add(newBall); */
 
     }
 
@@ -29,6 +47,6 @@ public class MultiBallPowerUp extends PowerUp {
     //Vẽ đối tượng ra màn hình.
     @Override
     public void render() {
-        System.out.println("MB tại (" + getX() + ", " + getY() + ")");
+        System.out.print("\033[" + ((int)getY() + 1) + ";" + ((int)getX() + 1) + "H*");
     }
 }
