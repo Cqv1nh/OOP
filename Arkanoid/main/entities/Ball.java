@@ -116,7 +116,10 @@ public class Ball extends MovableObject {
 
     //phương thức ktra bóng va cham vs đối tượng khác.
     public boolean checkCollision(GameObject other) {
-        if ((this.getY() + this.getHeight() < other.getY()) || (this.getX() + this.getWidth() < other.getX()) || (other.getY() + other.getHeight() < this.getY()) || (other.getX() + other.getWidth() < this.getX())) {
+        if ((this.getY() + this.getHeight() < other.getY())
+                || (this.getX() + this.getWidth() < other.getX())
+                || (other.getY() + other.getHeight() < this.getY())
+                || (other.getX() + other.getWidth() < this.getX())) {
             return false;
         } else {
             return true;
