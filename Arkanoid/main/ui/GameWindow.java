@@ -51,13 +51,20 @@ public class GameWindow extends JFrame {
                 ball.move();
                 double speed = ball.getSpeed();
             // va cham voi tuong
-                if (ball.getX() <= 0 || ball.getX() + ball.getRadius() * 2 >= Constants.SCREEN_WIDTH) {
-                    ball.setDirectionX(-ball.getDirectionX());
-                    ball.setDx(speed * ball.getDirectionX());
+                if (ball.getX() <= 0) {
+                    ball.setX(0);
+                    ball.setDirectionX(Math.abs(ball.getDirectionX())); // Bat sang phai
+                    ball.setDx(ball.getSpeed() * ball.getDirectionX());
+                }
+                if (ball.getX() + ball.getRadius() * 2 >= Constants.SCREEN_WIDTH) {
+                    ball.setX(Constants.SCREEN_WIDTH - ball.getRadius() * 2);
+                    ball.setDirectionX(-Math.abs(ball.getDirectionX())); // Bat sang trai
+                    ball.setDx(ball.getSpeed() * ball.getDirectionX());
                 }
                 if (ball.getY() <= 0) {
-                    ball.setDirectionY(-ball.getDirectionY());
-                    ball.setDy(speed * ball.getDirectionY()); // De qua bong roi xuong
+                    ball.setY(0);
+                    ball.setDirectionY(Math.abs(ball.getDirectionY())); // Bat xuong duoi
+                    ball.setDy(ball.getSpeed() * ball.getDirectionY()); // De qua bong roi xuong
                 }
 
                 // Va cham voi paddle
