@@ -1,12 +1,12 @@
 import javax.swing.*;
-
+import java.awt.*;
+import java.awt.event.*;
 import entities.Ball;
 import entities.Brick;
 import entities.NormalBrick;
 import entities.Paddle;
 import util.Constants;
 
-import java.awt.*;
 import java.util.ArrayList;
 
 public class GameWindow extends JFrame {
@@ -19,12 +19,12 @@ public class GameWindow extends JFrame {
         
         ArrayList<Brick> brickList = new ArrayList<>();
 
-        for (int i = 40; i <= 121; i= i + Constants.BRICK_HEIGHT) {
+        for (int i = 40; i <= 120; i= i + Constants.BRICK_HEIGHT) {
             for(int j = 40; j <= 680; j = j + Constants.BRICK_WIDTH ) {
                 brickList.add(new NormalBrick(j, i, Constants.BRICK_WIDTH, Constants.BRICK_HEIGHT));
             }
         }
-    
+        
         // Đặt tiêu đề cho cửa sổ
         setTitle(Constants.SCREEN_TITLE);
 
@@ -68,6 +68,22 @@ public class GameWindow extends JFrame {
             }
         };
 
+        gamePanel.setFocusable(true);
+        gamePanel.addKeyListener(new KeyAdapter() {
+            @Override
+            public void keyPressed(KeyEvent e) {
+                int key = e.getKeyCode();
+
+                if (key == KeyEvent.VK_LEFT || key == KeyEvent.VK_A) {
+                    paddle.moveLeft();
+                } else if (key == KeyEvent.VK_RIGHT || key == KeyEvent.VK_D) {
+                    paddle.moveRight();
+                }
+
+                gamePanel.repaint();
+            }
+        });
+
         // Thêm panel vào cửa sổ
         add(gamePanel);
 
@@ -78,5 +94,6 @@ public class GameWindow extends JFrame {
     public static void main(String[] args) {
         // Tạo cửa sổ trên luồng giao diện
         SwingUtilities.invokeLater(() -> new GameWindow());
+
     }
 }

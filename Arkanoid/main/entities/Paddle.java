@@ -43,13 +43,13 @@ public class Paddle extends MovableObject {
     
     @Override
     public void move() { // DI chuyen den toa do X moi
+         
         double destX = this.getX() + this.getDx() * 20;
-        if (destX < Constants.PADDLE_WIDTH / 2){
-            this.setX(Constants.PADDLE_WIDTH / 2);
-        } else if (destX > Constants.SCREEN_WIDTH - Constants.PADDLE_WIDTH / 2) {
-            this.setX(Constants.SCREEN_WIDTH - Constants.PADDLE_WIDTH / 2);
-        }
-        else {
+        if (destX < 0) {
+            this.setX(0);
+        } else if (destX + this.getWidth() > Constants.SCREEN_WIDTH) {
+            this.setX(Constants.SCREEN_WIDTH - this.getWidth());
+        } else {
             this.setX(destX);
         }
     }

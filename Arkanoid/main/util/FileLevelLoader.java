@@ -50,7 +50,7 @@ public class FileLevelLoader {
                     if (health != 0) {
                         float x = col;// * Constants.BRICK_WIDTH;
                         float y = row;//* Constants.BRICK_HEIGHT + Constants.LEVEL_TOP_OFFSET;
-                        bricks.add(new NormalBrick(y, x, Constants.BRICK_WIDTH, Constants.BRICK_HEIGHT, 1));
+                        bricks.add(new NormalBrick(y, x, Constants.BRICK_WIDTH, Constants.BRICK_HEIGHT));
                     }
                 }
                 row++;
