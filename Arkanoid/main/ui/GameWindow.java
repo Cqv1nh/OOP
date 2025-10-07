@@ -21,6 +21,7 @@ public class GameWindow extends JFrame {
         Constants.PADDLE_WIDTH,Constants.PADDLE_HEIGHT,0,0,null);
 
         ball = new Ball();
+        ball.setSpeed(Constants.BALL_SPEED);
         paddle.setBall(ball);
         createBricks();
         
@@ -49,22 +50,22 @@ public class GameWindow extends JFrame {
 
             if (ballLaunched) {
                 ball.move();
-                double speed = ball.getSpeed();
+                double speed = ball.getSpeed(); // Lay gia tri speed
             // va cham voi tuong
                 if (ball.getX() <= 0) {
                     ball.setX(0);
                     ball.setDirectionX(Math.abs(ball.getDirectionX())); // Bat sang phai
-                    ball.setDx(ball.getSpeed() * ball.getDirectionX());
+                    ball.setDx(speed * ball.getDirectionX());
                 }
                 if (ball.getX() + ball.getRadius() * 2 >= Constants.SCREEN_WIDTH) {
                     ball.setX(Constants.SCREEN_WIDTH - ball.getRadius() * 2);
                     ball.setDirectionX(-Math.abs(ball.getDirectionX())); // Bat sang trai
-                    ball.setDx(ball.getSpeed() * ball.getDirectionX());
+                    ball.setDx(speed * ball.getDirectionX());
                 }
                 if (ball.getY() <= 0) {
                     ball.setY(0);
                     ball.setDirectionY(Math.abs(ball.getDirectionY())); // Bat xuong duoi
-                    ball.setDy(ball.getSpeed() * ball.getDirectionY()); // De qua bong roi xuong
+                    ball.setDy(speed * ball.getDirectionY()); // De qua bong roi xuong
                 }
 
                 // Va cham voi paddle
