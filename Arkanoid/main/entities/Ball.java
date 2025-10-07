@@ -20,7 +20,7 @@ public class Ball extends MovableObject {
     public Ball() {
         super(Constants.INIT_BALL_X, Constants.INIT_BALL_Y, 
         Constants.BALL_DIAMETER, Constants.BALL_DIAMETER, 0, 0); //x=19 (giữa màn 40), y=17 (trên paddle), width=1, height=1.
-        this.speed = 5.0;
+        this.speed = 1.0;
         this.directionX = 1.0;
         this.directionY = -1.0;
         this.setDx(speed * directionX);
