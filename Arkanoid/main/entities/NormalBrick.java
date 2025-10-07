@@ -4,7 +4,7 @@ import util.BrickType;
 
 public class NormalBrick extends Brick {
     public NormalBrick(double x, double y, double width, double height) {
-        super(x, y, width, height, 1, BrickType.NORMAL);
+        super(x, y, width, height, 1, BrickType.NORMAL, 10);
     }
 
     @Override
@@ -19,7 +19,6 @@ public class NormalBrick extends Brick {
 
     @Override
     public void update(String input) {
-        
     }
 
     @Override

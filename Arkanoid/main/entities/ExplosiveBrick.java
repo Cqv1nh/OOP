@@ -6,7 +6,7 @@ import util.BrickType;
 public class ExplosiveBrick extends Brick{
 
     public ExplosiveBrick(double x, double y, double width, double height) {
-        super(x, y, width, height, 1, BrickType.EXPLOSIVE);
+        super(x, y, width, height, 1, BrickType.EXPLOSIVE, 50);
     }
 
     @Override
@@ -22,7 +22,6 @@ public class ExplosiveBrick extends Brick{
 
     @Override
     public void update(String input) {
-
     }
 
     @Override
