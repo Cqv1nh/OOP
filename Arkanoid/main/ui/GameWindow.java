@@ -12,11 +12,11 @@ public class GameWindow extends JFrame {
     private Ball ball; // Ball 
     private ArrayList<Brick> brickList; // Danh sach gach
     private boolean ballLaunched = false; // Bong con dinh tren paddle hay da di chuyen
-    private String gameState = GameState.GAMESTART;
-    private GamePanel gamePanel;
-    private GameLoop gameLoop;
-    private InputHandler inputHandler;
-    private BrickManager brickManager;
+    private String gameState = GameState.GAMESTART; // Trang thai game
+    private GamePanel gamePanel; // Ve cac vat the
+    private GameLoop gameLoop; // Vong lap game
+    private InputHandler inputHandler;  // Xu ly dau vao ban phim
+    private BrickManager brickManager; // Quan ly gach cua level 1
 
     public GameWindow() {
         paddle = new Paddle(Constants.INIT_PADDLE_X,Constants.INIT_PADDLE_Y,
