@@ -28,7 +28,7 @@ public class ExpandPaddlePowerUp extends PowerUp {
     //Cập nhật vị trí đối tượng.
     public void update(String input) {
         setX(getX());
-        setY(getY() + 1); //Tọa độ (0,0) ở góc trên bên trái -> xuống thì y tăng.
+        setY(getY() + getFallSpeed()); //Tọa độ (0,0) ở góc trên bên trái -> xuống thì y tăng thêm 1.
     }
 
     @Override

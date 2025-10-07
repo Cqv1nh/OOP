@@ -1,6 +1,6 @@
 package entities;
 
-import main.entities.Ball;
+import entities.Ball;
 
 public class FastBallPowerUp extends PowerUp {
     private static final double SPEED_MULTIPLIER = 1.25; //Tốc độ bóng sẽ tăng 1.25 lần.
@@ -37,7 +37,7 @@ public class FastBallPowerUp extends PowerUp {
     @Override
     public void update(String input) {
         setX(getX());
-        setY(getY() + 1); //tăng y lên 1 do đi xuống.
+        setY(getY() + getFallSpeed()); //tăng y lên 1 do đi xuống, lấy fallspeed = 1.
     }
 
     //Vẽ đối tượng ra màn hình.

@@ -50,4 +50,9 @@ public abstract class PowerUp extends GameObject {
 
     @Override
     public abstract void render(); //Vẽ đối tượng trên terminal
+
+    //Chỉnh sửa: Getter cho tốc độ rơi của bóng.
+    public double getFallSpeed() {
+        return fallSpeed;
+    }
 }
