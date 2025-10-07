@@ -1,7 +1,5 @@
 package util;
 
-import java.awt.Color;
-import java.awt.Font;
 // game swing
 public final class Constants {
     public static final int SCREEN_WIDTH = 800;
