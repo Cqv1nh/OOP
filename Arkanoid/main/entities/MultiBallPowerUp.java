@@ -1,6 +1,6 @@
 package entities;
 
-import main.entities.Ball;
+import entities.Ball;
 import java.util.List;
 
 public class MultiBallPowerUp extends PowerUp {
@@ -41,7 +41,7 @@ public class MultiBallPowerUp extends PowerUp {
     @Override
     public void update(String input) {
         setX(getX());
-        setY(getY() + 1); //tăng y lên 1 do đi xuống.
+        setY(getY() + getFallSpeed()); //tăng y lên 1 do đi xuống, lấy fallspeed = 1.
     }
 
     //Vẽ đối tượng ra màn hình.

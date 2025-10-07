@@ -28,7 +28,7 @@ public abstract class Brick extends GameObject {
     }
 
     //Getter cho 2 attribute mới.
-    public boolean isPowerUp() {
+    public boolean hasPowerUp() {
         return hasPowerUp;
     }
 
