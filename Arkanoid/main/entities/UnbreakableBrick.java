@@ -4,7 +4,7 @@ import util.BrickType;
 public class UnbreakableBrick extends Brick {
 
     public UnbreakableBrick(double x, double y, double width, double height) {
-        super(x, y, width, height, 1, BrickType.UNBREAKABLE);
+        super(x, y, width, height, 1, BrickType.UNBREAKABLE, 0);
     }
 
     @Override
@@ -18,7 +18,6 @@ public class UnbreakableBrick extends Brick {
 
     @Override
     public void update(String input) {
-
     }
 
     @Override

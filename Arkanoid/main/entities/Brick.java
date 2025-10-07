@@ -8,11 +8,14 @@ public abstract class Brick extends GameObject {
     private boolean hasPowerUp; //Gạch có sinh power up không.
     private String powerUpType; //Loại powerup nếu có.
 
+    private int score; //Điểm từng loại gạch.
+
     //Phần này sửa constructor này thêm 2 thuộc tính vừa thêm.
-    public Brick(double x, double y, double width, double height, int hitPoints, String type) {
+    public Brick(double x, double y, double width, double height, int hitPoints, String type, int score) {
         super(x, y, width, height);
         this.hitPoints = hitPoints;
         this.type = type;
+        this.score = score;
 
         //Sinh tỷ lệ 25% có powerup.
         if (Math.random() < 0.25) {
@@ -45,6 +48,15 @@ public abstract class Brick extends GameObject {
         } else {
             return "EXTRA_LIFE";
         }
+    }
+
+    //getter và setter cho điểm.
+    public int getScore() {
+        return score;
+    }
+
+    public void setScore(int score) {
+        this.score = score;
     }
 
     /*Hết thêm code.*/

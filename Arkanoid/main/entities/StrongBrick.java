@@ -3,7 +3,7 @@ import util.BrickType;
 
 public class StrongBrick extends Brick{
     public StrongBrick(double x, double y, double width, double height) {
-        super(x, y, width, height, 3, BrickType.STRONG);
+        super(x, y, width, height, 3, BrickType.STRONG, 25);
     }
 
     @Override
@@ -18,7 +18,6 @@ public class StrongBrick extends Brick{
 
     @Override
     public void update(String input) {
-        
     }
 
     @Override  // Su dung escape code ANSI  
