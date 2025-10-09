@@ -1,3 +1,5 @@
+package ui;
+
 import entities.Brick;
 import entities.NormalBrick;
 import util.Constants;
