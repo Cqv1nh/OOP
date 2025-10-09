@@ -1,5 +1,6 @@
 package util;
 
+import entities.Brick;
 import entities.NormalBrick;
 import java.io.*;
 import java.nio.charset.StandardCharsets;
@@ -17,8 +18,8 @@ public class FileLevelLoader {
      * @param filePath duong dan file.
      * @return danh sach cac khoi gach.
      */
-    public static List<NormalBrick> loadLevelFromFile(String filePath) {
-        List<NormalBrick> bricks = new ArrayList<>();
+    public static List<Brick> loadLevelFromFile(String filePath) {
+        List<Brick> bricks = new ArrayList<>();
 
         try (InputStream is = new FileInputStream(filePath);) {
             if (is == null) {
@@ -48,9 +49,9 @@ public class FileLevelLoader {
                     }
 
                     if (health != 0) {
-                        float x = col;// * Constants.BRICK_WIDTH;
-                        float y = row;//* Constants.BRICK_HEIGHT + Constants.LEVEL_TOP_OFFSET;
-                        bricks.add(new NormalBrick(y, x, Constants.BRICK_WIDTH, Constants.BRICK_HEIGHT));
+                        float x = col * 10;// * Constants.BRICK_WIDTH;
+                        float y = row * 30;//* Constants.BRICK_HEIGHT + Constants.LEVEL_TOP_OFFSET;
+                        bricks.add(new NormalBrick(x, y, (double) Constants.BRICK_WIDTH, (double) Constants.BRICK_HEIGHT));
                     }
                 }
                 row++;
@@ -64,9 +65,9 @@ public class FileLevelLoader {
     }
 
     public static void main(String[] args) {
-        List<NormalBrick> bricks = loadLevelFromFile("src/resources/level1.txt");
+        List<Brick> bricks = loadLevelFromFile("main/resources/level1.txt");
 
-        for (NormalBrick brick : bricks) {
+        for (Brick brick : bricks) {
             System.out.println((int) brick.getX() + " " + (int) brick.getY());
         }
     }
