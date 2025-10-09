@@ -1,79 +1,155 @@
-import engine.CollisionDetector;
-import engine.KeyboardInputTerminal;
-import entities.Ball;
-import entities.NormalBrick;
-import entities.Paddle;
-import ui.RendererConsole;
-import util.Constants;
-// import engine.KeybroadInputJPanel; // remove if not used
+import engine.KeybroadInputJPanel;
+import managers.LevelState;
+import ui.GameRenderer;
 
-import static util.FileLevelLoader.loadLevelFromFile;
-import engine.PaddleController;
-import util.FileLevelLoader;
-
+import javax.swing.*;
+import java.awt.*;
 import java.io.IOException;
-import java.util.List;
 
-public class Game {
-    private static boolean isRunning = true;
-    public static int frameCounter = 0;
-    public void stopGame() {
-        isRunning = false;
+import static java.lang.Thread.sleep;
+
+public class Game extends JPanel implements Runnable {
+    private LevelState levelState;
+    private GameRenderer gameRenderer;
+    private Thread thread;
+    private boolean isRunning;
+    private KeybroadInputJPanel kij;
+    private int numLevel = 5;
+    private int currentLevel = 1;
+
+    // Game loop timing
+    private final int FPS = 60;
+    private final double UPDATE_INTERVAL = 1000000000.0 / FPS;
+
+    public Game() {
+        setPreferredSize(new Dimension(800, 600));
+        setBackground(Color.BLACK);
+        setFocusable(true);
+        setDoubleBuffered(true);
+
+        levelState = new LevelState("main/resources/level1.txt", currentLevel); // Fixed: Use the no-arg constructor
+        gameRenderer = new GameRenderer();
+
+        kij = new KeybroadInputJPanel();
+        addKeyListener(kij);
+
+        System.out.println("Game initialized successfully");
+        System.out.println("Bricks loaded: " + levelState.getBricks().size());
     }
 
-    public static void main(String[] args) {
-        try {
-            Paddle paddle = new Paddle(
-                    Constants.INIT_PADDLE_X,
-                    Constants.INIT_PADDLE_Y,
-                    Constants.PADDLE_WIDTH,
-                    Constants.PADDLE_HEIGHT,
-                    0, 0, "None"
-            );
+    public boolean nextLevel() {
+        currentLevel++;
+        if (currentLevel > numLevel) {
+            System.out.println("WON");
+            return false;
+        }
 
-            Ball ball = new Ball (1, 5, 5);
-
-            RendererConsole render = new RendererConsole();
+        levelState = new LevelState(String.format("main/resources/level%d.txt", currentLevel), currentLevel);
 
 
-            //List<NormalBrick> bricks = FileLevelLoader.loadLevelFromFile("resources/level1.txt");
+        //
 
-            KeyboardInputTerminal kit = new KeyboardInputTerminal();
-            PaddleController pc = new PaddleController(kit);
+        return true;
+    }
 
-            kit.start(); // start listening for key presses
-            render.CharacterClear();
+    @Override
+    public void run() {
+        double delta = 0;
+        long lastTime = System.nanoTime();
+        long currentTime;
 
-            while (isRunning) {
-                render.clearConsole();
+        while (isRunning) {
+            currentTime = System.nanoTime();
+            delta += (currentTime - lastTime) / UPDATE_INTERVAL;
+            lastTime = currentTime;
 
-                if (!pc.movePaddle(paddle)) {
+            if (delta >= 1) {
+                try {
+                    levelState.update(kij);
+                } catch (IOException e) {
+                    e.printStackTrace();
                     isRunning = false;
                 }
 
-                ball.move();
-                CollisionDetector.checkWallCollision(ball);
-
-                render.DrawBorder();
-                render.DrawPaddle(paddle);
-                render.DrawBall(ball);
-                //render.DrawNormalBrick(bricks);
-
-                render.display();
-                try {
-                    Thread.sleep(10);
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
-                }
-
-                render.CharacterClear();
-                frameCounter++;
+                repaint();
+                delta--;
             }
-            kit.stop(); // stop input thread safely when game ends
 
-        } catch (IOException e) {
+            // Small sleep to prevent CPU overuse
+            try {
+                sleep(1);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+
+            if (levelState.checkWin()) {
+                repaint();
+
+                if(!nextLevel()){
+                    this.stopGame();
+                }
+            }
+        }
+    }
+
+    @Override
+    protected void paintComponent(Graphics g) {
+        super.paintComponent(g);
+
+        // Debug: Check if renderer and gameState are not null
+        if (gameRenderer == null) {
+            System.out.println("ERROR: gameRenderer is null!");
+            return;
+        }
+        if (levelState == null) {
+            System.out.println("ERROR: gameState is null!");
+            return;
+        }
+
+        gameRenderer.renderGame(g, levelState);
+    }
+
+    public void startGame() {
+        if (thread == null) {
+            thread = new Thread(this);
+            isRunning = true;
+            thread.start();
+        }
+    }
+
+    public void stopGame() {
+        isRunning = false;
+        try {
+            if (thread != null) {
+                thread.join();
+            }
+        } catch (InterruptedException e) {
             e.printStackTrace();
         }
-        System.out.println(frameCounter);
+    }
+
+    public static void main(String[] args) {
+        SwingUtilities.invokeLater(() -> {
+            JFrame frame = new JFrame("Arkanoid Game");
+            frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+            frame.setResizable(false);
+
+            Game game = new Game();
+            frame.add(game);
+            frame.pack();
+            frame.setLocationRelativeTo(null); // Center on screen
+            frame.setVisible(true);
+
+            game.requestFocusInWindow(); // Ensure the panel has focus for key input
+            game.startGame();
+
+            // Optional: Add window closing listener to properly stop the game
+            frame.addWindowListener(new java.awt.event.WindowAdapter() {
+                @Override
+                public void windowClosing(java.awt.event.WindowEvent e) {
+                    game.stopGame();
+                }
+            });
+        });
     }
 }
