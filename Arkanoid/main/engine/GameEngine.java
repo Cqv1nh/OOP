@@ -1,7 +1,7 @@
 package engine;
 
 import entities.*;
-import util.GameStatic;
+import util.GameState;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -55,11 +55,11 @@ public class GameEngine {
     }
 
     public void startGame() {
-        setGameState(GameStatic.GAMESTART);
+        setGameState(GameState.GAMESTART);
     }
 
     public void updateGame() {
-        setGameState(GameStatic.GAMEUPDATE);
+        setGameState(GameState.GAMEUPDATE);
     }
 
     public void handleInput(String input) {
@@ -77,6 +77,6 @@ public class GameEngine {
         // TODO: xử lý va chạm giữa Ball - Brick, Ball - Paddle, Paddle - PowerUp
     }
     public void gameOver() {
-        setGameState(GameStatic.GAMEEND);
+        setGameState(GameState.GAMEEND);
     }
 }
