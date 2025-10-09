@@ -109,8 +109,10 @@ public class GameLoop {
                         ball.setDirectionY(-ball.getDirectionY());
                         ball.setDy(speed * ball.getDirectionY());
                     }
-
-                    bricksToRemove.add(b);
+                    b.takeHit();
+                    if (b.isDestroyed()) {
+                        bricksToRemove.add(b);
+                    }
                     break; // tránh xử lý trùng lặp nhiều viên
                 }
             }

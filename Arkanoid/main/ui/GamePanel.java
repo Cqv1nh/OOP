@@ -4,7 +4,7 @@ import entities.Ball;
 import entities.Brick;
 import entities.Paddle;
 import util.GameState;
-
+import util.BrickType;
 import java.util.ArrayList;
 // Class GamePanel dc dua ra rieng phu trach viec in cac vat the ben trong man hinh cua
 // gameWindow
@@ -47,7 +47,13 @@ public class GamePanel extends JPanel {
             (int) ball.getRadius() * 2);
                 
             for( Brick b : brickList) {
-                g.setColor(Color.GREEN);
+                if (b.getType() == BrickType.NORMAL) {
+                    g.setColor(Color.GREEN);
+                }
+
+                if (b.getType() == BrickType.STRONG) {
+                    g.setColor(Color.BLUE);
+                }
                 g.fillRect((int) b.getX(), 
                 (int) b.getY(), 
                 (int) b.getWidth(), 

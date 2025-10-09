@@ -37,7 +37,7 @@ public abstract class Brick extends GameObject {
     }
 
     //Sinh từng loại PowerUp theo tỷ lệ 3:3:3:1.
-    private String getRandomPowerUpType() {
+    public String getRandomPowerUpType() {
         double rand = Math.random();
         if (rand <= 0.3) {
             return "EXPAND_PADDLE";
