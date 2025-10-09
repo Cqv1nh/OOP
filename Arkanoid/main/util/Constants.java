@@ -8,6 +8,7 @@ public final class Constants {
 
     public static final int PADDLE_WIDTH = 100;
     public static final int PADDLE_HEIGHT = 20;
+    public static final int PADDLE_SPEED = 5;
 
     public static final int INIT_PADDLE_X = (SCREEN_WIDTH - PADDLE_WIDTH) / 2;
     public static final int INIT_PADDLE_Y = 500;

@@ -26,6 +26,7 @@ public class GameWindow extends JFrame {
         Constants.PADDLE_WIDTH,Constants.PADDLE_HEIGHT,0,0,null);
 
         ball = new Ball();
+        // Xem xet xoa di
         ball.setSpeed(Constants.BALL_SPEED);
         paddle.setBall(ball);
         

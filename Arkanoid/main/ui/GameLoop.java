@@ -1,4 +1,3 @@
-package ui;
 
 import javax.swing.*;
 import entities.Ball;

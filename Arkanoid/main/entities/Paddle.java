@@ -3,7 +3,7 @@ package entities;
 import util.Constants;
 
 public class Paddle extends MovableObject {
-    private double speed = 1.0; // Speed la toc do, khong co huong
+    private double speed = Constants.PADDLE_SPEED; // Speed la toc do, khong co huong
     private String currentPowerUp;
 
     /*Thêm code: Thêm object ball vào class Paddle:*/
