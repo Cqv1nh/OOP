@@ -16,6 +16,8 @@ public class Game extends JPanel implements Runnable {
     private KeybroadInputJPanel kij;
     private int numLevel = 5;
     private int currentLevel = 1;
+    private int totalScore = 0;
+    private int lives = 3;
 
     // Game loop timing
     private final int FPS = 60;
@@ -27,7 +29,7 @@ public class Game extends JPanel implements Runnable {
         setFocusable(true);
         setDoubleBuffered(true);
 
-        levelState = new LevelState("main/resources/level1.txt", currentLevel); // Fixed: Use the no-arg constructor
+        levelState = new LevelState("main/resources/level1.txt", currentLevel, totalScore, lives); // Fixed: Use the no-arg constructor
         gameRenderer = new GameRenderer();
 
         kij = new KeybroadInputJPanel();
@@ -44,7 +46,8 @@ public class Game extends JPanel implements Runnable {
             return false;
         }
 
-        levelState = new LevelState(String.format("main/resources/level%d.txt", currentLevel), currentLevel);
+        levelState = new LevelState(String.format("main/resources/level%d.txt", currentLevel),
+                currentLevel, totalScore, lives);
 
 
         //
@@ -84,7 +87,7 @@ public class Game extends JPanel implements Runnable {
 
             if (levelState.checkWin()) {
                 repaint();
-
+                totalScore = levelState.
                 if(!nextLevel()){
                     this.stopGame();
                 }
@@ -126,6 +129,30 @@ public class Game extends JPanel implements Runnable {
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
+    }
+
+    public LevelState getLevelState() {
+        return levelState;
+    }
+
+    public void setLevelState(LevelState levelState) {
+        this.levelState = levelState;
+    }
+
+    public int getLives() {
+        return lives;
+    }
+
+    public void setLives(int lives) {
+        this.lives = lives;
+    }
+
+    public int getTotalScore() {
+        return totalScore;
+    }
+
+    public void setTotalScore(int totalScore) {
+        this.totalScore = totalScore;
     }
 
     public static void main(String[] args) {
