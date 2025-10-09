@@ -120,10 +120,15 @@ public class GameLoop {
             if (brickList.isEmpty()) {
                 game.setGameState(GameState.LEVELCLEAR);
             }
-
+            // Khi bong roi khoi man hinh
             if (ball.getY() > Constants.SCREEN_HEIGHT) {
-                // ballLaunched = false;
-                game.setGameState(GameState.GAMEEND);
+                // giam mang di 1 lan
+                game.loseLives();
+                if (game.getLives() > 0) {
+                    game.resetAfterLifeLost();
+                } else {
+                    game.setGameState(GameState.GAMEEND);
+                }
             }
         } else {
             ball.setX(paddle.getX()+paddle.getWidth() / 2 - ball.getRadius());

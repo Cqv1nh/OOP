@@ -15,13 +15,13 @@ public class ExpandPaddlePowerUp extends PowerUp {
     @Override
     //Áp dụng effect.
     public void applyEffect(Paddle paddle) {
-        expandPaddle(paddle, 2); // Sử dụng method ngay trên, powerup này khiến thanh dài thêm 2 đơn vị.
+        expandPaddle(paddle, 20); // Sử dụng method ngay trên, powerup này khiến thanh dài thêm 2 đơn vị.
     }
 
     @Override
     //Xóa bỏ effect.
     public void removeEffect(Paddle paddle) {
-        expandPaddle(paddle, -2);
+        expandPaddle(paddle, -20);
     }
 
     @Override
