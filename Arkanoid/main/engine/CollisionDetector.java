@@ -113,9 +113,33 @@ public class CollisionDetector {
                 ball.setDy(-ball.getSpeed());
 
                 if (paddle != null) {
+                    /*
                     double paddleCenter = paddle.getX() + paddle.getWidth() / 2;
                     double hitOffset = (ball.getX() - paddleCenter) / (paddle.getWidth() / 2);
                     ball.setDx(hitOffset * 4);
+                    */
+
+                    double paddleCenter = paddle.getX() + paddle.getWidth() / 2.0;
+                    double hitPosition = (ball.getX() + ball.getRadius()) - paddleCenter;
+
+                    // Chuẩn hóa hitPosition thành [-1, 1]
+                    double normalized = hitPosition / (paddle.getWidth() / 2.0);
+
+                    // Giới hạn để không ra ngoài [-1,1]
+                    if (normalized < -1) normalized = -1;
+                    if (normalized > 1) normalized = 1;
+
+                    // Góc bật lại: từ 150° (trái) → 30° (phải)
+                    double bounceAngle = Math.toRadians(150 - 120 * (normalized + 1) / 2.0);
+                    bounceAngle += Math.toRadians((Math.random() - 0.5) *10); // them ngau nhien + - 5 do
+                    // Cập nhật hướng di chuyển mới
+
+                    ball.setDirectionX(Math.cos(bounceAngle));
+                    ball.setDirectionY(-Math.abs(Math.sin(bounceAngle)));
+
+                    // Áp lại tốc độ (nếu Ball.java dùng dx, dy = speed * direction)
+                    ball.setDx(ball.getSpeed() * ball.getDirectionX());
+                    ball.setDy(ball.getSpeed() * ball.getDirectionY());
                 }
                 System.out.println("TOP");
                 break;
