@@ -49,11 +49,24 @@ public class GamePanel extends JPanel {
             for( Brick b : brickList) {
                 if (b.getType() == BrickType.NORMAL) {
                     g.setColor(Color.GREEN);
+                } else if (b.getType() == BrickType.STRONG) {
+                    if (b.getHitPoints() == 3) {
+                        g.setColor(Color.BLUE);
+                    } else if (b.getHitPoints() == 3) {
+                        g.setColor(Color.BLUE);
+                    } else if (b.getHitPoints() == 2) {
+                         // mau xanh nhat hon
+                        g.setColor(new Color(100, 100, 255));
+                    } else if (b.getHitPoints() == 1) {
+                        // Giong voi mau normal brick
+                        g.setColor(Color.GREEN);
+                    }
+                } else if (b.getType() == BrickType.EXPLOSIVE) {
+                    g.setColor(Color.YELLOW);
+                } else if (b.getType() == BrickType.UNBREAKABLE) {
+                    g.setColor(Color.GRAY);
                 }
 
-                if (b.getType() == BrickType.STRONG) {
-                    g.setColor(Color.BLUE);
-                }
                 g.fillRect((int) b.getX(), 
                 (int) b.getY(), 
                 (int) b.getWidth(), 
