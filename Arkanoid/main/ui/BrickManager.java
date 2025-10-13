@@ -13,7 +13,7 @@ public class BrickManager {
     private static final int[][] LEVEL_1_LAYOUT = {
         {0, 1, 1, 1, 1, 4, 4, 1, 1, 1, 0},
         {1, 1, 2, 2, 2, 4, 4, 2, 2, 1, 1},
-        {1, 2 ,1 ,1, 3, 1, 3, 1, 1, 2, 1}
+        {1, 3 ,3 ,1, 3, 1, 3, 1, 3, 3, 1}
     };
 
     public ArrayList<Brick> createBricks() {

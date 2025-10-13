@@ -1,8 +1,10 @@
 package entities;
+import util.Constants;
 
 public class ExtraLifePowerUp extends PowerUp {
+
     public ExtraLifePowerUp(double x, double y, double width, double height, double duration) {
-        super(x, y, width, height, "EXTRA_LIFE", duration);
+        super(x, y, Constants.POWERUP_WIDTH, Constants.POWERUP_HEIGHT, "EXTRA_LIFE", duration);
     }
 
     //Áp dụng hiệu ứng thêm 1 mạng.
