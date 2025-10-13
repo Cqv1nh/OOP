@@ -1,8 +1,9 @@
-
 import javax.swing.*;
 import entities.Ball;
 import entities.Brick;
+import entities.ExplosiveBrick;
 import entities.Paddle;
+import util.BrickType;
 import util.Constants;
 import util.GameState;
 
@@ -85,14 +86,19 @@ public class GameLoop {
                 ball.setDy(speed * ball.getDirectionY());
             }
 
-            // Va cham voi brick
-            ArrayList<Brick> bricksToRemove = new ArrayList<>();
+            // Va cham voi brick Thinh thay doi logic va cham 1 chut
+            boolean collisionOccurred = false;
             for (Brick b : brickList) {
+                if (collisionOccurred == true) {
+                    break; 
+                    // Chi xu ly 1 gach moi vong for
+                }
+
                 if (ball.getX() + ball.getRadius() * 2 >= b.getX()
                     && ball.getX() <= b.getX() + b.getWidth()
                     && ball.getY() + ball.getRadius() * 2 >= b.getY()
                     && ball.getY() <= b.getY() + b.getHeight()) {
-
+                    collisionOccurred = true;
                     // Kiểm tra va chạm ngang hay dọc
                     double overlapLeft = (ball.getX() + ball.getRadius() * 2) - b.getX();
                     double overlapRight = (b.getX() + b.getWidth()) - ball.getX();
@@ -111,14 +117,18 @@ public class GameLoop {
                         ball.setDy(speed * ball.getDirectionY());
                     }
                     b.takeHit();
-                    if (b.isDestroyed()) {
-                        bricksToRemove.add(b);
+                    // if brick is explosiveBrick
+                    if (b.isDestroyed() && b instanceof ExplosiveBrick) {
+                       ExplosiveBrick e = (ExplosiveBrick) b;
+                       e.explode(brickList);
                     }
-                    break; // tránh xử lý trùng lặp nhiều viên
+                    
                 }
             }
-            brickList.removeAll(bricksToRemove);
-            if (brickList.isEmpty()) {
+            // Don dep tat ca vien gach khi vao vu no
+            brickList.removeIf(brick -> brick.isDestroyed());
+            // Kiem tra thang man
+            if (brickList.stream().allMatch(b -> b.getType() == BrickType.UNBREAKABLE)) {
                 game.setGameState(GameState.LEVELCLEAR);
             }
             // Khi bong roi khoi man hinh
