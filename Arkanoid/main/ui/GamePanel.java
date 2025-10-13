@@ -5,6 +5,7 @@ import java.awt.*;
 import entities.Ball;
 import entities.Brick;
 import entities.Paddle;
+import entities.PowerUp;
 import util.GameState;
 import util.BrickType;
 import java.util.ArrayList;
@@ -25,7 +26,7 @@ public class GamePanel extends JPanel {
         Paddle paddle = parent.getPaddle();
         Ball ball = parent.getBall();
         ArrayList<Brick> brickList = parent.getBricks();
-
+        ArrayList<PowerUp> powerUps = parent.getPowerUps();  
         // Vẽ nền màu đen
         g.setColor(Color.BLACK);
         g.fillRect(0, 0, getWidth(), getHeight());
@@ -54,8 +55,6 @@ public class GamePanel extends JPanel {
                 } else if (b.getType() == BrickType.STRONG) {
                     if (b.getHitPoints() == 3) {
                         g.setColor(Color.BLUE);
-                    } else if (b.getHitPoints() == 3) {
-                        g.setColor(Color.BLUE);
                     } else if (b.getHitPoints() == 2) {
                          // mau xanh nhat hon
                         g.setColor(new Color(100, 100, 255));
@@ -74,13 +73,24 @@ public class GamePanel extends JPanel {
                 (int) b.getWidth(), 
                 (int) b.getHeight());
             }
+
+            // Ve cac powerUps
+            for (PowerUp p : powerUps) {
+                if (p.getType().equals("EXTRA_LIFE")) {
+                    g.setColor(Color.PINK);
+                    // Ve thanh hinh chu nhat
+                    g.fillRect((int) p.getX(), (int) p.getY(), 
+                    (int) p.getWidth(), (int) p.getHeight());
+                    g.setColor(Color.BLACK);
+                    g.drawString("L", (int) p.getX() + 5, (int) p.getY() + 15);
+                }
+                // else if cho cac loai power up khac
+            }
             // Ve dong chua hien thi so mang
             g.setColor(Color.WHITE);
             g.setFont(new Font("Arial", Font.BOLD, 20));
             g.drawString("Lives: " + parent.getLives(), 10, 20);
             // Ve dong hien thi so diem Score
-            g.setColor(Color.WHITE);
-            g.setFont(new Font("Arial", Font.BOLD, 20));
             g.drawString("Scores: " + parent.getScore(), 90, 20);
 
         } else if (gameState.equals(GameState.GAMEEND)) {

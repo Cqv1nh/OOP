@@ -1,3 +1,4 @@
+package ui;
 import javax.swing.*;
 import entities.Ball;
 import entities.Brick;
@@ -175,6 +176,11 @@ public class GameWindow extends JFrame {
     public int getScore() {
         return score;
     }
+
+    public void addLife() {
+        this.lives++;
+    }
+    
     public static void main(String[] args) {
         // Tạo cửa sổ trên luồng giao diện
         SwingUtilities.invokeLater(() -> new GameWindow());

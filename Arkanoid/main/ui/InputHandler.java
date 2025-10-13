@@ -1,3 +1,4 @@
+package ui;
 import java.awt.event.*;
 import entities.Paddle;
 import util.GameState;

@@ -4,12 +4,15 @@ import javax.swing.*;
 import entities.Ball;
 import entities.Brick;
 import entities.ExplosiveBrick;
+import entities.ExtraLifePowerUp;
 import entities.Paddle;
+import entities.PowerUp;
 import util.BrickType;
 import util.Constants;
 import util.GameState;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 // Class thuc hien vong lap game
 public class GameLoop {
     private GameWindow game;
@@ -132,6 +135,10 @@ public class GameLoop {
             brickList.removeIf(brick -> {
                 if (brick.isDestroyed()) {
                     game.addScore(brick.getScore());
+                    // Tao powerup khi gach vo
+                    if (brick.hasPowerUp()) {
+                        spawnPowerUp(brick);
+                    }
                     // Cong diem truoc khi xoa
                     return true;
                 } 
@@ -156,6 +163,50 @@ public class GameLoop {
             ball.setX(paddle.getX()+paddle.getWidth() / 2 - ball.getRadius());
             ball.setY(paddle.getY() - ball.getRadius() * 2 - 1);
         }
+        // Cap nhat va xu ly va cham cho PowerUps
+        updatePowerUps();
         panel.repaint();
+    }
+
+    private void spawnPowerUp(Brick brick) {
+        String type = brick.getPowerUpType();
+        PowerUp newPowerUp = null;
+
+        // Dung switch de them cac powerup khac trong tuong lai
+        switch (type) {
+            case "EXTRA_LIFE":
+                newPowerUp = new ExtraLifePowerUp(
+                    brick.getX() + brick.getWidth() / 2 - Constants.POWERUP_WIDTH / 2, 
+                    brick.getY(), Constants.POWERUP_WIDTH, 
+                    Constants.POWERUP_HEIGHT, 10);
+                break;
+        
+            default:
+                break;
+        }
+        if (newPowerUp != null) {
+            game.getPowerUps().add(newPowerUp);
+        }
+    }
+
+    private void updatePowerUps() {
+        ArrayList<PowerUp> powerUps = game.getPowerUps();
+        Paddle paddle = game.getPaddle();
+        // Dung itertator de xoa an toan
+        Iterator<PowerUp> iterator = powerUps.iterator();
+
+        while (iterator.hasNext()) {
+            PowerUp p = iterator.next(); // Lay phan tu tiep theo
+            p.update(null); // cho powerup di chuyen xuong duoi
+            if (p.getX() < paddle.getX() + paddle.getWidth() 
+            && p.getX() + p.getWidth() > paddle.getX() 
+            && p.getY() < paddle.getY() + paddle.getHeight()
+            && p.getY() + p.getHeight() > paddle.getY()) {
+                p.applyEffect(game);
+                iterator.remove();
+            } else if (p.getY() > Constants.SCREEN_HEIGHT) {
+                iterator.remove();
+            }
+        }       
     }
 }

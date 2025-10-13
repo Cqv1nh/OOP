@@ -1,9 +1,11 @@
 package entities;
 
+import ui.GameWindow;
+
 public abstract class PowerUp extends GameObject {
     private double duration; //Thời gian hiệu lực
     private String type; //Loại powerup
-    private double fallSpeed = 1.0; //Tốc độ rơi vật phẩm đặc biệt là 1
+    private double fallSpeed = 2.0; //Tốc độ rơi vật phẩm đặc biệt là 2
 
     //Constructor có tham số.
     public PowerUp(double x, double y, double width, double height, String type, double duration) {
@@ -31,7 +33,8 @@ public abstract class PowerUp extends GameObject {
     }
 
     //Áp dụng hiệu ứng:
-    public abstract void applyEffect(Paddle paddle);
+    // Thay doi tham so cua applyEffect 
+    public abstract void applyEffect(GameWindow game);
 
     //Gỡ bỏ hiệu ứng:
     public abstract void removeEffect(Paddle paddle);

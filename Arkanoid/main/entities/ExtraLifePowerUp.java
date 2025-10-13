@@ -1,6 +1,6 @@
 package entities;
 import util.Constants;
-
+import ui.GameWindow;
 public class ExtraLifePowerUp extends PowerUp {
 
     public ExtraLifePowerUp(double x, double y, double width, double height, double duration) {
@@ -9,12 +9,8 @@ public class ExtraLifePowerUp extends PowerUp {
 
     //Áp dụng hiệu ứng thêm 1 mạng.
     @Override
-    public void applyEffect(Paddle paddle) {
-        /* **CHÚ Ý**: Cần thêm mạng vào GameManager
-         * Thêm: gameManager.addLife();
-         * Hoặc: lives++;
-         * Hoặc: setLives(getLives() + 1);
-         */
+    public void applyEffect(GameWindow game) {
+        game.addLife();
     }
 
     //Xóa bỏ hiệu ứng.
@@ -25,7 +21,6 @@ public class ExtraLifePowerUp extends PowerUp {
     //Cập nhật vị trí đối tượng.
     @Override
     public void update(String input) {
-        setX(getX());
         setY(getY() + getFallSpeed()); //tăng y lên 1 do đi xuống, lấy fallSpeed = 1.
     }
 
