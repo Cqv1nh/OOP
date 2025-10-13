@@ -1,5 +1,6 @@
 package engine;
 
+import entities.Ball;
 import entities.Paddle;
 
 import javax.swing.*;
@@ -45,10 +46,12 @@ public class KeybroadInputJPanel extends JPanel implements KeyListener {
         }
     }
 
-    public boolean hold() {
-        if (keys[KeyEvent.VK_A]) {
-            return false;
+    public boolean outFollow(Ball ball) {
+        if (keys[KeyEvent.VK_SPACE]) {
+           ball.setDy(-ball.getSpeed());
+
+           return true;
         }
-        return  true;
+        return  false;
     }
 }
