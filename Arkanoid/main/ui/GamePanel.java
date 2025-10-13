@@ -76,6 +76,10 @@ public class GamePanel extends JPanel {
             g.setColor(Color.WHITE);
             g.setFont(new Font("Arial", Font.BOLD, 20));
             g.drawString("Lives: " + parent.getLives(), 10, 20);
+            // Ve dong hien thi so diem Score
+            g.setColor(Color.WHITE);
+            g.setFont(new Font("Arial", Font.BOLD, 20));
+            g.drawString("Scores: " + parent.getScore(), 90, 20);
 
         } else if (gameState.equals(GameState.GAMEEND)) {
             g.setColor(Color.RED);

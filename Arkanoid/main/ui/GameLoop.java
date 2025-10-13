@@ -126,7 +126,16 @@ public class GameLoop {
                 }
             }
             // Don dep tat ca vien gach khi vao vu no
-            brickList.removeIf(brick -> brick.isDestroyed());
+            // Them cong diem cho cac vien gach
+            brickList.removeIf(brick -> {
+                if (brick.isDestroyed()) {
+                    game.addScore(brick.getScore());
+                    // Cong diem truoc khi xoa
+                    return true;
+                } 
+                return false;
+            });
+
             // Kiem tra thang man
             if (brickList.stream().allMatch(b -> b.getType() == BrickType.UNBREAKABLE)) {
                 game.setGameState(GameState.LEVELCLEAR);

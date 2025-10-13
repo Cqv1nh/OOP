@@ -14,6 +14,7 @@ public class GameWindow extends JFrame {
     private ArrayList<Brick> brickList; // Danh sach gach
     private ArrayList<PowerUp> powerUps; // Danh sach luu cac powerUp dang hoat dong 
     private int lives = 3; // Khoi tao so mang la 3;
+    private int score = 0;
     private boolean ballLaunched = false; // Bong con dinh tren paddle hay da di chuyen
     private String gameState = GameState.GAMESTART; // Trang thai game
     private GamePanel gamePanel; // Ve cac vat the
@@ -68,6 +69,7 @@ public class GameWindow extends JFrame {
     public void restartGame() {
         // dat lai gia tri lives = 3;
         this.lives = 3;
+        this.score = 0;
         brickList = brickManager.createBricks();
         paddle = new Paddle(Constants.INIT_PADDLE_X,Constants.INIT_PADDLE_Y,
         Constants.PADDLE_WIDTH,Constants.PADDLE_HEIGHT,0,0,null);
@@ -141,11 +143,18 @@ public class GameWindow extends JFrame {
     public int getLives() {
         return lives;
     }
-    // Thay ham serLives bang loseLives de goi tu dong tru mang
+    // Thay ham setLives bang loseLives de goi tu dong tru mang
     public void loseLives() {
         this.lives --;
     }
 
+    public void addScore(int newScore) {
+        this.score += newScore;
+    }
+
+    public int getScore() {
+        return score;
+    }
     public static void main(String[] args) {
         // Tạo cửa sổ trên luồng giao diện
         SwingUtilities.invokeLater(() -> new GameWindow());
