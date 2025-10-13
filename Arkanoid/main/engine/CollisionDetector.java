@@ -48,10 +48,10 @@ public class CollisionDetector {
         if (ball.getY() > Constants.SCREEN_HEIGHT - Constants.BALL_DIAMETER ) {
             ball.setY(Constants.SCREEN_HEIGHT - Constants.BALL_DIAMETER);
             ball.setDy(-ball.getSpeed());
-            return true;
+            return false;
         }
 
-        return false;
+        return true;
     }
 
     public static CollisionResult checkCollision(Ball ball, GameObject obj) {
@@ -183,21 +183,25 @@ public class CollisionDetector {
         }
     }
 
-    public static boolean handleBrickCollision(Brick brick, Ball ball) {
+    public static int handleBrickCollision(Brick brick, Ball ball) {
 
-        if (brick.getHitPoints() == 0) return false;
+        if (brick.getHitPoints() == 0) return 0;
 
         CollisionResult result = CollisionDetector.checkCollision(ball, brick);
 
         if (result.collided) {
             CollisionSide side = CollisionDetector.getCollisionSide(result, ball);
 
+
             handleCollision(side, null, ball);
             brick.setHitPoints(brick.getHitPoints() - 1);
-            return true; // Brick should be destroyed
+            if (brick.getHitPoints() == 0) {
+                return brick.getScore();
+            }
+            return 0; // Brick should be destroyed
         }
 
-        return false;
+        return 0;
     }
 
 }
