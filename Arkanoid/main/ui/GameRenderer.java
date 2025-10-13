@@ -44,6 +44,34 @@ public class GameRenderer {
                 (int) brick.getWidth(), (int) brick.getHeight());
     }
 
+    public void drawScore (Graphics g, int lives, int score) {
+        Graphics2D g2d = (Graphics2D) g;
+
+
+        g2d.setRenderingHint(
+                RenderingHints.KEY_TEXT_ANTIALIASING,
+                RenderingHints.VALUE_TEXT_ANTIALIAS_ON);
+
+
+        Font hudFont = new Font("Consolas", Font.BOLD, 20);
+        g2d.setFont(hudFont);
+        g2d.setColor(Color.WHITE);
+
+
+        String scoreText = String.format("SCORE: %04d", score); // Zero-pads the score
+        String livesText = "LIVES: " + lives;
+
+
+        g2d.drawString(scoreText, 10, 25);
+
+
+        FontMetrics metrics = g2d.getFontMetrics(hudFont);
+        int livesTextWidth = metrics.stringWidth(livesText);
+        int x = Constants.SCREEN_WIDTH - livesTextWidth - 10;
+        g2d.drawString(livesText, x, 25);
+    }
+
+
     public void renderGame(Graphics g, LevelState levelState) {
         if(levelState.checkWin()) {
             if(levelState.isLastLevel()) {
@@ -57,6 +85,7 @@ public class GameRenderer {
         drawPaddle(g, levelState.getPaddle());
         drawBall(g, levelState.getBall());
 
+        drawScore(g, levelState.getLives(), levelState.getScore());
         for (Brick brick :  levelState.getBricks()) {
             drawBrick(g, brick);
         }
