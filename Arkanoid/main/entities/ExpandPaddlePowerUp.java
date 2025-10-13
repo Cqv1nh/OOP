@@ -1,10 +1,34 @@
 package entities;
 
+import javax.imageio.ImageIO;
+import java.awt.image.BufferedImage;
+import java.io.IOException;
+
 public class ExpandPaddlePowerUp extends PowerUp {
     //Constructor có tham số.
     public ExpandPaddlePowerUp(double x, double y, double width, double height, double duration) {
-        super(x, y, width, height, "EXPAND_PADDLE", duration); //Truyền type cố định rồi.
+        super(x, y, width, height, "EXPAND_PADDLE", duration); //Truyền type cố định rồi.    
+        loadImage(); //sửa: method load ảnh
     }
+
+    //sửa:
+    private BufferedImage image; // Biến lưu hình ảnh.
+
+    //sửa:
+    private void loadImage() {
+        try {
+            // Load hình ảnh từ thư mục resources
+            image = ImageIO.read(getClass().getResource("/images/expandpaddle.png"));
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    //sửa: Getter để GameRenderer có thể lấy ảnh ra vẽ
+    public BufferedImage getImage() {
+        return image;
+    }
+
 
     //Method.
     public void expandPaddle(Paddle paddle, int extra) {
@@ -31,10 +55,11 @@ public class ExpandPaddlePowerUp extends PowerUp {
         setY(getY() + getFallSpeed()); //Tọa độ (0,0) ở góc trên bên trái -> xuống thì y tăng thêm 1.
     }
 
+    /*
     @Override
     //Vẽ đối tượng ra màn hình.
     public void render(){
         // Vẽ ký tự '*' tại vị trí (x, y) theo ANSI escape code
         System.out.print("\033[" + ((int)getY() + 1) + ";" + ((int)getX() + 1) + "H*");
-    }
+    }*/
 }
