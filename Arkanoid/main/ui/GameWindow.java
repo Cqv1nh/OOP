@@ -4,6 +4,7 @@ import entities.Ball;
 import entities.Brick;
 import entities.Paddle;
 import entities.PowerUp;
+import util.AssetManager;
 import util.Constants;
 import util.GameState;
 
@@ -27,6 +28,7 @@ public class GameWindow extends JFrame {
     private BrickManager brickManager; // Quan ly gach cua level 1
 
     public GameWindow() {
+        AssetManager.loadImages();
         paddle = new Paddle(Constants.INIT_PADDLE_X,Constants.INIT_PADDLE_Y,
         Constants.PADDLE_WIDTH,Constants.PADDLE_HEIGHT,0,0,null);
 

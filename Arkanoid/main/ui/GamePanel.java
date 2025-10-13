@@ -2,11 +2,13 @@ package ui;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.image.BufferedImage;
 import entities.Ball;
 import entities.Brick;
 import entities.Paddle;
 import entities.PowerUp;
 import util.GameState;
+import util.AssetManager;
 import util.BrickType;
 import java.util.ArrayList;
 // Class GamePanel dc dua ra rieng phu trach viec in cac vat the ben trong man hinh cua
@@ -37,54 +39,72 @@ public class GamePanel extends JPanel {
             g.drawString("Press SPACE to Start", 200, 300);
 
         } else if (gameState.equals(GameState.GAMEPLAYING)) {
-            g.setColor(Color.WHITE);
-            g.fillRect(
-                (int) paddle.getX(), 
-                (int) paddle.getY(), 
-                (int) paddle.getWidth(), 
-                (int) paddle.getHeight());
+            // g.setColor(Color.WHITE);
+            // g.fillRect(
+            //     (int) paddle.getX(), 
+            //     (int) paddle.getY(), 
+            //     (int) paddle.getWidth(), 
+            //     (int) paddle.getHeight());
+            // Paddle
+            g.drawImage(AssetManager.paddle, 
+            (int) paddle.getX(), (int) paddle.getY(), (int) paddle.getWidth(), 
+            (int) paddle.getHeight(), null);
             // Ball 
-            g.setColor(Color.RED);
-            g.fillOval((int) ball.getX(), 
-            (int) ball.getY(), (int) ball.getRadius() * 2, 
-            (int) ball.getRadius() * 2);
+            // g.setColor(Color.RED);
+            // g.fillOval((int) ball.getX(), 
+            // (int) ball.getY(), (int) ball.getRadius() * 2, 
+            // (int) ball.getRadius() * 2);
+            g.drawImage(AssetManager.ball, 
+            (int) ball.getX(), (int) ball.getY(), (int) ball.getRadius() * 2, 
+            (int) ball.getRadius() * 2, null);
                 
-            for( Brick b : brickList) {
-                if (b.getType() == BrickType.NORMAL) {
-                    g.setColor(Color.GREEN);
-                } else if (b.getType() == BrickType.STRONG) {
-                    if (b.getHitPoints() == 3) {
-                        g.setColor(Color.BLUE);
-                    } else if (b.getHitPoints() == 2) {
-                         // mau xanh nhat hon
-                        g.setColor(new Color(100, 100, 255));
-                    } else if (b.getHitPoints() == 1) {
-                        // Giong voi mau normal brick
-                        g.setColor(Color.GREEN);
-                    }
-                } else if (b.getType() == BrickType.EXPLOSIVE) {
-                    g.setColor(Color.YELLOW);
-                } else if (b.getType() == BrickType.UNBREAKABLE) {
-                    g.setColor(Color.GRAY);
-                }
+            // for( Brick b : brickList) {
+            //     if (b.getType() == BrickType.NORMAL) {
+            //         g.setColor(Color.GREEN);
+            //     } else if (b.getType() == BrickType.STRONG) {
+            //         if (b.getHitPoints() == 3) {
+            //             g.setColor(Color.BLUE);
+            //         } else if (b.getHitPoints() == 2) {
+            //              // mau xanh nhat hon
+            //             g.setColor(new Color(100, 100, 255));
+            //         } else if (b.getHitPoints() == 1) {
+            //             // Giong voi mau normal brick
+            //             g.setColor(Color.GREEN);
+            //         }
+            //     } else if (b.getType() == BrickType.EXPLOSIVE) {
+            //         g.setColor(Color.YELLOW);
+            //     } else if (b.getType() == BrickType.UNBREAKABLE) {
+            //         g.setColor(Color.GRAY);
+            //     }
 
-                g.fillRect((int) b.getX(), 
-                (int) b.getY(), 
-                (int) b.getWidth(), 
-                (int) b.getHeight());
+            //     g.fillRect((int) b.getX(), 
+            //     (int) b.getY(), 
+            //     (int) b.getWidth(), 
+            //     (int) b.getHeight());
+            // }
+            for (Brick b : brickList) {
+                BufferedImage brickImage = getBrickImage(b);
+                if (brickImage != null) {
+                    g.drawImage(brickImage, (int) b.getX(), (int) b.getY(), (int) b.getWidth(), (int) b.getHeight(), null);
+                }
             }
-
             // Ve cac powerUps
+            // for (PowerUp p : powerUps) {
+            //     if (p.getType().equals("EXTRA_LIFE")) {
+            //         g.setColor(Color.PINK);
+            //         // Ve thanh hinh chu nhat
+            //         g.fillRect((int) p.getX(), (int) p.getY(), 
+            //         (int) p.getWidth(), (int) p.getHeight());
+            //         g.setColor(Color.BLACK);
+            //         g.drawString("L", (int) p.getX() + 5, (int) p.getY() + 15);
+            //     }
+            //     // else if cho cac loai power up khac
+            // }
             for (PowerUp p : powerUps) {
-                if (p.getType().equals("EXTRA_LIFE")) {
-                    g.setColor(Color.PINK);
-                    // Ve thanh hinh chu nhat
-                    g.fillRect((int) p.getX(), (int) p.getY(), 
-                    (int) p.getWidth(), (int) p.getHeight());
-                    g.setColor(Color.BLACK);
-                    g.drawString("L", (int) p.getX() + 5, (int) p.getY() + 15);
+                BufferedImage powerUpImage = getPowerUpImage(p);
+                 if (powerUpImage != null) {
+                    g.drawImage(powerUpImage, (int) p.getX(), (int) p.getY(), (int) p.getWidth(), (int) p.getHeight(), null);
                 }
-                // else if cho cac loai power up khac
             }
             // Ve dong chua hien thi so mang
             g.setColor(Color.WHITE);
@@ -105,6 +125,35 @@ public class GamePanel extends JPanel {
             g.drawString("LEVEL CLEARED!", 233, 280);
             g.setFont(new Font("Arial", Font.PLAIN, 24));
             g.drawString("Press ENTER for Next Level", 238, 340);
+        }
+    }
+
+    private BufferedImage getBrickImage(Brick b) {
+        if (b.getType() == BrickType.NORMAL) {
+            return AssetManager.normalBrick;
+        } else if (b.getType() == BrickType.STRONG) {
+            switch (b.getHitPoints()) {
+                case 3: return AssetManager.strongBrick;
+                case 2: return AssetManager.strongBrick_1hit;
+                case 1: return AssetManager.normalBrick;
+                default: return null;
+            }
+        } else if (b.getType() == BrickType.EXPLOSIVE) {
+            return AssetManager.explosiveBrick;
+        } else if (b.getType() == BrickType.UNBREAKABLE) {
+            return AssetManager.unbreakableBrick;
+        }
+        return null;
+    }
+
+    private BufferedImage getPowerUpImage(PowerUp p) {
+        switch (p.getType()) {
+            case "EXTRA_LIFE":
+                return AssetManager.extraLife;
+            // Thêm các case khác cho các power-up khác ở đây
+            // case "EXPAND_PADDLE": return AssetManager.expandPaddle;
+            default:
+                return null;
         }
     }
 }
