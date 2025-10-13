@@ -107,8 +107,11 @@ public class Ball extends MovableObject {
     //sửa đổi phương thức move
     @Override
     public void move() {
-        setX(getX() + getDx());
-        setY(getY() + getDy());
+        double destX = this.getX() + this.getDx() * 5;
+        this.setX(destX);
+
+        double destY = this.getY() + this.getDy() * 5;
+        this.setY(destY);
     }
 
     //sửa đổi phương thức update cập nhật vị trí mới
