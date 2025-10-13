@@ -21,6 +21,7 @@ public class LevelState {
     private int levelId;
     private int score;
     private int lives;
+    private boolean followPaddle = false;
 
     public LevelState(String levelFileName, int levelNum, int score, int lives) {
         paddle = new Paddle(
@@ -48,37 +49,61 @@ public class LevelState {
         kij.update(paddle);
     }
 
-    public void resetPaddle() {
+    public boolean isAlive() {
+        return lives > 0;
+    }
 
+    public void followPaddle() {
+        double paddleCentre = paddle.getX() + Constants.PADDLE_WIDTH / 2.0;
+
+        ball.setX(paddleCentre);
+    }
+
+    public void resetPaddle() {
+        paddle.setX(Constants.INIT_PADDLE_X);
+        paddle.setY(Constants.INIT_PADDLE_Y);
+
+        ball.setX(Constants.INIT_BALL_X);
+        ball.setY(Constants.INIT_BALL_Y);
+
+        ball.setDx(0);
+        ball.setDy(0);
+
+        followPaddle = true;
     }
 
     public void update(KeybroadInputJPanel kij) throws IOException {
 
         getKeybroadInput(kij);
 
-        CollisionDetector.checkWallCollision(ball);
+        if (!CollisionDetector.checkWallCollision(ball)) {
+            lives--;
+            resetPaddle();
+        };
         CollisionDetector.handlePaddleCollision(paddle, ball);
 
         int pointScore;
         for (Brick brick : bricks) {
             pointScore = CollisionDetector.handleBrickCollision(brick, ball);
-            if(pointScore > 0) {
+            if (pointScore > 0) {
                 brickNum--;
                 score += pointScore;
             }
         }
 
         paddle.move();
+
+        if (followPaddle) {
+            if (kij.outFollow(ball)){
+                followPaddle = false;
+            }
+            followPaddle();
+        }
+
         ball.move();
     }
 
-    public void hold(KeybroadInputJPanel kij) {
-        while (true) {
-            if (!kij.hold()) {
-                break;
-            }
-        }
-    }
+
     public Paddle getPaddle() {
         return paddle;
     }
