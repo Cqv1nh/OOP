@@ -87,7 +87,9 @@ public class Game extends JPanel implements Runnable {
 
             if (levelState.checkWin()) {
                 repaint();
-                totalScore = levelState.
+                totalScore = levelState.getScore();
+                lives = levelState.getLives();
+
                 if(!nextLevel()){
                     this.stopGame();
                 }
