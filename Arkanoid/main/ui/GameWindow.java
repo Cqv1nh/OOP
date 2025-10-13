@@ -12,7 +12,10 @@ public class GameWindow extends JFrame {
     private Paddle paddle; // Thanh truot
     private Ball ball; // Ball 
     private ArrayList<Brick> brickList; // Danh sach gach
-    private ArrayList<PowerUp> powerUps; // Danh sach luu cac powerUp dang hoat dong 
+    private ArrayList<PowerUp> powerUps; // Danh sach luu cac powerUp dang roi
+    private ArrayList<PowerUp> activePowerUpsEffects; // Danh sach hieu ung dang co hieu luc
+    private boolean extraLifeShieldActive = false; // Co trang thai "khien"
+
     private int lives = 3; // Khoi tao so mang la 3;
     private int score = 0;
     private boolean ballLaunched = false; // Bong con dinh tren paddle hay da di chuyen
@@ -36,6 +39,7 @@ public class GameWindow extends JFrame {
         brickList = brickManager.createBricks();
         // PowerUp khoi tao
         powerUps = new ArrayList<>();
+        activePowerUpsEffects = new ArrayList<>();
 
         // Đặt tiêu đề cho cửa sổ
         setTitle(Constants.SCREEN_TITLE);
@@ -70,6 +74,10 @@ public class GameWindow extends JFrame {
         // dat lai gia tri lives = 3;
         this.lives = 3;
         this.score = 0;
+        this.extraLifeShieldActive = false; // Reset trang thai powerup
+        powerUps.clear(); // Xoa het cac hieu ung dang roi
+        activePowerUpsEffects.clear(); // Xoa het cac hieu ung co hieu luc
+
         brickList = brickManager.createBricks();
         paddle = new Paddle(Constants.INIT_PADDLE_X,Constants.INIT_PADDLE_Y,
         Constants.PADDLE_WIDTH,Constants.PADDLE_HEIGHT,0,0,null);
@@ -146,6 +154,18 @@ public class GameWindow extends JFrame {
     // Thay ham setLives bang loseLives de goi tu dong tru mang
     public void loseLives() {
         this.lives --;
+    }
+
+    public boolean isExtraLifeShieldActive() {
+        return extraLifeShieldActive;
+    }
+
+    public void setExtraLifeShieldActive(boolean active) {
+        this.extraLifeShieldActive = active;
+    }
+
+    public ArrayList<PowerUp> getActivePowerUpEffects() {
+        return activePowerUpsEffects;
     }
 
     public void addScore(int newScore) {

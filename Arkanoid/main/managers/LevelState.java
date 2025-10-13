@@ -35,7 +35,9 @@ public class LevelState {
         this.score = score;
         this.lives = lives;
 
-        ball = new Ball ( 5, 5 ,Constants.BALL_DIAMETER / 2.0);
+        ball = new Ball ( Constants.INIT_PADDLE_X, Constants.INIT_PADDLE_Y,
+                Constants.BALL_DIAMETER, Constants.BALL_DIAMETER, 5, 5, 5,
+                Constants.BALL_DIAMETER / 2.0);
         bricks = FileLevelLoader.loadLevelFromFile(levelFileName);
 
         brickNum = bricks.size();

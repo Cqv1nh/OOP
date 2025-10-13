@@ -18,8 +18,8 @@ public class Ball extends MovableObject {
     //Constructor mặc định
     // Thinh thay doi phu hop voi gameWindow
     public Ball() {
-        super(Constants.INIT_BALL_X, Constants.INIT_BALL_Y, 
-        Constants.BALL_DIAMETER, Constants.BALL_DIAMETER, 0, 0); //x=19 (giữa màn 40), y=17 (trên paddle), width=1, height=1.
+        super(Constants.INIT_BALL_X, Constants.INIT_BALL_Y,
+                Constants.BALL_DIAMETER, Constants.BALL_DIAMETER, 0, 0); //x=19 (giữa màn 40), y=17 (trên paddle), width=1, height=1.
         this.speed = Constants.BALL_SPEED;
         this.directionX = 1.0;
         this.directionY = -1.0;
@@ -54,6 +54,14 @@ public class Ball extends MovableObject {
         this.initialY = this.getY();
         this.radius = radius;
     }
+
+    public Ball(double x, double y, double width, double height,
+                double dx, double dy, double speed, double radius) {
+        super(x, y, width, height, dx, dy);
+        this.speed = speed;
+        this.radius = radius;
+    }
+
     //Getter, setter cho 5 thuộc tính: speed, directionX, directionY, symbol, radius.
     public double getSpeed() {
         return speed;
@@ -99,8 +107,11 @@ public class Ball extends MovableObject {
     //sửa đổi phương thức move
     @Override
     public void move() {
-        setX(getX() + getDx());
-        setY(getY() + getDy());
+        double destX = this.getX() + this.getDx() * 5;
+        this.setX(destX);
+
+        double destY = this.getY() + this.getDy() * 5;
+        this.setY(destY);
     }
 
     //sửa đổi phương thức update cập nhật vị trí mới
