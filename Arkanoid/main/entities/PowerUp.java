@@ -5,7 +5,7 @@ import ui.GameWindow;
 public abstract class PowerUp extends GameObject {
     private double duration; //Thời gian hiệu lực
     private String type; //Loại powerup
-    private double fallSpeed = 2.0; //Tốc độ rơi vật phẩm đặc biệt là 2
+    private double fallSpeed = 3.0; //Tốc độ rơi vật phẩm đặc biệt là 3
 
     //Constructor có tham số.
     public PowerUp(double x, double y, double width, double height, String type, double duration) {
