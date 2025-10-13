@@ -79,6 +79,8 @@ public class GameWindow extends JFrame {
     }
 
     public void nextLevel() {
+        // Dat lai so mang bang 3 cho level moi
+        this.lives = 3;
         brickList = brickManager.createBricks(); // Có thể tăng độ khó sau này
         paddle = new Paddle(Constants.INIT_PADDLE_X,Constants.INIT_PADDLE_Y,
         Constants.PADDLE_WIDTH,Constants.PADDLE_HEIGHT,0,0,null);
