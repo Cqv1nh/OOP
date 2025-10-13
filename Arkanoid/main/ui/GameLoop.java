@@ -1,3 +1,5 @@
+package ui;
+
 import javax.swing.*;
 import entities.Ball;
 import entities.Brick;
