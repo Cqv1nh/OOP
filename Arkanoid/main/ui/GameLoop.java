@@ -51,7 +51,6 @@ public class GameLoop {
         ArrayList<Brick> brickList = game.getBricks();
 
         int panelWidth = panel.getWidth();
-        // int panelHeight = panel.getHeight();
 
         // Xu ly logic Paddle dau tien
         paddle.move();
@@ -62,21 +61,23 @@ public class GameLoop {
             paddle.setX(panelWidth - paddle.getWidth());
         }
 
-        double speed = ball.getSpeed(); // Lay gia tri speed
+        // Xu ly va cham cua qua bong
+        // double speed = ball.getSpeed(); // Lay gia tri speed
         if (game.isBallLaunched()) {
             ball.move();
             // va cham voi tuong
             if (ball.getX() <= 0) {
                 ball.setX(0);
-                ball.setDx(-ball.getDx());
+                ball.setDirectionX(-ball.getDirectionX());
             }
             if (ball.getX() + ball.getRadius() * 2 >= panelWidth) {
                 ball.setX(panelWidth - ball.getRadius() * 2);
-                ball.setDx(-ball.getDx());
+                
+                ball.setDirectionX(-ball.getDirectionX());
             }
             if (ball.getY() <= 0) {
                 ball.setY(0);
-                ball.setDy(-ball.getDy());
+                ball.setDirectionY(-ball.getDirectionY());
             }
 
             // Va cham voi paddle
@@ -105,8 +106,6 @@ public class GameLoop {
                 ball.setDirectionY(-Math.abs(Math.sin(bounceAngle)));
 
                 // Áp lại tốc độ (nếu Ball.java dùng dx, dy = speed * direction)
-                ball.setDx(speed * ball.getDirectionX());
-                ball.setDy(speed * ball.getDirectionY());
                 ball.setY(paddle.getY() - ball.getRadius() * 2);
             }
 
@@ -155,9 +154,13 @@ public class GameLoop {
                         ball.setX(newcenterBallX - ball.getRadius());
                         ball.setY(newcenterBallY - ball.getRadius());
                     }
+                    
                     // dat gia tri van toc
-                    ball.setDx(newBallDx);
-                    ball.setDy(newBallDy);
+                    double newSpeed = Math.sqrt(newBallDx * newBallDx + newBallDy * newBallDy);
+                    ball.setSpeed(newSpeed);
+                    ball.setDirectionX(newBallDx / ball.getSpeed());
+                    ball.setDirectionY(newBallDy / ball.getSpeed());
+
                     // Brick nhan sat thuong
                     // Day chinh la nguyen nhan gay ra bug bong di chuyen k dung vat ly doi voi gach k the bi pha vo
                     // Chi ap dung takeHit doi voi cac loai gach khac gach k the bi pha vo
@@ -167,7 +170,10 @@ public class GameLoop {
                     if (b.isDestroyed() && b instanceof ExplosiveBrick) {
                        ExplosiveBrick e = (ExplosiveBrick) b;
                        e.explode(brickList);
-                    }
+                    } 
+                    // Danh dau rang da co va cham trong khung hinh nay va de thoat vong lap
+                    // Tranh gay loi
+                    collisionOccurred = true;
                 }
             }
             // Don dep tat ca vien gach khi vao vu no
