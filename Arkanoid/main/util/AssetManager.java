@@ -32,7 +32,7 @@ public class AssetManager {
         extraLife = loadImage("/resources/images/extralife.png");
         expandPaddle = loadImage("/resources/images/expandpaddle.png");
         multiBall = loadImage("/resources/images/multiball.png");
-        increaseSpeed = loadImage("rescources/images/increasespeed.png");
+        increaseSpeed = loadImage("/resources/images/increasespeed.png");
     }
 
     /**
