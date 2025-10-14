@@ -88,6 +88,7 @@ public class GamePanel extends JPanel {
                     g.drawImage(brickImage, (int) b.getX(), (int) b.getY(), (int) b.getWidth(), (int) b.getHeight(), null);
                 }
             }
+
             // Ve cac powerUps
             // for (PowerUp p : powerUps) {
             //     if (p.getType().equals("EXTRA_LIFE")) {
@@ -98,16 +99,9 @@ public class GamePanel extends JPanel {
             //         g.setColor(Color.BLACK);
             //         g.drawString("L", (int) p.getX() + 5, (int) p.getY() + 15);
             //     }
-            //     // else if cho cac loai power up khac
+            //     
             // }
-            for (PowerUp p : powerUps) {
-                BufferedImage powerUpImage = getPowerUpImage(p);
-                 if (powerUpImage != null) {
-                    g.drawImage(powerUpImage, (int) p.getX(), (int) p.getY(), (int) p.getWidth(), (int) p.getHeight(), null);
-                }
-<<<<<<< HEAD
-
-                // else if cho cac loai power up khac, sửa code:
+                /* else if cho cac loai power up khac, sửa code:
                 else if (p.getType().equals("EXPAND_PADDLE")) {
                     g.setColor(Color.BLUE); //Chọn màu sắc
                     //Vẽ hình chữ nhật.
@@ -133,11 +127,15 @@ public class GamePanel extends JPanel {
                     (int) p.getWidth(), (int) p.getHeight());
                     g.setColor(Color.BLACK);
                     g.drawString("FL", (int) p.getX() + 5, (int) p.getY() + 15);
-                } //Hết sửa.
-                
-=======
->>>>>>> 08cee990b5db2c0fe3df3168fbe2e0fd07043021
+                }  */
+            
+            for (PowerUp p : powerUps) {
+                BufferedImage powerUpImage = getPowerUpImage(p);
+                if (powerUpImage != null) {
+                    g.drawImage(powerUpImage, (int) p.getX(), (int) p.getY(), (int) p.getWidth(), (int) p.getHeight(), null);
+                }
             }
+
             // Ve dong chua hien thi so mang
             g.setColor(Color.WHITE);
             g.setFont(new Font("Arial", Font.BOLD, 20));
@@ -182,8 +180,13 @@ public class GamePanel extends JPanel {
         switch (p.getType()) {
             case "EXTRA_LIFE":
                 return AssetManager.extraLife;
-            // Thêm các case khác cho các power-up khác ở đây
-            // case "EXPAND_PADDLE": return AssetManager.expandPaddle;
+            // Thêm các case khác cho các power-up khác ở đây. Sửa:
+            case "EXPAND_PADDLE":
+                return AssetManager.expandPaddle;
+            case "MULTI_BALL":
+                return AssetManager.multiBall;
+            case "FAST_BALL":
+                return AssetManager.increaseSpeed;
             default:
                 return null;
         }

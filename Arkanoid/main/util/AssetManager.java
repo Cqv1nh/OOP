@@ -8,7 +8,7 @@ import java.io.InputStream;
 public class AssetManager {
 
     // Khai báo các biến để lưu trữ hình ảnh
-    public static BufferedImage ball, paddle, extraLife, strongBrick_1hit;
+    public static BufferedImage ball, paddle, extraLife, expandPaddle, multiBall, increaseSpeed, strongBrick_1hit;
     public static BufferedImage normalBrick, strongBrick, explosiveBrick, unbreakableBrick;
     // Thêm các power-up khác nếu cần
     // public static BufferedImage expandPaddle, increaseSpeed;
@@ -29,10 +29,11 @@ public class AssetManager {
         explosiveBrick = loadImage("/resources/images/element_yellow_rectangle_glossy.png");
         unbreakableBrick = loadImage("/resources/images/element_grey_rectangle_glossy.png");
     
-        // Tải hình ảnh power-up
+        // Tải hình ảnh power-up. Sửa code:
         extraLife = loadImage("/resources/images/extralife.png");
-        // expandPaddle = loadImage("/images/expandpaddle.png");
-        // increaseSpeed = loadImage("/images/increasespeed.png");
+        expandPaddle = loadImage("/resources/images/expandpaddle.png");
+        multiBall = loadImage("/resources/images/multiball.png");
+        increaseSpeed = loadImage("rescources/images/increasespeed.png");
     }
 
     /**
