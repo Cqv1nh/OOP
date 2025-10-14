@@ -70,6 +70,17 @@ public class GameWindow extends JFrame {
         
         // Hiển thị cửa sổ
         setVisible(true);
+
+        //SỬA CODE: THÊM 2 METHOD:
+        // Mở rộng thanh đỡ
+        public void expandPaddle(int amount) {
+            this.paddle.setWidth(this.paddle.getWidth() + amount);
+        }
+
+        // Thu nhỏ thanh đỡ
+        public void shrinkPaddle(int amount) {
+            this.paddle.setWidth(this.paddle.getWidth() - amount);
+        }
     }
     
     // Ham reset Game choi lai tu dau
