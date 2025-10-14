@@ -1,8 +1,8 @@
 package entities;
 
-import entities.MovableObject;
+
 import util.Constants;
-import entities.GameObject;
+
 
 public class Ball extends MovableObject {
     private double speed; //Tốc độ bóng.
