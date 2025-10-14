@@ -14,11 +14,7 @@ public class ExtraLifePowerUp extends PowerUp {
         game.addLife();
     }
 
-    //Xóa bỏ hiệu ứng.
-    @Override
-    public void removeEffect(Paddle paddle) {
-    } //Hàm này k làm gì cả vì ng chơi mất mạng khi không còn bóng.
-
+    
     //Cập nhật vị trí đối tượng.
     @Override
     public void update(String input) {
@@ -29,6 +25,12 @@ public class ExtraLifePowerUp extends PowerUp {
     public void render() {
         // Vẽ ký tự '*' tại vị trí (x, y) theo ANSI escape code
         System.out.print("\033[" + ((int)getY() + 1) + ";" + ((int)getX() + 1) + "H*");
+    }
+    // Khong can remove vi powerup nay vinh vien cho den khi nguoi choi tu an het mang
+    @Override
+    public void removeEffect(GameWindow game) {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'removeEffect'");
     }
 }
 
