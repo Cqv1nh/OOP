@@ -7,11 +7,10 @@ import java.io.InputStream;
 
 public class AssetManager {
 
-    // Khai báo các biến để lưu trữ hình ảnh
+    // Khai bao bien luu tru hinh anh
     public static BufferedImage ball, paddle, extraLife, expandPaddle, multiBall, increaseSpeed, strongBrick_1hit;
     public static BufferedImage normalBrick, strongBrick, explosiveBrick, unbreakableBrick;
-    // Thêm các power-up khác nếu cần
-    // public static BufferedImage expandPaddle, increaseSpeed;
+    // Them cac powerUp khac neu can
 
     /**
      * Tải tất cả các hình ảnh từ thư mục /resources/images vào bộ nhớ.
