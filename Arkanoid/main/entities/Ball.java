@@ -19,7 +19,7 @@ public class Ball extends MovableObject {
     // Thinh thay doi phu hop voi gameWindow
     public Ball() {
         super(Constants.INIT_BALL_X, Constants.INIT_BALL_Y,
-                Constants.BALL_DIAMETER, Constants.BALL_DIAMETER, 0, 0); //x=19 (giữa màn 40), y=17 (trên paddle), width=1, height=1.
+                Constants.BALL_DIAMETER, Constants.BALL_DIAMETER, 0, 0); 
         this.speed = Constants.BALL_SPEED;
         this.directionX = 1.0;
         this.directionY = -1.0;
@@ -105,13 +105,16 @@ public class Ball extends MovableObject {
     }
 
     //sửa đổi phương thức move
+    // Thinh thay doi phuong thuc move , day la ly do tai sao bong cu nhanh cham bat thuong
     @Override
     public void move() {
-        double destX = this.getX() + this.getDx() * 5;
-        this.setX(destX);
+        // double destX = this.getX() + this.getDx() * 5;
+        // this.setX(destX);
 
-        double destY = this.getY() + this.getDy() * 5;
-        this.setY(destY);
+        // double destY = this.getY() + this.getDy() * 5;
+        // this.setY(destY);
+        this.setX(this.getX() + this.getDx());
+        this.setY(this.getY() + this.getDy());
     }
 
     //sửa đổi phương thức update cập nhật vị trí mới
@@ -126,6 +129,7 @@ public class Ball extends MovableObject {
     }
 
     //phương thức ktra bóng va cham vs đối tượng khác.
+    // Sap dc xoa bo vi da dc xu ly torng GameLoop
     public boolean checkCollision(GameObject other) {
         if ((this.getY() + this.getHeight() < other.getY())
                 || (this.getX() + this.getWidth() < other.getX())
