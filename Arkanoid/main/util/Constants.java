@@ -23,4 +23,8 @@ public final class Constants {
 
     public static final int POWERUP_WIDTH = 20;
     public static final int POWERUP_HEIGHT = 20;
+
+    //Bổ sung thêm 2 hằng số: Độ dài tăng thêm thanh + Thời gian 7s hiệu lực PowerUp.
+    public static final int PADDLE_EXPAND_AMOUNT = 20;
+    public static final long POWERUP_DURATION = 7000; //7000 milis.
 }
