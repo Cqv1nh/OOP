@@ -5,7 +5,6 @@ import util.Constants;
 public class Paddle extends MovableObject {
     private double speed = Constants.PADDLE_SPEED; // Speed la toc do, khong co huong
     private String currentPowerUp;
-
     /*Thêm code: Thêm object ball vào class Paddle:*/
     private Ball ball;
 
@@ -33,6 +32,7 @@ public class Paddle extends MovableObject {
         return speed;
     }
 
+    // Xem xet co dung k
     public void setCurrentPowerUp(String currentPowerUp) {
         this.currentPowerUp = currentPowerUp;
     }
@@ -43,49 +43,34 @@ public class Paddle extends MovableObject {
     
     @Override
     public void move() { // DI chuyen den toa do X moi
-         
-        double destX = this.getX() + this.getDx() * 5;
-        if (destX < 0) {
-            this.setX(0);
-        } else if (destX + this.getWidth() > Constants.SCREEN_WIDTH) {
-            this.setX(Constants.SCREEN_WIDTH - this.getWidth());
-        } else {
-            this.setX(destX);
-        }
+        this.setX(this.getX() + this.getDx());
     }
 
     public void moveLeft() {
         setDx(-speed);
-        move();
     }
 
     public void moveRight() {
         setDx(speed);
-        move();
     }
+
+    public void stopMoving() {
+        setDx(0);
+    }
+    // Chuyen phan xu ly va cham voi man hinh vao game loop
+    public boolean applyPowerUp() {
+        return false;
+    }
+
     @Override
     public void update(String input) {
         // TODO Auto-generated method stub
-        if ("a".equalsIgnoreCase(input)) {
-            moveLeft();  // Sang trai
-        }
-        else if ("d".equalsIgnoreCase(input)) {
-            moveRight(); // Sang phai
-        } else {
-            setDx(0);   // Dung yen dx = 0
-        }
+        throw new UnsupportedOperationException("Unimplemented method 'update'");
     }
 
     @Override
     public void render() {
-        System.out.print("\033["+((int)getY()+1) + ";" + ((int)getX()+1) + "H");
-        for(int i = 0; i < getWidth(); i++) {
-            System.out.print("=");
-        }
-            
-    }
-
-    public boolean applyPowerUp() {
-        return false;
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'render'");
     }
 }

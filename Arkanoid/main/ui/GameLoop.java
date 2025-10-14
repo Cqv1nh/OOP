@@ -40,26 +40,41 @@ public class GameLoop {
 
         Ball ball = game.getBall();
         Paddle paddle = game.getPaddle();
+        
         ArrayList<Brick> brickList = game.getBricks();
+        
+        int panelWidth = panel.getWidth();
+        // int panelHeight = panel.getHeight();
 
+        // Xu ly logic Paddle dau tien
+        paddle.move();
+        if (paddle.getX() < 0) {
+            paddle.setX(0);
+        }
+        if (paddle.getX() + paddle.getWidth() > panelWidth) {
+            paddle.setX(panelWidth - paddle.getWidth());
+        }
+        
         double speed = ball.getSpeed(); // Lay gia tri speed
         if (game.isBallLaunched()) {
             ball.move();
             // va cham voi tuong
             if (ball.getX() <= 0) {
                 ball.setX(0);
-                ball.setDirectionX(Math.abs(ball.getDirectionX())); // Bat sang phai
-                ball.setDx(speed * ball.getDirectionX());
+                // Direction la huong , dx dy la van toc
+                // Bat sang phai
+                ball.setDx(-ball.getDx());
             }
-            if (ball.getX() + ball.getRadius() * 2 >= Constants.SCREEN_WIDTH) {
-                ball.setX(Constants.SCREEN_WIDTH - ball.getRadius() * 2);
-                ball.setDirectionX(-Math.abs(ball.getDirectionX())); // Bat sang trai
-                ball.setDx(speed * ball.getDirectionX());
+            if (ball.getX() + ball.getRadius() * 2 >= panelWidth) {
+                ball.setX(panelWidth - ball.getRadius() * 2);
+                // Bat sang trai
+                ball.setDx(-ball.getDx());
             }
             if (ball.getY() <= 0) {
                 ball.setY(0);
-                ball.setDirectionY(Math.abs(ball.getDirectionY())); // Bat xuong duoi
-                ball.setDy(speed * ball.getDirectionY()); // De qua bong roi xuong
+                // ball.setDirectionY(Math.abs(ball.getDirectionY())); // Bat xuong duoi
+                // ball.setDy(speed * ball.getDirectionY()); // De qua bong roi xuong
+                ball.setDy(-ball.getDy());
             }
 
             // Va cham voi paddle
@@ -90,6 +105,9 @@ public class GameLoop {
                 // Áp lại tốc độ (nếu Ball.java dùng dx, dy = speed * direction)
                 ball.setDx(speed * ball.getDirectionX());
                 ball.setDy(speed * ball.getDirectionY());
+
+                // Day qua bong ra 1 doan de tranh bi ket voi paddle
+                ball.setY(paddle.getY() - ball.getRadius() * 2);
             }
 
             // Va cham voi brick Thinh thay doi logic va cham 1 chut
@@ -99,36 +117,59 @@ public class GameLoop {
                     break; 
                     // Chi xu ly 1 gach moi vong for
                 }
-
-                if (ball.getX() + ball.getRadius() * 2 >= b.getX()
-                    && ball.getX() <= b.getX() + b.getWidth()
-                    && ball.getY() + ball.getRadius() * 2 >= b.getY()
-                    && ball.getY() <= b.getY() + b.getHeight()) {
-                    collisionOccurred = true;
-                    // Kiểm tra va chạm ngang hay dọc
-                    double overlapLeft = (ball.getX() + ball.getRadius() * 2) - b.getX();
-                    double overlapRight = (b.getX() + b.getWidth()) - ball.getX();
-                    double overlapTop = (ball.getY() + ball.getRadius() * 2) - b.getY();
-                    double overlapBottom = (b.getY() + b.getHeight()) - ball.getY();
-
-                    double minOverlapX = Math.min(overlapLeft, overlapRight);
-                    double minOverlapY = Math.min(overlapTop, overlapBottom);
-
-                    // Bóng bật lại theo hướng ít chồng lấn hơn (thực tế hơn)
-                    if (minOverlapX < minOverlapY) {
-                        ball.setDirectionX(-ball.getDirectionX());
-                        ball.setDx(speed * ball.getDirectionX());
-                    } else {
-                        ball.setDirectionY(-ball.getDirectionY());
-                        ball.setDy(speed * ball.getDirectionY());
+                // Tinh tam cua ball
+                double centerBallX = ball.getX() + ball.getRadius();
+                double centerBallY = ball.getY() + ball.getRadius();
+                // Tinh diem tren hinh chu nhat co toa do gan ball nhat 
+                double closetX = Math.max(b.getX(), Math.min(centerBallX, b.getX() + b.getWidth()));
+                double closetY = Math.max(b.getY(), Math.min(centerBallY, b.getY() + b.getHeight()));
+                // Tinh khoang tu diem do den tam qua bong
+                double distance = Math.sqrt((centerBallX - closetX) * (centerBallX - closetX) 
+                + (centerBallY - closetY) * (centerBallY - closetY));
+                // Dk va cham: khoang cach nho hon ban kinh 
+                if (distance < ball.getRadius()) {
+                    // Vectophaptuyen
+                    double nx = centerBallX - closetX;
+                    double ny = centerBallY - closetY;
+                    // Tinh do lon vector
+                    double disN = Math.sqrt((nx * nx) + (ny * ny));
+                    if (disN == 0) {
+                        return;
                     }
-                    b.takeHit();
+                    // Chuan hoa
+                    double unix = nx / disN;
+                    double uniy = ny / disN;
+                    // Tinh van toc tuong doi, vat the brick luon co van toc bang 0
+                    double dentaV = ball.getDx() * unix + (ball.getDy()) * uniy;
+                    // Cong thuc van toc moi
+                    double newBallDx = ball.getDx() - 2 * dentaV * unix;
+                    double newBallDy = ball.getDy() - 2 * dentaV * uniy;
+                    // Dat lai vi tri hinh 
+                    // Tinh do chong lan
+                    double overlap = ball.getRadius() - distance;
+                    if (overlap > 0) {
+                        // Va cham bat lai, brick dc co dinh nen bong phai dc lui ra dung 1 overlap
+                        double newcenterBallX = centerBallX + unix * overlap;
+                        double newcenterBallY = centerBallY + uniy * overlap;
+                        ball.setX(newcenterBallX - ball.getRadius());
+                        ball.setY(newcenterBallY - ball.getRadius());
+                    }
+
+                    // dat gia tri van toc
+                    ball.setDx(newBallDx);
+                    ball.setDy(newBallDy);
+                    // Brick nhan sat thuong
+                    // Day chinh la nguyen nhan gay ra bug bong di chuyen k dung vat ly doi voi gach k the bi pha vo
+                    // Chi ap dung takeHit doi voi cac loai gach khac gach k the bi pha vo
+                    if (b.getType() != BrickType.UNBREAKABLE) {
+                        b.takeHit();
+                    }
+    
                     // if brick is explosiveBrick
                     if (b.isDestroyed() && b instanceof ExplosiveBrick) {
                        ExplosiveBrick e = (ExplosiveBrick) b;
                        e.explode(brickList);
                     }
-                    
                 }
             }
             // Don dep tat ca vien gach khi vao vu no
