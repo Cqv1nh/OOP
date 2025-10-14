@@ -1,6 +1,7 @@
 package entities;
 import util.Constants;
 import ui.GameWindow;
+
 public class ExtraLifePowerUp extends PowerUp {
 
     public ExtraLifePowerUp(double x, double y, double width, double height, double duration) {

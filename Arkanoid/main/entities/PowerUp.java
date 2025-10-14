@@ -37,7 +37,7 @@ public abstract class PowerUp extends GameObject {
     public abstract void applyEffect(GameWindow game);
 
     //Gỡ bỏ hiệu ứng:
-    public abstract void removeEffect(Paddle paddle);
+    public abstract void removeEffect(GameWindow game);
 
     //Kiểm tra Hiệu ứng đã ra khỏi màn hỉnh (tụt xuống đày chưa)
     public boolean isOutOfBounds (int worldHeight) {

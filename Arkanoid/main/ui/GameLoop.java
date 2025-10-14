@@ -5,6 +5,7 @@ import entities.Ball;
 import entities.Brick;
 import entities.ExplosiveBrick;
 import entities.ExtraLifePowerUp;
+import entities.FastBallPowerUp;
 import entities.Paddle;
 import entities.PowerUp;
 import util.BrickType;
@@ -178,9 +179,16 @@ public class GameLoop {
                 newPowerUp = new ExtraLifePowerUp(
                     brick.getX() + brick.getWidth() / 2 - Constants.POWERUP_WIDTH / 2, 
                     brick.getY(), Constants.POWERUP_WIDTH, 
-                    Constants.POWERUP_HEIGHT, 10);
+                    Constants.POWERUP_HEIGHT, 10.0);
                 break;
-        
+            case "FAST_BALL":
+                newPowerUp = new FastBallPowerUp(
+                    brick.getX() + brick.getWidth() / 2 - Constants.POWERUP_WIDTH / 2, 
+                    brick.getY(), Constants.POWERUP_WIDTH, 
+                    Constants.POWERUP_HEIGHT, 10.0); // Hiệu ứng kéo dài 10 giây
+                break;
+                // KẾT THÚC ĐOẠN CODE THÊM
+    
             default:
                 break;
         }
