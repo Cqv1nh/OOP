@@ -1,5 +1,6 @@
 package entities;
-
+import util.Constants;
+import ui.GameWindow;
 import entities.Ball;
 
 public class FastBallPowerUp extends PowerUp {
@@ -7,7 +8,7 @@ public class FastBallPowerUp extends PowerUp {
 
     //Construtor có tham số.
     public FastBallPowerUp(double x, double y, double width, double height, double duration) {
-        super(x, y, width, height, "FAST_BALL", duration); //Truyền type cố định rồi.
+        super(x, y, Constants.POWERUP_WIDTH, Constants.POWERUP_HEIGHT, "FAST_BALL", duration); //Truyền type cố định rồi.
     }
 
     //Set tốc độ bóng trong thời gian Power Up.
@@ -15,28 +16,27 @@ public class FastBallPowerUp extends PowerUp {
         ball.setSpeed(ball.getSpeed() * multiplier);
     }
 
-    //Áp dụng hiệu ứng lên thanh trong tgian PU.
+    //Áp dụng hiệu ứng lên thanh trong tgian PU. sửa
     @Override
-    public void applyEffect(Paddle paddle) {
-        Ball ball = paddle.getBall();
+    public void applyEffect(GameWindow game) {
+        Ball ball = game.getBall();
         if (ball != null) {
-            modifySpeedBallWhenPowerUp(ball, SPEED_MULTIPLIER);
+            ball.setSpeed(ball.getSpeed() * SPEED_MULTIPLIER);
         }
     }
 
-    //Xóa bỏ hiệu ứng sau khi hết duration.
+    //Xóa bỏ hiệu ứng sau khi hết duration. sửa
     @Override
-    public void removeEffect(Paddle paddle) {
-        Ball ball = paddle.getBall();
+    public void removeEffect(GameWindow game) {
+        Ball ball = game.getBall();
         if (ball != null) {
-            modifySpeedBallWhenPowerUp(ball, 1 / SPEED_MULTIPLIER); //Nhân với nghịch đảo của speed tăng.
+            ball.setSpeed(ball.getSpeed() / SPEED_MULTIPLIER); //Chia cho 1.25.
         }
     }
 
-    //Cập nhật vị trí đối tượng.
+    //Cập nhật vị trí đối tượng. sửa
     @Override
     public void update(String input) {
-        setX(getX());
         setY(getY() + getFallSpeed()); //tăng y lên 1 do đi xuống, lấy fallspeed = 1.
     }
 
