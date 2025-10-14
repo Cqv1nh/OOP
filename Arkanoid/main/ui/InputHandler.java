@@ -38,4 +38,24 @@ public class InputHandler extends KeyAdapter {
             game.setBallLaunched(true);
         }
     }
+
+    public void keyReleased(KeyEvent e) {
+        // Chi xu ly khi dang choi game
+        if (!game.getGameState().equals(GameState.GAMEPLAYING)) {
+            return;
+        }
+
+        int key = e.getKeyCode();
+        Paddle paddle = game.getPaddle();
+        if (paddle == null) {
+            return;
+        }
+
+        // Neu tha phim a d hoac di chuyen trai phai thi paddle phai dung lai 
+        if (key == KeyEvent.VK_LEFT || key == KeyEvent.VK_RIGHT 
+        || key == KeyEvent.VK_A || key == KeyEvent.VK_D) {
+            paddle.stopMoving();
+            // Dung di chuyen
+        }
+    }
 }
