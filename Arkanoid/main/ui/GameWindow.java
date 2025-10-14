@@ -70,17 +70,25 @@ public class GameWindow extends JFrame {
         
         // Hiển thị cửa sổ
         setVisible(true);
+    }
 
-        //SỬA CODE: THÊM 2 METHOD:
-        // Mở rộng thanh đỡ
-        public void expandPaddle(int amount) {
-            this.paddle.setWidth(this.paddle.getWidth() + amount);
-        }
+    //SỬA CODE:
+    // Mở rộng thanh đỡ
+    public void expandPaddle(int amount) {
+        this.paddle.setWidth(this.paddle.getWidth() + amount);
+    }
 
-        // Thu nhỏ thanh đỡ
-        public void shrinkPaddle(int amount) {
-            this.paddle.setWidth(this.paddle.getWidth() - amount);
-        }
+    // Thu nhỏ thanh đỡ
+    public void shrinkPaddle(int amount) {
+        this.paddle.setWidth(this.paddle.getWidth() - amount);
+    }
+    
+    // SỬA LỖI: Thêm method này để xử lý MultiBallPowerUp
+    // Thêm một quả bóng phụ (tạm thời chỉ in ra console, logic thực tế cần được bổ sung)
+    public void addExtraBall() {
+        // Cần bổ sung logic tạo và quản lý bóng mới (Ball) tại đây.
+        // Hiện tại, tạm thời để trống hoặc in thông báo.
+        System.out.println("Extra ball added (Logic for new Ball creation needs implementation)");
     }
     
     // Ham reset Game choi lai tu dau

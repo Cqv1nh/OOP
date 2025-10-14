@@ -4,7 +4,7 @@ import util.Constants;
 import ui.GameWindow;
 
 public class MultiBallPowerUp extends PowerUp {
-    private static final long INSTANT_DURATION = 0.0;
+    private static final double INSTANT_DURATION = 0.0;
 
     public MultiBallPowerUp(double x, double y, double width, double height, double duration) {
         super(x, y, Constants.POWERUP_WIDTH, Constants.POWERUP_HEIGHT, "MULTI_BALL", INSTANT_DURATION);
