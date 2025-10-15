@@ -101,7 +101,7 @@ public class CollisionHandler {
                 }
 
                 // Chỉ xử lý một va chạm gạch mỗi khung hình để tránh lỗi
-                 break; 
+                break; 
             }
         }
 

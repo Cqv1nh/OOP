@@ -2,13 +2,13 @@ package engine;
 
 import ui.GameWindow;
 import util.BrickType;
-import util.Constants;
 import util.GameState;
 
 public class GameStateManager {
-    public void checkGameStatus(GameWindow game) {
+    // THAY ĐỔI: Thêm tham số panelHeight
+    public void checkGameStatus(GameWindow game, int panelHeight) {
         // Thay bang gamePanel.getHeight
-        if (game.getBall().getY() > Constants.SCREEN_HEIGHT) {
+        if (game.getBall().getY() > panelHeight) {
             // giam mang di 1 lan
             game.loseLives();
             if (game.getLives() > 0) {

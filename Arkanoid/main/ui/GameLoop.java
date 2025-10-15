@@ -46,14 +46,16 @@ public class GameLoop {
             return;
         }
 
+        int panelWidth = panel.getWidth();
+        int panelHeight = panel.getHeight();
         // 1. Cập nhật vị trí các thực thể (Bóng, Thanh trượt)
-        entityManager.updateEntities(game, panel.getWidth());
+        entityManager.updateEntities(game, panelWidth);
         // 2. Xử lý tất cả các va chạm
-        collisionHandler.handleCollisions(game, panel.getWidth());
+        collisionHandler.handleCollisions(game, panelWidth);
         // 3. Cập nhật và quản lý Power-up
-        powerUpManager.update(game);
+        powerUpManager.update(game, panelHeight);
         // 4. Kiểm tra trạng thái thắng/thua của game
-        gameStateManager.checkGameStatus(game);
+        gameStateManager.checkGameStatus(game, panelHeight);
         // 5. Vẽ lại màn hình
         panel.repaint();
     }

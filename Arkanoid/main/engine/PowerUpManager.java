@@ -9,8 +9,9 @@ import util.Constants;
 public class PowerUpManager {
     private long lastUpdateTime = System.currentTimeMillis();
     
-    public void update(GameWindow game) {
-        updateFallingPowerUps(game);
+    public void update(GameWindow game, int panelHeight) {
+        // Truyen panelHeight xuong tiep
+        updateFallingPowerUps(game, panelHeight);
         processActivePowerUps(game);
     }
 
@@ -49,7 +50,7 @@ public class PowerUpManager {
         }
     }
 
-    private void updateFallingPowerUps(GameWindow game) {
+    private void updateFallingPowerUps(GameWindow game, int panelHeight) {
         // Dung itertator de xoa an toan
         Paddle paddle = game.getPaddle();
         Iterator<PowerUp> iterator = game.getPowerUps().iterator();
@@ -63,7 +64,7 @@ public class PowerUpManager {
             && p.getY() + p.getHeight() > paddle.getY()) {
                 p.applyEffect(game);
                 iterator.remove();
-            } else if (p.getY() > Constants.SCREEN_HEIGHT) {
+            } else if (p.getY() > panelHeight) {
                 // Thay the bang gamePanel.getHeight
                 iterator.remove(); // Xóa khi rơi ra ngoài màn hình
             }
