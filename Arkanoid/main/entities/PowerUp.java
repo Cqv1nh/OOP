@@ -6,7 +6,7 @@ public abstract class PowerUp extends GameObject {
     private double duration; //Thời gian hiệu lực
     private String type; //Loại powerup
     private double fallSpeed = 3.0; //Tốc độ rơi vật phẩm đặc biệt là 3
-
+    protected double initialDuration; // Thoi gian ban dau cua PowerUp , dung de tinh phan tram
     //Constructor có tham số.
     public PowerUp(double x, double y, double width, double height, String type, double duration) {
         super(x, y, width, height);
@@ -32,6 +32,10 @@ public abstract class PowerUp extends GameObject {
         this.duration = duration;
     }
 
+    public double getInitialDuration() {
+        return initialDuration;
+    }
+    
     //Áp dụng hiệu ứng:
     // Thay doi tham so cua applyEffect 
     public abstract void applyEffect(GameWindow game);

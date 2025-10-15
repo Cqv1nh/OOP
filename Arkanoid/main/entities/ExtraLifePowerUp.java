@@ -18,7 +18,7 @@ public class ExtraLifePowerUp extends PowerUp {
     //Cập nhật vị trí đối tượng.
     @Override
     public void update(String input) {
-        setY(getY() + getFallSpeed()); //tăng y lên 1 do đi xuống, lấy fallSpeed = 1.
+        setY(getY() + getFallSpeed()); //tăng y lên 1 do đi xuống, lấy fallSpeed = 3.
     }
 
     @Override

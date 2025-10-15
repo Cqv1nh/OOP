@@ -9,6 +9,9 @@ public class FastBallPowerUp extends PowerUp {
     //Construtor có tham số.
     public FastBallPowerUp(double x, double y, double width, double height, double duration) {
         super(x, y, Constants.POWERUP_WIDTH, Constants.POWERUP_HEIGHT, "FAST_BALL", Constants.POWERUP_DURATION); //Truyền type cố định rồi.
+        // Gian gia tri ban dau bang gia tri thoi gian vua bat dau
+        this.initialDuration = duration;
+        // Chi dung cho cac class co thoi gian
     }
 
     //Áp dụng hiệu ứng lên thanh trong tgian PU. sửa

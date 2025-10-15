@@ -33,6 +33,7 @@ public class PowerUpManager {
                 Constants.POWERUP_WIDTH, Constants.POWERUP_HEIGHT, 
                 (double) Constants.POWERUP_DURATION);
                 // Hiệu ứng kéo dài 7 giây
+                break;
             case "EXPAND_PADDLE":
                 newPowerUp = new ExpandPaddlePowerUp(x, y, 
                 Constants.POWERUP_WIDTH, Constants.POWERUP_HEIGHT, 

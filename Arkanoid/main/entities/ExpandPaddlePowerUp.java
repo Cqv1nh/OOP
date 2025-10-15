@@ -8,6 +8,8 @@ public class ExpandPaddlePowerUp extends PowerUp {
     public ExpandPaddlePowerUp(double x, double y, double width, double height, double duration) {
         // Sử dụng Constants cho kích thước và POWERUP_DURATION_MS cho duration
         super(x, y, Constants.POWERUP_WIDTH, Constants.POWERUP_HEIGHT, "EXPAND_PADDLE", Constants.POWERUP_DURATION); 
+        this.initialDuration = duration;
+        // Gian gia tri ban dau bang gia tri thoi gian vua bat dau
     }
 
     @Override

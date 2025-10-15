@@ -3,6 +3,8 @@ package ui;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.image.BufferedImage;
+import java.util.ArrayList;
+
 import entities.Ball;
 import entities.Brick;
 import entities.Paddle;
@@ -83,6 +85,8 @@ public class GamePanel extends JPanel {
 
         // Vẽ HUD (Heads-Up Display)
         drawHUD(g);
+        // Phuong thuc ve thanh nang luong thoi gian
+        drawPowerUpTimers(g);
     }
 
     private void drawGameOverState(Graphics2D g) {
@@ -165,6 +169,64 @@ public class GamePanel extends JPanel {
                 return AssetManager.increaseSpeed;
             default:
                 return null;
+        }
+    }
+    // Ve thanh nang luong
+    private void drawPowerUpTimers(Graphics2D g) {
+        ArrayList<PowerUp> activeEffects = parent.getActivePowerUpEffects();
+
+        // Can hang so kich thuoc
+        final int ICON_SIZE = 25; // Hinh vuong
+        final int BAR_HEIGHT = 15; // Cao 
+        final int BAR_WIDTH = 100; // Rong
+        final int PADDING = 8;
+
+        int yPos = 20; // Vị trí Y ban đầu, ngay dưới HUD
+
+        for (PowerUp p : activeEffects) {
+            // Chỉ vẽ thanh thời gian cho Power-up có thời gian hiệu lực
+            // Chinh la cac powerUp co initialDuration > 0 
+            if (p.getInitialDuration() > 0) {
+                BufferedImage icon = getPowerUpImage(p);
+                if (icon == null) {
+                    continue;
+                }
+
+                // 1. Tính toán
+                double timePercentage = p.getDuration() / p.getInitialDuration();
+                // Ti le la 1
+                // Đảm bảo không bị số âm
+                timePercentage = Math.max(0, timePercentage); 
+                // Chieu rong nang luong chinh la ti le thoi gian
+                int currentBarWidth = (int) (BAR_WIDTH * timePercentage);
+                // Vị trí X, căn lề phải cho đẹp
+                int xPos = getWidth() - BAR_WIDTH - ICON_SIZE - PADDING * 2;
+
+                // 2. Vẽ Icon
+                g.drawImage(icon, xPos, yPos, ICON_SIZE, ICON_SIZE, null);
+                // 3. Vẽ thanh thời gian
+                int barX = xPos + ICON_SIZE + PADDING;
+                int barY = yPos + (ICON_SIZE - BAR_HEIGHT) / 2; // Căn giữa thanh với icon
+
+                // Vẽ màu nền cho thanh (giống cái ống rỗng)
+                g.setColor(new Color(60, 60, 60)); // Màu xám tối
+                g.fillRect(barX, barY, BAR_WIDTH, BAR_HEIGHT);
+
+                // Chọn màu cho "nước" bên trong
+                if (p.getType().equals("EXPAND_PADDLE")) {
+                    g.setColor(Color.CYAN);
+                } else if (p.getType().equals("FAST_BALL")) {
+                    g.setColor(Color.ORANGE);
+                }
+                // Vẽ phần "nước" còn lại, nó sẽ tự ngắn lại
+                g.fillRect(barX, barY, currentBarWidth, BAR_HEIGHT);
+                // Vẽ viền cho thanh để trông rõ hơn
+                g.setColor(Color.DARK_GRAY);
+                g.drawRect(barX, barY, BAR_WIDTH, BAR_HEIGHT);
+                // Tăng vị trí Y cho Power-up tiếp theo (nếu có)
+                yPos += ICON_SIZE + PADDING;
+                // Cac powerUp se xep theo truc y
+            }
         }
     }
 }
