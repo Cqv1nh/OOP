@@ -21,7 +21,7 @@ public class Ball extends MovableObject {
         super(Constants.INIT_BALL_X, Constants.INIT_BALL_Y,
                 Constants.BALL_DIAMETER, Constants.BALL_DIAMETER, 0, 0); 
         this.speed = Constants.BALL_SPEED;
-        this.directionX = 1.0;
+        this.directionX = -1.0;
         this.directionY = -1.0;
         this.setDx(speed * directionX);
         this.setDy(speed * directionY);
