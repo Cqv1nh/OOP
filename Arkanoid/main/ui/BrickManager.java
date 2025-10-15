@@ -2,25 +2,29 @@ package ui;
 
 import entities.*;
 import util.Constants;
+import util.LevelData;
 
 import java.util.ArrayList;
-
+// Nang cap BrickManager voi LevelData nhan dau vao la so nguyen chi so level
 // Tao class tao cac brick va quan ly chung, dc goi trong GameWindow
 public class BrickManager {
 
     //Thuoc tinh dinh nghia cau truc gach bang 1 mang 2D 
     // 0: NULL, 1: NormalBrick 2. StrongBrick, 3. ExplosiveBrick, 4.UnbreakableBrick
-    private static final int[][] LEVEL_1_LAYOUT = {
-        {0, 1, 1, 1, 1, 4, 4, 1, 1, 1, 0},
-        {1, 1, 2, 2, 2, 4, 4, 2, 2, 1, 1},
-        {1, 3 ,3 ,1, 3, 1, 3, 1, 3, 3, 1}
-    };
+    
 
-    public ArrayList<Brick> createBricks() {
+    public ArrayList<Brick> createBricks(int levelNumber, int panelWidth) {
         ArrayList<Brick> brickList = new ArrayList<>();
+        int[][] layout = LevelData.getLayoutForLevel(levelNumber);
+
+        // Nếu level không tồn tại, trả về danh sách rỗng để tránh lỗi
+        if (layout == null) {
+            System.err.println("Error: Level " + levelNumber + " not found!");
+            return brickList;
+        }
         // Lay kich thuoc mang dong va cot
-        int numRows = LEVEL_1_LAYOUT.length;
-        int numCols = LEVEL_1_LAYOUT[0].length;
+        int numRows = layout.length;
+        int numCols = layout[0].length;
         
         // Can le cho toan bo khoi gach moi vien gach cach nhau 5 theo truc x
         double totalBricksWidth = numCols * Constants.BRICK_WIDTH + ((numCols) - 1) * 5;
@@ -30,7 +34,7 @@ public class BrickManager {
         // Dat cac vien gach cach nhau
         for (int i= 0; i < numRows; i++) {
             for (int j = 0; j < numCols; j++) {
-                int brickCode = LEVEL_1_LAYOUT[i][j];
+                int brickCode = layout[i][j];
                 // Neu trong thi bo qua
                 if (brickCode == 0) {
                     continue;

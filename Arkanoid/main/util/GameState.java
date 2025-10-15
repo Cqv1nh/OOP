@@ -6,7 +6,7 @@ public class GameState {
     public static final String GAMEPLAYING = "GAMEPLAYING"; // Dang choi 
     public static final String LEVELCLEAR = "LEVELCLEAR"; // chuyen level
     public static final String GAMEUPDATE = "GAMEUPDATE";
-
+    public static final String GAMEWON = "GAMEWON";
     private GameState() {
 
     }

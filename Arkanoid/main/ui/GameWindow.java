@@ -7,7 +7,6 @@ import entities.PowerUp;
 import util.AssetManager;
 import util.Constants;
 import util.GameState;
-
 import java.util.ArrayList;
 
 public class GameWindow extends JFrame {
@@ -20,6 +19,7 @@ public class GameWindow extends JFrame {
 
     private int lives = 3; // Khoi tao so mang la 3;
     private int score = 0;
+    private int currentLevel = 1;
     private boolean ballLaunched = false; // Bong con dinh tren paddle hay da di chuyen
     private String gameState = GameState.GAMESTART; // Trang thai game
     private GamePanel gamePanel; // Ve cac vat the
@@ -37,9 +37,7 @@ public class GameWindow extends JFrame {
         ball.setSpeed(Constants.BALL_SPEED);
         paddle.setBall(ball);
         
-        // Brick manager
-        brickManager = new BrickManager();
-        brickList = brickManager.createBricks();
+        
         // PowerUp khoi tao
         powerUps = new ArrayList<>();
         activePowerUpsEffects = new ArrayList<>();
@@ -60,6 +58,10 @@ public class GameWindow extends JFrame {
         gamePanel = new GamePanel(this);
         add(gamePanel);
 
+        // Brick manager
+        brickManager = new BrickManager();
+        brickList = brickManager.createBricks(currentLevel, gamePanel.getWidth());
+        
         // Input + Loop
         inputHandler = new InputHandler(this);
         gamePanel.addKeyListener(inputHandler);
@@ -96,11 +98,12 @@ public class GameWindow extends JFrame {
         // dat lai gia tri lives = 3;
         this.lives = 3;
         this.score = 0;
+        this.currentLevel = 1;
         this.extraLifeShieldActive = false; // Reset trang thai powerup
         powerUps.clear(); // Xoa het cac hieu ung dang roi
         activePowerUpsEffects.clear(); // Xoa het cac hieu ung co hieu luc
 
-        brickList = brickManager.createBricks();
+        brickList = brickManager.createBricks(currentLevel, gamePanel.getWidth());
         paddle = new Paddle(Constants.INIT_PADDLE_X,Constants.INIT_PADDLE_Y,
         Constants.PADDLE_WIDTH,Constants.PADDLE_HEIGHT,0,0,null);
         ball = new Ball();
@@ -112,8 +115,12 @@ public class GameWindow extends JFrame {
 
     public void nextLevel() {
         // Dat lai so mang bang 3 cho level moi
+        currentLevel++;
         this.lives = 3;
-        brickList = brickManager.createBricks(); // Có thể tăng độ khó sau này
+        powerUps.clear();
+        activePowerUpsEffects.clear();
+        
+        brickList = brickManager.createBricks(currentLevel, gamePanel.getWidth()); // Có thể tăng độ khó sau này
         paddle = new Paddle(Constants.INIT_PADDLE_X,Constants.INIT_PADDLE_Y,
         Constants.PADDLE_WIDTH,Constants.PADDLE_HEIGHT,0,0,null);
         ball = new Ball();
@@ -202,6 +209,9 @@ public class GameWindow extends JFrame {
         this.lives++;
     }
     
+    public int getCurrentLevel() {
+        return this.currentLevel;
+    }
     public static void main(String[] args) {
         // Tạo cửa sổ trên luồng giao diện
         SwingUtilities.invokeLater(() -> new GameWindow());

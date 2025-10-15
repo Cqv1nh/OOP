@@ -10,7 +10,6 @@ import entities.PowerUp;
 import util.GameState;
 import util.AssetManager;
 import util.BrickType;
-import java.util.ArrayList;
 // Class GamePanel dc dua ra rieng phu trach viec in cac vat the ben trong man hinh cua
 // gameWindow
 public class GamePanel extends JPanel {
@@ -19,145 +18,122 @@ public class GamePanel extends JPanel {
     public GamePanel(GameWindow parent) {
         this.parent = parent;
         setFocusable(true);
+        setBackground(Color.BLACK); // Dat mau nen 1 lan o day
     }
 
     @Override
     protected void paintComponent(Graphics g) {
         super.paintComponent(g);
         String gameState = parent.getGameState(); // Lay trang thai tu gameWindown 
-        Paddle paddle = parent.getPaddle();
-        Ball ball = parent.getBall();
-        ArrayList<Brick> brickList = parent.getBricks();
-        ArrayList<PowerUp> powerUps = parent.getPowerUps();  
-        // Vẽ nền màu đen
-        g.setColor(Color.BLACK);
-        g.fillRect(0, 0, getWidth(), getHeight());
+        // Chuyển đổi Graphics thành Graphics2D để có thể khử răng cưa
+        Graphics2D g2d = (Graphics2D) g;
+        g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
 
-        if (gameState.equals(GameState.GAMESTART)) {
-            g.setColor(Color.WHITE);
-            g.setFont(new Font("Arial", Font.BOLD, 36));
-            g.drawString("Press SPACE to Start", 200, 300);
-
-        } else if (gameState.equals(GameState.GAMEPLAYING)) {
-            // g.setColor(Color.WHITE);
-            // g.fillRect(
-            //     (int) paddle.getX(), 
-            //     (int) paddle.getY(), 
-            //     (int) paddle.getWidth(), 
-            //     (int) paddle.getHeight());
-            // Paddle
-            g.drawImage(AssetManager.paddle, 
-            (int) paddle.getX(), (int) paddle.getY(), (int) paddle.getWidth(), 
-            (int) paddle.getHeight(), null);
-            // Ball 
-            // g.setColor(Color.RED);
-            // g.fillOval((int) ball.getX(), 
-            // (int) ball.getY(), (int) ball.getRadius() * 2, 
-            // (int) ball.getRadius() * 2);
-            g.drawImage(AssetManager.ball, 
-            (int) ball.getX(), (int) ball.getY(), (int) ball.getRadius() * 2, 
-            (int) ball.getRadius() * 2, null);
-                
-            // for( Brick b : brickList) {
-            //     if (b.getType() == BrickType.NORMAL) {
-            //         g.setColor(Color.GREEN);
-            //     } else if (b.getType() == BrickType.STRONG) {
-            //         if (b.getHitPoints() == 3) {
-            //             g.setColor(Color.BLUE);
-            //         } else if (b.getHitPoints() == 2) {
-            //              // mau xanh nhat hon
-            //             g.setColor(new Color(100, 100, 255));
-            //         } else if (b.getHitPoints() == 1) {
-            //             // Giong voi mau normal brick
-            //             g.setColor(Color.GREEN);
-            //         }
-            //     } else if (b.getType() == BrickType.EXPLOSIVE) {
-            //         g.setColor(Color.YELLOW);
-            //     } else if (b.getType() == BrickType.UNBREAKABLE) {
-            //         g.setColor(Color.GRAY);
-            //     }
-
-            //     g.fillRect((int) b.getX(), 
-            //     (int) b.getY(), 
-            //     (int) b.getWidth(), 
-            //     (int) b.getHeight());
-            // }
-            for (Brick b : brickList) {
-                BufferedImage brickImage = getBrickImage(b);
-                if (brickImage != null) {
-                    g.drawImage(brickImage, (int) b.getX(), (int) b.getY(), (int) b.getWidth(), (int) b.getHeight(), null);
-                }
-            }
-
-            // Ve cac powerUps
-            // for (PowerUp p : powerUps) {
-            //     if (p.getType().equals("EXTRA_LIFE")) {
-            //         g.setColor(Color.PINK);
-            //         // Ve thanh hinh chu nhat
-            //         g.fillRect((int) p.getX(), (int) p.getY(), 
-            //         (int) p.getWidth(), (int) p.getHeight());
-            //         g.setColor(Color.BLACK);
-            //         g.drawString("L", (int) p.getX() + 5, (int) p.getY() + 15);
-            //     }
-            //     
-            // }
-                /* else if cho cac loai power up khac, sửa code:
-                else if (p.getType().equals("EXPAND_PADDLE")) {
-                    g.setColor(Color.BLUE); //Chọn màu sắc
-                    //Vẽ hình chữ nhật.
-                    g.fillRect((int) p.getX(), (int) p.getY(),
-                    (int) p.getWidth(), (int) p.getHeight());
-                    g.setColor(Color.BLACK);
-                    g.drawString("E", (int) p.getX() + 5, (int) p.getY() + 15);
-                }
-
-                else if (p.getType().equals("MULTI_BALL")) {
-                    g.setColor(Color.GREEN); //Chọn màu sắc
-                    //Vẽ hình chữ nhật.
-                    g.fillRect((int) p.getX(), (int) p.getY(),
-                    (int) p.getWidth(), (int) p.getHeight());
-                    g.setColor(Color.BLACK);
-                    g.drawString("+1", (int) p.getX() + 5, (int) p.getY() + 15);
-                }
-
-                else if (p.getType().equals("FAST_BALL")) {
-                    g.setColor(Color.YELLOW); //Chọn màu sắc
-                    //Vẽ hình chữ nhật.
-                    g.fillRect((int) p.getX(), (int) p.getY(),
-                    (int) p.getWidth(), (int) p.getHeight());
-                    g.setColor(Color.BLACK);
-                    g.drawString("FL", (int) p.getX() + 5, (int) p.getY() + 15);
-                }  */
-            
-            for (PowerUp p : powerUps) {
-                BufferedImage powerUpImage = getPowerUpImage(p);
-                if (powerUpImage != null) {
-                    g.drawImage(powerUpImage, (int) p.getX(), (int) p.getY(), (int) p.getWidth(), (int) p.getHeight(), null);
-                }
-            }
-
-            // Ve dong chua hien thi so mang
-            g.setColor(Color.WHITE);
-            g.setFont(new Font("Arial", Font.BOLD, 20));
-            g.drawString("Lives: " + parent.getLives(), 10, 20);
-            // Ve dong hien thi so diem Score
-            g.drawString("Scores: " + parent.getScore(), 90, 20);
-
-        } else if (gameState.equals(GameState.GAMEEND)) {
-            g.setColor(Color.RED);
-            g.setFont(new Font("Arial", Font.BOLD, 36));
-            g.drawString("GAME OVER", 290, 280);
-            g.setFont(new Font("Arial", Font.PLAIN, 24));
-            g.drawString("Press SPACE to Restart", 275, 340);
-        } else if (gameState.equals(GameState.LEVELCLEAR)) {
-            g.setColor(Color.YELLOW);
-            g.setFont(new Font("Arial", Font.BOLD, 36));
-            g.drawString("LEVEL CLEARED!", 233, 280);
-            g.setFont(new Font("Arial", Font.PLAIN, 24));
-            g.drawString("Press ENTER for Next Level", 238, 340);
+        switch (gameState) {
+            case GameState.GAMESTART:
+                drawGameStartState(g2d);
+                break;
+            case GameState.GAMEEND:
+                drawGameOverState(g2d);
+                break;
+            case GameState.GAMEPLAYING:
+                drawGamePlayingState(g2d);
+                break;
+            case GameState.LEVELCLEAR:
+                drawLevelClearState(g2d);
+                break;
+            case GameState.GAMEWON:
+                drawGameWonState(g2d);
+                break;
         }
+
     }
 
+    // --- CÁC PHƯƠNG THỨC VẼ CHO TỪNG TRẠNG THÁI ---
+    private void drawGameStartState(Graphics2D g) {
+        g.setColor(Color.WHITE);
+        g.setFont(new Font("Arial", Font.BOLD, 36));
+        drawCenteredString("Press SPACE to Start", getWidth(), getHeight(), g, 0, 0);
+    }
+
+    private void drawGamePlayingState(Graphics2D g) {
+        // Vẽ Paddle
+        Paddle paddle = parent.getPaddle();
+        g.drawImage(AssetManager.paddle, (int) paddle.getX(), (int) paddle.getY(), (int) paddle.getWidth(), (int) paddle.getHeight(), null);
+
+        // Vẽ Ball
+        Ball ball = parent.getBall();
+        g.drawImage(AssetManager.ball, (int) ball.getX(), (int) ball.getY(), (int) ball.getRadius() * 2, (int) ball.getRadius() * 2, null);
+        
+        // Vẽ Bricks
+        for (Brick b : parent.getBricks()) {
+            BufferedImage brickImage = getBrickImage(b);
+            if (brickImage != null) {
+                g.drawImage(brickImage, (int) b.getX(), (int) b.getY(), (int) b.getWidth(), (int) b.getHeight(), null);
+            }
+        }
+
+        // Vẽ Power-ups
+        for (PowerUp p : parent.getPowerUps()) {
+            BufferedImage powerUpImage = getPowerUpImage(p);
+            if (powerUpImage != null) {
+                g.drawImage(powerUpImage, (int) p.getX(), (int) p.getY(), (int) p.getWidth(), (int) p.getHeight(), null);
+            }
+        }
+
+        // Vẽ HUD (Heads-Up Display)
+        drawHUD(g);
+    }
+
+    private void drawGameOverState(Graphics2D g) {
+        g.setColor(Color.RED);
+        g.setFont(new Font("Arial", Font.BOLD, 36));
+        drawCenteredString("GAME OVER", getWidth(), getHeight(), g, 0, -20);
+        // Chu o ben tren
+        
+        g.setColor(Color.WHITE);
+        g.setFont(new Font("Arial", Font.PLAIN, 24));
+        drawCenteredString("Press SPACE to Restart", getWidth(), getHeight(), g, 0, 40);
+        // Chu o duoi
+    }
+
+    private void drawLevelClearState(Graphics2D g) {
+        g.setColor(Color.YELLOW);
+        g.setFont(new Font("Arial", Font.BOLD, 36));
+        drawCenteredString("LEVEL CLEARED!", getWidth(), getHeight(), g, 0, -20);
+        
+        g.setColor(Color.WHITE);
+        g.setFont(new Font("Arial", Font.PLAIN, 24));
+        drawCenteredString("Press ENTER for Next Level", getWidth(), getHeight(), g, 0, 40);
+    }
+
+    private void drawGameWonState(Graphics2D g) {
+        g.setColor(Color.GREEN);
+        g.setFont(new Font("Arial", Font.BOLD, 36));
+        // Sửa lỗi chính tả "CONSTRAGLUTION" -> "CONGRATULATIONS!"
+        drawCenteredString("CONGRATULATIONS!", getWidth(), getHeight(), g, 0, 0);
+    }
+
+    // Cac phuong thuc tien ich
+    private void drawHUD(Graphics2D g) {
+        g.setColor(Color.WHITE);
+        g.setFont(new Font("Arial", Font.BOLD, 20));
+        g.drawString("Lives: " + parent.getLives(), 10, 25);
+        g.drawString("Level: " + parent.getCurrentLevel(), 120, 25);
+        // Căn lề phải cho điểm số
+        String scoreText = "Score: " + parent.getScore();
+        FontMetrics fm = g.getFontMetrics();
+        int scoreWidth = fm.stringWidth(scoreText);
+        g.drawString(scoreText, getWidth() - scoreWidth - 10, 25);
+    }
+
+    private void drawCenteredString(String text, int panelWidth, 
+    int panelHeight, Graphics g, int xOffset, int yOffset) {
+        FontMetrics fm = g.getFontMetrics();
+        int x = (panelWidth - fm.stringWidth(text)) / 2;
+        int y = (fm.getAscent() + (panelHeight - (fm.getAscent() + fm.getDescent())) / 2);
+        g.drawString(text, x + xOffset, y + yOffset);
+    }
     private BufferedImage getBrickImage(Brick b) {
         if (b.getType() == BrickType.NORMAL) {
             return AssetManager.normalBrick;

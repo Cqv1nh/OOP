@@ -55,7 +55,8 @@ public class GameLoop {
         // 3. Cập nhật và quản lý Power-up
         powerUpManager.update(game, panelHeight);
         // 4. Kiểm tra trạng thái thắng/thua của game
-        gameStateManager.checkGameStatus(game, panelHeight);
+        // THAY ĐỔI: Truyền thêm level hiện tại vào
+        gameStateManager.checkGameStatus(game, panelHeight, game.getCurrentLevel());
         // 5. Vẽ lại màn hình
         panel.repaint();
     }
