@@ -11,7 +11,10 @@ import java.util.ArrayList;
 
 public class GameWindow extends JFrame {
     private Paddle paddle; // Thanh truot
-    private Ball ball; // Ball 
+    // / cũ 
+    //private Ball ball; 
+
+    private ArrayList<Ball> balls; // / mới
     private ArrayList<Brick> brickList; // Danh sach gach
     private ArrayList<PowerUp> powerUps; // Danh sach luu cac powerUp dang roi
     private ArrayList<PowerUp> activePowerUpsEffects; // Danh sach hieu ung dang co hieu luc
@@ -32,11 +35,16 @@ public class GameWindow extends JFrame {
         paddle = new Paddle(Constants.INIT_PADDLE_X,Constants.INIT_PADDLE_Y,
         Constants.PADDLE_WIDTH,Constants.PADDLE_HEIGHT,0,0,null);
 
-        ball = new Ball();
-        // Xem xet xoa di
+        // /cũ
+        /*ball = new Ball();
         ball.setSpeed(Constants.BALL_SPEED);
-        paddle.setBall(ball);
+        paddle.setBall(ball); */
         
+        // /mới
+        Ball initialBall = new Ball(); 
+        initialBall.setSpeed(Constants.BALL_SPEED);
+        balls = new ArrayList<>();
+        balls.add(initialBall);
         
         // PowerUp khoi tao
         powerUps = new ArrayList<>();
@@ -85,12 +93,16 @@ public class GameWindow extends JFrame {
         this.paddle.setWidth(this.paddle.getWidth() - amount);
     }
     
-    // SỬA LỖI: Thêm method này để xử lý MultiBallPowerUp
-    // Thêm một quả bóng phụ (tạm thời chỉ in ra console, logic thực tế cần được bổ sung)
-    public void addExtraBall() {
-        // Cần bổ sung logic tạo và quản lý bóng mới (Ball) tại đây.
-        // Hiện tại, tạm thời để trống hoặc in thông báo.
+    // /cũ
+    /*public void addExtraBall() {
         System.out.println("Extra ball added (Logic for new Ball creation needs implementation)");
+    } */
+
+    // /mới
+    public void addBall(Ball newBall) {
+        if (newBall != null) {
+            this.balls.add(newBall);
+        }
     }
     
     // Ham reset Game choi lai tu dau
@@ -106,9 +118,19 @@ public class GameWindow extends JFrame {
         brickList = brickManager.createBricks(currentLevel, gamePanel.getWidth());
         paddle = new Paddle(Constants.INIT_PADDLE_X,Constants.INIT_PADDLE_Y,
         Constants.PADDLE_WIDTH,Constants.PADDLE_HEIGHT,0,0,null);
-        ball = new Ball();
+        
+        // /cũ
+        /*ball = new Ball();
         ball.setSpeed(Constants.BALL_SPEED);
-        paddle.setBall(ball);
+        paddle.setBall(ball); */
+
+        // /mới
+        this.balls.clear(); // Xóa sạch danh sách bóng cũ
+        Ball restartBall = new Ball();
+        restartBall.setSpeed(Constants.BALL_SPEED);
+        this.balls.add(restartBall); // Thêm quả bóng mới vào danh sách
+        paddle.setBall(restartBall); // Cập nhật tham chiếu bóng chính cho Paddle
+
         ballLaunched = false;
         gameState = GameState.GAMESTART;
     }
@@ -123,9 +145,19 @@ public class GameWindow extends JFrame {
         brickList = brickManager.createBricks(currentLevel, gamePanel.getWidth()); // Có thể tăng độ khó sau này
         paddle = new Paddle(Constants.INIT_PADDLE_X,Constants.INIT_PADDLE_Y,
         Constants.PADDLE_WIDTH,Constants.PADDLE_HEIGHT,0,0,null);
-        ball = new Ball();
+        
+        // /cũ
+        /*ball = new Ball();
         ball.setSpeed(Constants.BALL_SPEED);
-        paddle.setBall(ball);
+        paddle.setBall(ball); */
+
+        // /mới
+        this.balls.clear(); // Xóa sạch danh sách bóng cũ
+        Ball nextLevelBall = new Ball();
+        nextLevelBall.setSpeed(Constants.BALL_SPEED);
+        this.balls.add(nextLevelBall); // Thêm quả bóng mới vào danh sách
+        paddle.setBall(nextLevelBall); // Cập nhật tham chiếu bóng chính cho Paddle
+        
         gameState = GameState.GAMESTART;
         ballLaunched = false;
     }
@@ -138,11 +170,27 @@ public class GameWindow extends JFrame {
         paddle.setX(Constants.INIT_PADDLE_X);
         paddle.setY(Constants.INIT_PADDLE_Y);
         
-        // Dat qua bong tren thanh paddle
-        ball.setX(Constants.INIT_BALL_X);
-        ball.setY(Constants.INIT_BALL_Y);
-        // Van su dung lai cac paddle va ball cu nen k can dung ham new
+        // /Cũ
+        /*ball.setX(Constants.INIT_BALL_X);
+        ball.setY(Constants.INIT_BALL_Y); */
+
+        // /mới
+        //Loại bỏ tất cả các quả bóng phụ (MultiBall)
+        if (this.balls.size() > 1) {
+            // Giữ lại quả bóng đầu tiên (bóng chính)
+            Ball initialBall = this.balls.get(0);
+            this.balls.clear();
+            this.balls.add(initialBall);
+        }
+    
+        //Đặt lại quả bóng DUY NHẤT (Balls.get(0)) trên thanh paddle
+        //Phương thức này đã có trong Ball.java, nó đặt lại hướng và vị trí ban đầu
+        this.balls.get(0).resetToInitial(); 
+    
+        //Cập nhật tham chiếu bóng chính cho Paddle (nếu cần)
+        //paddle.setBall(this.balls.get(0));
         
+        // Van su dung lai cac paddle va ball cu nen k can dung ham new   
     }
 
     public String getGameState() {
@@ -158,7 +206,16 @@ public class GameWindow extends JFrame {
     }
 
     public Ball getBall() {
-        return ball;
+        // /cũ
+        //return ball;
+
+        // Trả về bóng chính (thường là bóng đầu tiên)
+        return balls.isEmpty() ? null : balls.get(0);
+    }
+
+    // /mới
+    public ArrayList<Ball> getBalls() {
+        return balls; 
     }
 
     public ArrayList<PowerUp> getPowerUps() {

@@ -1,7 +1,6 @@
 package engine;
 
 import java.util.ArrayList;
-
 import entities.Ball;
 import entities.Brick;
 import entities.ExplosiveBrick;
@@ -20,10 +19,19 @@ public class CollisionHandler {
         if (!game.isBallLaunched()) {
             return;
         }
-        // Phuong thuc xu ly
+
+        // /cũ
+        /*// Phuong thuc xu ly
         handleBallWallCollision(game.getBall(), panelWidth);
         handleBallPaddleCollision(game.getBall(), game.getPaddle());
-        handleBallBrickCollision(game);
+        handleBallBrickCollision(game); */
+
+        // /mới
+        for (Ball ball : game.getBalls()) { 
+            handleBallWallCollision(ball, panelWidth);
+            handleBallPaddleCollision(ball, game.getPaddle());
+            handleBallBrickCollision(game, ball); // Truyền quả bóng hiện tại vào
+        }
     }
     // Va cham bong voi tuong
     public void handleBallWallCollision(Ball ball, int panelWidth) {
@@ -73,8 +81,11 @@ public class CollisionHandler {
     }   
     
     // Va cham voi Gach
-    private void handleBallBrickCollision(GameWindow game) {
-        Ball ball = game.getBall();
+    // /cũ:private void handleBallBrickCollision(GameWindow game) {
+    // /mới
+    private void handleBallBrickCollision(GameWindow game, Ball ball) {
+        // /cũ:Ball ball = game.getBall();
+        // /mới
         ArrayList<Brick> brickList = game.getBricks();
         for (Brick b : brickList) {
             // Tinh tam cua ball

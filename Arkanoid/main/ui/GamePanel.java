@@ -12,6 +12,7 @@ import entities.PowerUp;
 import util.GameState;
 import util.AssetManager;
 import util.BrickType;
+
 // Class GamePanel dc dua ra rieng phu trach viec in cac vat the ben trong man hinh cua
 // gameWindow
 public class GamePanel extends JPanel {
@@ -63,10 +64,20 @@ public class GamePanel extends JPanel {
         Paddle paddle = parent.getPaddle();
         g.drawImage(AssetManager.paddle, (int) paddle.getX(), (int) paddle.getY(), (int) paddle.getWidth(), (int) paddle.getHeight(), null);
 
-        // Vẽ Ball
-        Ball ball = parent.getBall();
-        g.drawImage(AssetManager.ball, (int) ball.getX(), (int) ball.getY(), (int) ball.getRadius() * 2, (int) ball.getRadius() * 2, null);
+        // /cũ:Vẽ Ball
+        /*Ball ball = parent.getBall();
+        g.drawImage(AssetManager.ball, (int) ball.getX(), (int) ball.getY(), (int) ball.getRadius() * 2, (int) ball.getRadius() * 2, null); */
         
+        // /mới
+        ArrayList<Ball> balls = parent.getBalls(); // Lấy danh sách bóng
+        for (Ball ball : balls) {
+            g.drawImage(AssetManager.ball, 
+                    (int) ball.getX(), 
+                    (int) ball.getY(), 
+                    (int) ball.getRadius() * 2, 
+                    (int) ball.getRadius() * 2, null);
+        }
+
         // Vẽ Bricks
         for (Brick b : parent.getBricks()) {
             BufferedImage brickImage = getBrickImage(b);

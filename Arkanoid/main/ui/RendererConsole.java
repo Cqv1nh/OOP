@@ -1,6 +1,7 @@
 package ui;
 
 import entities.Ball;
+import entities.Brick;
 import entities.NormalBrick;
 import entities.Paddle;
 import util.Constants;
@@ -128,7 +129,7 @@ public class RendererConsole {
                 Constants.INIT_PADDLE_Y, Constants.PADDLE_WIDTH,
                 Constants.PADDLE_HEIGHT,0, 0, "None");
 
-        List<NormalBrick> bricks = loadLevelFromFile("src/resources/level1.txt");
+        List<NormalBrick> bricks = loadLevelFromFile("src/resources/level1.txt"); 
 
         RendererConsole render = new RendererConsole();
 

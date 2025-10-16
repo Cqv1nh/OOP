@@ -2,6 +2,7 @@ package entities;
 
 import util.Constants;
 import ui.GameWindow;
+import java.util.ArrayList;
 
 public class FastBallPowerUp extends PowerUp {
     private static final double SPEED_MULTIPLIER = 1.25; //Tốc độ bóng sẽ tăng 1.25 lần.
@@ -18,18 +19,39 @@ public class FastBallPowerUp extends PowerUp {
     @Override
     public void applyEffect(GameWindow game) {
         game.getActivePowerUpEffects().add(this);
-        Ball ball = game.getBall();
+        
+        // /cũ
+        /*Ball ball = game.getBall();       
         if (ball != null) {
             ball.setSpeed(ball.getSpeed() * SPEED_MULTIPLIER);
+        } */
+
+        // /mới:Lấy danh sách Balls
+        ArrayList<Ball> balls = game.getBalls();
+        //Lặp qua tất cả Balls và tăng tốc độ
+        for (Ball ball : balls) {
+            if (ball != null) {
+                ball.setSpeed(ball.getSpeed() * SPEED_MULTIPLIER);
+            }
         }
     }
 
     //Xóa bỏ hiệu ứng sau khi hết duration. sửa
     @Override
     public void removeEffect(GameWindow game) {
-        Ball ball = game.getBall();
+        /*Ball ball = game.getBall();
         if (ball != null) {
             ball.setSpeed(ball.getSpeed() / SPEED_MULTIPLIER); //Chia cho 1.25.
+        } */
+
+        // /mới
+        ArrayList<Ball> balls = game.getBalls();  
+        // Lặp qua tất cả Balls và giảm tốc độ về ban đầu
+        for (Ball ball : balls) {
+            if (ball != null) {
+                // Chia tốc độ hiện tại cho hằng số nhân
+                ball.setSpeed(ball.getSpeed() / SPEED_MULTIPLIER); 
+            }
         }
     }
 
