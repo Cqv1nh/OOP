@@ -17,6 +17,7 @@ public class FastBallPowerUp extends PowerUp {
     //Áp dụng hiệu ứng lên thanh trong tgian PU. sửa
     @Override
     public void applyEffect(GameWindow game) {
+        game.getActivePowerUpEffects().add(this);
         Ball ball = game.getBall();
         if (ball != null) {
             ball.setSpeed(ball.getSpeed() * SPEED_MULTIPLIER);

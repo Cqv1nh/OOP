@@ -181,7 +181,7 @@ public class GamePanel extends JPanel {
         final int BAR_WIDTH = 100; // Rong
         final int PADDING = 8;
 
-        int yPos = 20; // Vị trí Y ban đầu, ngay dưới HUD
+        int yPos = 25; // Vị trí Y ban đầu, ngay dưới HUD
 
         for (PowerUp p : activeEffects) {
             // Chỉ vẽ thanh thời gian cho Power-up có thời gian hiệu lực
