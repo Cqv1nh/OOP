@@ -46,12 +46,11 @@ public class EntityManager {
         } */
 
         // /mới
-        //XỬ LÝ BÓNG RƠI: Loại bỏ các quả bóng đã rơi
-        //Chỉ loại bỏ nếu có nhiều hơn 1 quả bóng
-        balls.removeIf(ball -> ball.getY() > game.getHeight() && balls.size() > 1);
-    
-        // KIỂM TRA MẤT MẠNG: Nếu quả bóng duy nhất (balls.get(0)) bị rơi
-        if (balls.size() == 1 && balls.get(0).getY() > game.getHeight()) {
+        // 1. XÓA TẤT CẢ bóng rơi ra ngoài (KHÔNG PHÂN BIỆT CHÍNH/PHỤ)
+        balls.removeIf(ball -> ball.getY() > game.getHeight());
+
+        // 2. KIỂM TRA MẤT MẠNG: Nếu danh sách bóng trở nên rỗng sau khi xóa
+        if (balls.isEmpty()) {
             game.loseLives();
             game.resetAfterLifeLost();
             return;
@@ -59,11 +58,10 @@ public class EntityManager {
     
         // Lặp qua tất cả các quả bóng hiện có để di chuyển
         for (Ball ball : balls) {
-            // Neu o trang thai phong
             if (game.isBallLaunched()) {
                 ball.move();
             } else if (ball == balls.get(0)) {
-                // CHỈ quả bóng đầu tiên được giữ trên thanh Paddle khi chưa Launch
+                // Giữ QUẢ BÓNG ĐẦU TIÊN trên Paddle khi chưa Launch
                 ball.setX(paddle.getX() + paddle.getWidth() / 2 - ball.getRadius());
                 ball.setY(paddle.getY() - ball.getRadius() * 2 - 1);
             }

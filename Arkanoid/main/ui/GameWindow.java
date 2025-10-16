@@ -175,22 +175,44 @@ public class GameWindow extends JFrame {
         ball.setY(Constants.INIT_BALL_Y); */
 
         // /mới
-        //Loại bỏ tất cả các quả bóng phụ (MultiBall)
-        if (this.balls.size() > 1) {
-            // Giữ lại quả bóng đầu tiên (bóng chính)
-            Ball initialBall = this.balls.get(0);
-            this.balls.clear();
-            this.balls.add(initialBall);
+        // 1. BẮT BUỘC KHÔI PHỤC TỐC ĐỘ (Remove Power-Ups)
+        // Phải gọi removeEffect cho mọi Power-Up đang hoạt động trước khi xóa chúng.
+        for (PowerUp p : activePowerUpsEffects) {
+            if (p.getInitialDuration() > 0) {
+                p.removeEffect(this);
+            }
         }
+        activePowerUpsEffects.clear(); // Xóa sạch danh sách hiệu ứng đang hoạt động
+
+        // 2. KHÔI PHỤC TRẠNG THÁI 1 BÓNG
+        // LƯU Ý: Phải sử dụng ArrayList tạm thời để tránh lỗi đồng thời khi lặp và xóa
     
-        //Đặt lại quả bóng DUY NHẤT (Balls.get(0)) trên thanh paddle
-        //Phương thức này đã có trong Ball.java, nó đặt lại hướng và vị trí ban đầu
-        this.balls.get(0).resetToInitial(); 
+        // TẠO DANH SÁCH TẠM để tránh lỗi đồng thời khi lặp và xóa (nếu cần)
+        ArrayList<PowerUp> effectsToClear = new ArrayList<>(activePowerUpsEffects);
+
+        for (PowerUp p : effectsToClear) {
+            if (p.getInitialDuration() > 0) {
+                p.removeEffect(this);
+            }
+        }
+        activePowerUpsEffects.clear(); 
+
+        // QUAN TRỌNG: Cần thêm logic xóa các bóng phụ khỏi danh sách balls 
+        // TRƯỚC KHI tạo bóng mới. (Logic này bạn đã có)
+        this.balls.clear(); // Xóa sạch tất cả các bóng hiện có
     
-        //Cập nhật tham chiếu bóng chính cho Paddle (nếu cần)
-        //paddle.setBall(this.balls.get(0));
-        
-        // Van su dung lai cac paddle va ball cu nen k can dung ham new   
+        Ball newBall = new Ball();
+        newBall.setSpeed(Constants.BALL_SPEED); 
+
+        this.balls.add(newBall); 
+        paddle.setBall(newBall); // Cập nhật tham chiếu Paddle
+    
+        // Đặt lại vị trí bóng mới trên Paddle
+        // Bạn cần đảm bảo quả bóng mới này có vị trí chính xác
+        newBall.setX(Constants.INIT_BALL_X); // Có thể cần dòng này nếu Ball() không đặt X, Y
+        newBall.setY(Constants.INIT_BALL_Y); // Có thể cần dòng này nếu Ball() không đặt X, Y
+
+        setBallLaunched(false);
     }
 
     public String getGameState() {

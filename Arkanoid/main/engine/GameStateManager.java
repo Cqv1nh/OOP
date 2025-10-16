@@ -9,7 +9,8 @@ import util.GameState;
 public class GameStateManager {
     // THAY ĐỔI: Thêm tham số panelHeight
     public void checkGameStatus(GameWindow game, int panelHeight, int currentLevel) {
-        // Thay bang gamePanel.getHeight
+        // /cũ
+        /*Thay bang gamePanel.getHeight
         if (game.getBall().getY() > panelHeight) {
             // giam mang di 1 lan
             game.loseLives();
@@ -19,7 +20,7 @@ public class GameStateManager {
                 game.setGameState(GameState.GAMEEND);
             }
             return; // De tranh kiem tra thang thua khi da thua
-        }
+        } */
 
         // Kiểm tra điều kiện thắng
         // Thắng khi tất cả các gạch có thể phá đã bị phá
