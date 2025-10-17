@@ -52,6 +52,11 @@ public class EntityManager {
         // 2. KIỂM TRA MẤT MẠNG: Nếu danh sách bóng trở nên rỗng sau khi xóa
         if (balls.isEmpty()) {
             game.loseLives();
+            if (game.getLives() <= 0) {
+                // MẠNG HẾT -> KẾT THÚC GAME
+                game.setGameState(util.GameState.GAMEEND); // Chuyển trạng thái GAME OVER
+                return; // Dừng cập nhật
+            }
             game.resetAfterLifeLost();
             return;
         }

@@ -192,7 +192,10 @@ public class GameWindow extends JFrame {
 
         for (PowerUp p : effectsToClear) {
             if (p.getInitialDuration() > 0) {
-                p.removeEffect(this);
+                // ĐẢM BẢO KHÔNG CHẠM VÀO LOGIC TỐC ĐỘ BÓNG KHI RESET
+                if (!p.getType().equals("FAST_BALL")) { // <--- DÒNG NÀY RẤT QUAN TRỌNG
+                    p.removeEffect(this);
+                }
             }
         }
         activePowerUpsEffects.clear(); 
