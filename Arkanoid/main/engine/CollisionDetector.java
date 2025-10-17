@@ -138,22 +138,25 @@ public class CollisionDetector {
                     ball.setDirectionY(-Math.abs(Math.sin(bounceAngle)));
 
                     // Áp lại tốc độ (nếu Ball.java dùng dx, dy = speed * direction)
-                    ball.setDx(ball.getSpeed() * ball.getDirectionX());
-                    ball.setDy(ball.getSpeed() * ball.getDirectionY());
+                    // cu: ball.setDx(ball.getSpeed() * ball.getDirectionX());
+                    // cu: ball.setDy(ball.getSpeed() * ball.getDirectionY());
                 }
                 System.out.println("TOP");
                 break;
             case CollisionSide.BOTTOM:
-                ball.setDy(ball.getSpeed()); // Bounce down
+                //ball.setDy(ball.getSpeed()); // Bounce down cu
+                ball.setDirectionY(1.0);
                 System.out.println("BOTTOM");
                 break;
 
             case CollisionSide.LEFT:
-                ball.setDx(-ball.getSpeed()); // Bounce horizontally
+                //ball.setDx(-ball.getSpeed()); // Bounce horizontally cu
+                ball.setDirectionX(-1.0);
                 System.out.println("SIDE");
                 break;
             case CollisionSide.RIGHT:
-                ball.setDx(ball.getSpeed()); // Bounce horizontally
+                //ball.setDx(ball.getSpeed()); // Bounce horizontally cu
+                ball.setDirectionX(1.0);
                 System.out.println("SIDE");
                 break;
         }
