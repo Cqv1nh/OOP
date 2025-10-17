@@ -60,6 +60,15 @@ public class GamePanel extends JPanel {
     }
 
     private void drawGamePlayingState(Graphics2D g) {
+        // 1. Lấy level hiện tại và vẽ ảnh nền tương ứng
+        int currentLevel = parent.getCurrentLevel();
+        BufferedImage bgImage = AssetManager.levelBackgrounds.get(currentLevel);
+        // Chỉ vẽ nếu ảnh nền tồn tại cho level đó
+        if (bgImage != null) {
+            g.drawImage(bgImage, 0, 0, getWidth(), getHeight(), null);
+        }
+        // Nếu không có ảnh nền, nó sẽ tự động dùng màu nền đen đã được thiết lập trong hàm khởi tạo.
+        
         // Vẽ Paddle
         Paddle paddle = parent.getPaddle();
         g.drawImage(AssetManager.paddle, (int) paddle.getX(), (int) paddle.getY(), (int) paddle.getWidth(), (int) paddle.getHeight(), null);
