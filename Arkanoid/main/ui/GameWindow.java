@@ -7,6 +7,7 @@ import entities.PowerUp;
 import util.AssetManager;
 import util.Constants;
 import util.GameState;
+import util.AudioManager; // Import AudioManager
 import java.util.ArrayList;
 
 public class GameWindow extends JFrame {
@@ -31,7 +32,12 @@ public class GameWindow extends JFrame {
     private BrickManager brickManager; // Quan ly gach cua level 1
 
     public GameWindow() {
+        // Tai hinh anh
         AssetManager.loadImages();
+        // Tải âm thanh khi khởi tạo GameWindow
+        AudioManager.loadSound("/resources/sounds/level_music_loop.wav", "background_music");
+        AudioManager.loadSound("/resources/sounds/sfx_ball_hit.wav", "ball_hit");
+
         paddle = new Paddle(Constants.INIT_PADDLE_X,Constants.INIT_PADDLE_Y,
         Constants.PADDLE_WIDTH,Constants.PADDLE_HEIGHT,0,0,null);
 
@@ -80,6 +86,16 @@ public class GameWindow extends JFrame {
         
         // Hiển thị cửa sổ
         setVisible(true);
+
+        // Đảm bảo đóng tài nguyên âm thanh khi cửa sổ đóng
+        addWindowListener(new java.awt.event.WindowAdapter() {
+            @Override
+            public void windowClosing(java.awt.event.WindowEvent windowEvent) {
+                AudioManager.closeAllSounds();
+            }
+        });
+        // Kích hoạt nhạc nền ngay khi game khởi động (vì trạng thái ban đầu là GAMESTART)
+        AudioManager.playBackgroundMusic("background_music");
     }
 
     //SỬA CODE:
@@ -132,7 +148,9 @@ public class GameWindow extends JFrame {
         paddle.setBall(restartBall); // Cập nhật tham chiếu bóng chính cho Paddle
 
         ballLaunched = false;
-        gameState = GameState.GAMESTART;
+        // Thay vì gán trực tiếp, hãy gọi setGameState để kích hoạt logic âm thanh
+        // gameState = GameState.GAMESTART;
+        setGameState(GameState.GAMESTART); // <-- DÒNG MỚI
     }
 
     public void nextLevel() {
@@ -158,8 +176,9 @@ public class GameWindow extends JFrame {
         this.balls.add(nextLevelBall); // Thêm quả bóng mới vào danh sách
         paddle.setBall(nextLevelBall); // Cập nhật tham chiếu bóng chính cho Paddle
         
-        gameState = GameState.GAMESTART;
         ballLaunched = false;
+        // gameState = GameState.GAMESTART;
+        setGameState(GameState.GAMESTART);
     }
 
     // Sau khi bi mat 1 mang ( bong roi xuong vuc)
@@ -223,6 +242,26 @@ public class GameWindow extends JFrame {
     }
 
     public void setGameState(String gameState) {
+        // Xử lý nhạc nền khi trạng thái game thay đổi
+        if (!this.gameState.equals(gameState)) { // Chỉ thực hiện khi trạng thái thực sự thay đổi
+            
+            // LOGIC MỚI: Bật nhạc cho các trạng thái chờ/kết thúc
+            if (gameState.equals(GameState.GAMESTART) ||
+                gameState.equals(GameState.GAMEEND) ||
+                gameState.equals(GameState.LEVELCLEAR) ||
+                gameState.equals(GameState.GAMEWON)) 
+            {
+                // Phát nhạc nền
+                AudioManager.playBackgroundMusic("background_music");
+            } 
+            // LOGIC MỚI: Tắt nhạc khi đang chơi
+            else if (gameState.equals(GameState.GAMEPLAYING)) 
+            {
+                // Dừng nhạc nền
+                AudioManager.stopBackgroundMusic();
+            }
+            // (Nếu có các trạng thái khác như GAMEUPDATE, nhạc sẽ giữ nguyên)
+        }
         this.gameState = gameState;
     }
 

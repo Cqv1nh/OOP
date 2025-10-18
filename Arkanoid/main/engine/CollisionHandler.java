@@ -7,6 +7,9 @@ import entities.ExplosiveBrick;
 import entities.Paddle;
 import ui.GameWindow;
 import util.BrickType;
+// === BẮT ĐẦU CHỈNH SỬA ===
+import util.AudioManager; // Import AudioManager
+// === KẾT THÚC CHỈNH SỬA ===
 
 // Thinh
 // Lớp này tập trung toàn bộ logic xử lý va chạm phức tạp.
@@ -99,6 +102,10 @@ public class CollisionHandler {
             + (centerBallY - closetY) * (centerBallY - closetY));
             // Dk va cham: khoang cach nho hon ban kinh
             if (distance < ball.getRadius()) {
+                // === BẮT ĐẦU CHỈNH SỬA ===
+                AudioManager.playSound("ball_hit"); // Phát âm thanh khi va chạm gạch
+                // === KẾT THÚC CHỈNH SỬA ===
+                
                 // Xử lý vật lý va chạm
                 processCollisionPhysics(ball, closetX, closetY, distance);
                 // Xử lý logic gạch
