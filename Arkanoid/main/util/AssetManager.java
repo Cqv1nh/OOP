@@ -10,10 +10,18 @@ import java.util.Map;
 public class AssetManager {
 
     // Khai bao bien luu tru hinh anh
-    public static BufferedImage ball, paddle, extraLife, expandPaddle, multiBall, increaseSpeed, strongBrick_1hit;
-    public static BufferedImage normalBrick, strongBrick, explosiveBrick, unbreakableBrick;
+    public static BufferedImage  extraLife, expandPaddle, multiBall, increaseSpeed;
     // Dung map de luu tru cac anh nen , key = so level
     public static Map<Integer, BufferedImage> levelBackgrounds = new HashMap<>();
+    public static Map<Integer, BufferedImage> ball = new HashMap<>();
+    public static Map<Integer, BufferedImage> paddle = new HashMap<>();
+    public static Map<Integer, BufferedImage> normalBrick = new HashMap<>();
+    public static Map<Integer, BufferedImage> strongBrick = new HashMap<>();
+    public static Map<Integer, BufferedImage> strongBrick_1hit = new HashMap<>();
+    public static Map<Integer, BufferedImage> explosiveBrick = new HashMap<>();
+    public static Map<Integer, BufferedImage> unbreakableBrick = new HashMap<>();
+    
+
 
     // Them cac powerUp khac neu can
 
@@ -22,30 +30,59 @@ public class AssetManager {
      * Phương thức này nên được gọi một lần duy nhất khi game khởi động.
      */
     public static void loadImages() {
-        ball = loadImage("/resources/images/Ball.png");
-        paddle = loadImage("/resources/images/paddleRed.png");
         
-        // Tải hình ảnh gạch
-        normalBrick = loadImage("/resources/images/element_green_rectangle_glossy.png");
-        strongBrick = loadImage("/resources/images/element_blue_rectangle_glossy.png");
-        strongBrick_1hit = loadImage("/resources/images/element_red_rectangle_glossy.png");
-        explosiveBrick = loadImage("/resources/images/element_yellow_rectangle_glossy.png");
-        unbreakableBrick = loadImage("/resources/images/element_grey_rectangle_glossy.png");
-    
         // Tải hình ảnh power-up. Sửa code:
-        extraLife = loadImage("/resources/images/extralife.png");
-        expandPaddle = loadImage("/resources/images/expandpaddle.png");
-        multiBall = loadImage("/resources/images/multiball.png");
-        increaseSpeed = loadImage("/resources/images/increasespeed.png");
+        extraLife = loadImage("/resources/images/PowerUp/extralife.png");
+        expandPaddle = loadImage("/resources/images/PowerUp/expandpaddle.png");
+        multiBall = loadImage("/resources/images/PowerUp/multiball.png");
+        increaseSpeed = loadImage("/resources/images/PowerUp/increasespeed.png");
 
         // Tải ảnh nền cho level 1 (giả sử tên file là BackGround.jpg)
         // Tải 5 ảnh nền cho 5 level
         // Đảm bảo bạn có các file BackGround1.jpg, BackGround2.jpg,... trong thư mục resources/images
-        levelBackgrounds.put(1, loadImage("/resources/images/BackGround1.jpg"));
-        levelBackgrounds.put(2, loadImage("/resources/images/BackGround2.jpg"));
-        levelBackgrounds.put(3, loadImage("/resources/images/BackGround3.jpg"));
-        levelBackgrounds.put(4, loadImage("/resources/images/BackGround4.jpg"));
-        levelBackgrounds.put(5, loadImage("/resources/images/BackGround5.jpg"));
+        levelBackgrounds.put(1, loadImage("/resources/images/Level1/BackGround1.jpg"));
+        levelBackgrounds.put(2, loadImage("/resources/images/Level2/BackGround2.jpg"));
+        levelBackgrounds.put(3, loadImage("/resources/images/Level3/BackGround3.jpg"));
+        levelBackgrounds.put(4, loadImage("/resources/images/Level4/BackGround4.jpg"));
+        levelBackgrounds.put(5, loadImage("/resources/images/Level5/BackGround5.jpg"));
+
+        // Tai ball
+        ball.put(1, loadImage("/resources/images/Level1/BallLevel1.png"));
+        ball.put(2, loadImage("/resources/images/Level2/BallLevel2.png"));
+        // ball.put(3, loadImage("/resources/images/Level3/BallLevel3.png"));
+        // ball.put(4, loadImage("/resources/images/Level4/BallLevel4.png"));
+        // ball.put(5, loadImage("/resources/images/Level5/BallLevel5.png"));
+
+        // Tai paddle
+        paddle.put(1, loadImage("/resources/images/Level1/PaddleLevel1.png"));
+        paddle.put(2, loadImage("/resources/images/Level2/PaddleLevel2.png"));
+        // paddle.put(3, loadImage("/resources/images/Level3/PaddleLevel3.png"));
+        // paddle.put(4, loadImage("/resources/images/Level4/PaddleLevel4.png"));
+        // paddle.put(5, loadImage("/resources/images/Level5/PaddleLevel5.png"));
+
+        // Tai brick
+        normalBrick.put(1, loadImage("/resources/images/Level1/NormalBrickLevel1.png"));
+        normalBrick.put(2, loadImage("/resources/images/Level2/NormalBrickLevel2.png"));
+        // normalBrick.put(3, loadImage("/resources/images/Level3/NormalBrickLevel3.png"));
+        // normalBrick.put(4, loadImage("/resources/images/Level4/NormalBrickLevel4.png"));
+        // normalBrick.put(5, loadImage("/resources/images/Level5/NormalBrickLevel5.png"));
+
+        strongBrick.put(1, loadImage("/resources/images/Level1/StrongBrick1Level1.png"));
+        strongBrick.put(2, loadImage("/resources/images/Level2/StrongBrick1Level2.png"));
+        // strongBrick.put(3, loadImage("/resources/images/Level3/StrongBrick1Level3.png"));
+        // strongBrick.put(4, loadImage("/resources/images/Level4/StrongBrick1Level4.png"));
+        // strongBrick.put(5, loadImage("/resources/images/Level5/StrongBrick1Level5.png"));
+
+
+        strongBrick_1hit.put(1, loadImage("/resources/images/Level1/StrongBrick2Level1.png"));
+        strongBrick_1hit.put(2, loadImage("/resources/images/Level2/StrongBrick2Level2.png"));
+        // strongBrick_1hit.put(3, loadImage("/resources/images/Level3/StrongBrick2Level3.png"));
+        // strongBrick_1hit.put(4, loadImage("/resources/images/Level4/StrongBrick2Level4.png"));
+        // strongBrick_1hit.put(5, loadImage("/resources/images/Level5/StrongBrick2Level5.png"));
+
+        // explosiveBrick
+        // UnbreakableBrick
+        
     }
 
     /**
