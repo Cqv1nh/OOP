@@ -53,6 +53,7 @@ public class GamePanel extends JPanel {
     }
 
     // --- CÁC PHƯƠNG THỨC VẼ CHO TỪNG TRẠNG THÁI ---
+    // Ve man hinh gameStart
     private void drawGameStartState(Graphics2D g) {
         g.setColor(Color.WHITE);
         g.setFont(new Font("Arial", Font.BOLD, 36));
@@ -61,8 +62,12 @@ public class GamePanel extends JPanel {
 
     private void drawGamePlayingState(Graphics2D g) {
         // 1. Lấy level hiện tại và vẽ ảnh nền tương ứng
+        // Chỉ lấy những ảnh cần dùng TRỰC TIẾP trong phương thức này
         int currentLevel = parent.getCurrentLevel();
         BufferedImage bgImage = AssetManager.levelBackgrounds.get(currentLevel);
+        BufferedImage ballImage = AssetManager.ball.get(currentLevel);
+        BufferedImage paddleImage = AssetManager.paddle.get(currentLevel);
+
         // Chỉ vẽ nếu ảnh nền tồn tại cho level đó
         if (bgImage != null) {
             g.drawImage(bgImage, 0, 0, getWidth(), getHeight(), null);
@@ -71,7 +76,7 @@ public class GamePanel extends JPanel {
         
         // Vẽ Paddle
         Paddle paddle = parent.getPaddle();
-        g.drawImage(AssetManager.paddle, (int) paddle.getX(), (int) paddle.getY(), (int) paddle.getWidth(), (int) paddle.getHeight(), null);
+        g.drawImage(paddleImage, (int) paddle.getX(), (int) paddle.getY(), (int) paddle.getWidth(), (int) paddle.getHeight(), null);
 
         // /cũ:Vẽ Ball
         /*Ball ball = parent.getBall();
@@ -80,7 +85,7 @@ public class GamePanel extends JPanel {
         // /mới
         ArrayList<Ball> balls = parent.getBalls(); // Lấy danh sách bóng
         for (Ball ball : balls) {
-            g.drawImage(AssetManager.ball, 
+            g.drawImage(ballImage, 
                     (int) ball.getX(), 
                     (int) ball.getY(), 
                     (int) ball.getRadius() * 2, 
@@ -159,19 +164,22 @@ public class GamePanel extends JPanel {
         g.drawString(text, x + xOffset, y + yOffset);
     }
     private BufferedImage getBrickImage(Brick b) {
+        // Lấy level hiện tại từ GameWindow (parent)
+        int currentLevel = parent.getCurrentLevel();
+
         if (b.getType() == BrickType.NORMAL) {
-            return AssetManager.normalBrick;
+            return AssetManager.normalBrick.get(currentLevel);
         } else if (b.getType() == BrickType.STRONG) {
             switch (b.getHitPoints()) {
-                case 3: return AssetManager.strongBrick;
-                case 2: return AssetManager.strongBrick_1hit;
-                case 1: return AssetManager.normalBrick;
+                case 3: return AssetManager.strongBrick.get(currentLevel);
+                case 2: return AssetManager.strongBrick_1hit.get(currentLevel);
+                case 1: return AssetManager.normalBrick.get(currentLevel);
                 default: return null;
             }
         } else if (b.getType() == BrickType.EXPLOSIVE) {
-            return AssetManager.explosiveBrick;
+            return AssetManager.explosiveBrick.get(currentLevel);
         } else if (b.getType() == BrickType.UNBREAKABLE) {
-            return AssetManager.unbreakableBrick;
+            return AssetManager.unbreakableBrick.get(currentLevel);
         }
         return null;
     }
