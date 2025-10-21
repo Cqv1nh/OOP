@@ -1,5 +1,6 @@
 package entities;
 
+import managers.LevelState2;
 import util.Constants;
 import ui.GameWindow;
 
@@ -36,5 +37,21 @@ public class ExpandPaddlePowerUp extends PowerUp {
     // Vẽ đối tượng ra màn hình.
     public void render(){
         System.out.print("\033[" + ((int)getY() + 1) + ";" + ((int)getX() + 1) + "H#");
+    }
+
+
+
+
+    // V2.
+    @Override
+    public void applyEffect(LevelState2 game) {
+        // Lưu PowerUp này vào danh sách active để xử lý duration
+        game.getActivePowerUpEffects().add(this);
+        game.expandPaddle(Constants.PADDLE_EXPAND_AMOUNT);
+    }
+
+    @Override
+    public void removeEffect(LevelState2 game) {
+        game.shrinkPaddle(Constants.PADDLE_EXPAND_AMOUNT);
     }
 }

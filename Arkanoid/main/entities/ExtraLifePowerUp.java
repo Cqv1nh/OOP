@@ -1,4 +1,5 @@
 package entities;
+import managers.LevelState2;
 import util.Constants;
 import ui.GameWindow;
 
@@ -27,10 +28,21 @@ public class ExtraLifePowerUp extends PowerUp {
         System.out.print("\033[" + ((int)getY() + 1) + ";" + ((int)getX() + 1) + "H*");
     }
 
+    //V2.
+    @Override
+    public void applyEffect(LevelState2 game) {
+        game.addLife();
+    }
+
+    @Override
+    public void removeEffect(LevelState2 game) {
+
+    }
+
     // Khong can remove vi powerup nay vinh vien cho den khi nguoi choi tu an het mang
     @Override
     public void removeEffect(GameWindow game) {
-        // TODO Auto-generated method stub
+
         throw new UnsupportedOperationException("Unimplemented method 'removeEffect'");
     }
 }
