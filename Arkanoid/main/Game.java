@@ -1,24 +1,29 @@
+
 import engine.KeybroadInputJPanel;
+import engine.KeybroadManager;
+import engine.MouseManager;
+import managers.GameStateManager;
 import managers.LevelState;
+import managers.LevelState2;
 import ui.GameRenderer;
+import ui.InputHandler;
+import ui.InputHandler2;
 
 import javax.swing.*;
 import java.awt.*;
-import java.io.IOException;
 
 import static java.lang.Thread.sleep;
 
 public class Game extends JPanel implements Runnable {
-    private LevelState levelState;
+    private GameStateManager gameStateManager;
     private GameRenderer gameRenderer;
     private Thread thread;
     private boolean isRunning;
     private KeybroadInputJPanel kij;
-    private int numLevel = 5;
-    private int currentLevel = 1;
-    private int totalScore = 0;
-    private int lives = 3;
+    private KeybroadManager km = new KeybroadManager();
+    private MouseManager mm = new MouseManager();
 
+    private InputHandler2 inputHandler2;
     // Game loop timing
     private final int FPS = 60;
     private final double UPDATE_INTERVAL = 1000000000.0 / FPS;
@@ -29,30 +34,20 @@ public class Game extends JPanel implements Runnable {
         setFocusable(true);
         setDoubleBuffered(true);
 
-        levelState = new LevelState("main/resources/level1.txt", currentLevel, totalScore, lives); // Fixed: Use the no-arg constructor
+        this.addKeyListener(km);
+        this.addMouseListener(mm);
+        this.addMouseMotionListener(mm);
+
+        // Initialize the game state manager
+        gameStateManager = new GameStateManager(km, mm);
         gameRenderer = new GameRenderer();
 
-        kij = new KeybroadInputJPanel();
-        addKeyListener(kij);
+        inputHandler2 = new InputHandler2(gameStateManager);
+        this.addKeyListener(inputHandler2);
+        // Start at menu state
+        gameStateManager.setState("menu");
 
         System.out.println("Game initialized successfully");
-        System.out.println("Bricks loaded: " + levelState.getBricks().size());
-    }
-
-    public boolean nextLevel() {
-        currentLevel++;
-        if (currentLevel > numLevel) {
-            System.out.println("WON");
-            return false;
-        }
-
-        levelState = new LevelState(String.format("main/resources/level%d.txt", currentLevel),
-                currentLevel, totalScore, lives);
-
-
-        //
-
-        return true;
     }
 
     @Override
@@ -67,33 +62,20 @@ public class Game extends JPanel implements Runnable {
             lastTime = currentTime;
 
             if (delta >= 1) {
-                try {
-                    levelState.update(kij);
-                } catch (IOException e) {
-                    e.printStackTrace();
-                    isRunning = false;
-                }
+                //mm.update();
+                //km.update();
+                gameStateManager.update();
 
                 repaint();
                 delta--;
             }
 
-            // Small sleep to prevent CPU overuse
             try {
                 sleep(1);
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
 
-            if (levelState.checkWin()) {
-                repaint();
-                totalScore = levelState.getScore();
-                lives = levelState.getLives();
-
-                if(!nextLevel()){
-                    this.stopGame();
-                }
-            }
         }
     }
 
@@ -101,17 +83,53 @@ public class Game extends JPanel implements Runnable {
     protected void paintComponent(Graphics g) {
         super.paintComponent(g);
 
-        // Debug: Check if renderer and gameState are not null
+        // Check if renderer and manager are not null
         if (gameRenderer == null) {
             System.out.println("ERROR: gameRenderer is null!");
             return;
         }
-        if (levelState == null) {
-            System.out.println("ERROR: gameState is null!");
+        if (gameStateManager == null) {
+            System.out.println("ERROR: gameStateManager is null!");
             return;
         }
 
-        gameRenderer.renderGame(g, levelState);
+        Graphics2D g2d = (Graphics2D) g;
+
+        // Render based on current state
+        String currentStateName = getCurrentStateName();
+
+        switch (currentStateName) {
+            case "level":
+            case "menu":
+            case "pause":
+            case "game over":
+            case "settings":
+            case "victory":
+                gameStateManager.render(g2d);
+                break;
+
+            default:
+                // Fallback
+                g2d.setColor(Color.WHITE);
+                g2d.drawString("Unknown State", 100, 100);
+                break;
+        }
+    }
+
+    // Helper method to get current state name
+    private String getCurrentStateName() {
+        if (gameStateManager.getCurrentState() == null) {
+            return "unknown";
+        }
+
+        // Check instance type to determine state name
+        if (gameStateManager.getCurrentState() instanceof LevelState2 ) {
+            return "level";
+        }
+        // You can add more checks for other states if needed
+        // For now, we'll use a simple approach
+
+        return "menu"; // Default fallback
     }
 
     public void startGame() {
@@ -133,28 +151,9 @@ public class Game extends JPanel implements Runnable {
         }
     }
 
-    public LevelState getLevelState() {
-        return levelState;
-    }
-
-    public void setLevelState(LevelState levelState) {
-        this.levelState = levelState;
-    }
-
-    public int getLives() {
-        return lives;
-    }
-
-    public void setLives(int lives) {
-        this.lives = lives;
-    }
-
-    public int getTotalScore() {
-        return totalScore;
-    }
-
-    public void setTotalScore(int totalScore) {
-        this.totalScore = totalScore;
+    // Getters for accessing game state manager
+    public GameStateManager getGameStateManager() {
+        return gameStateManager;
     }
 
     public static void main(String[] args) {
