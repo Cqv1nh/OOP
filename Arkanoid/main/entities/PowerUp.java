@@ -1,5 +1,6 @@
 package entities;
 
+import managers.LevelState2;
 import ui.GameWindow;
 
 public abstract class PowerUp extends GameObject {
@@ -62,4 +63,10 @@ public abstract class PowerUp extends GameObject {
     public double getFallSpeed() {
         return fallSpeed;
     }
+
+
+    public abstract void applyEffect(LevelState2 game);
+
+    //Gỡ bỏ hiệu ứng:
+    public abstract void removeEffect(LevelState2 game);
 }
