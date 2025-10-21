@@ -9,6 +9,7 @@ import entities.Ball;
 import entities.Brick;
 import entities.Paddle;
 import entities.PowerUp;
+import util.Constants;
 import util.GameState;
 import util.AssetManager;
 import util.BrickType;
@@ -70,7 +71,8 @@ public class GamePanel extends JPanel {
 
         // Chỉ vẽ nếu ảnh nền tồn tại cho level đó
         if (bgImage != null) {
-            g.drawImage(bgImage, 0, 0, getWidth(), getHeight(), null);
+            g.drawImage(bgImage, 0, 0, Constants.SCREEN_WIDTH,
+                    Constants.SCREEN_HEIGHT, null);
         }
         // Nếu không có ảnh nền, nó sẽ tự động dùng màu nền đen đã được thiết lập trong hàm khởi tạo.
         
@@ -156,13 +158,14 @@ public class GamePanel extends JPanel {
         g.drawString(scoreText, getWidth() - scoreWidth - 10, 25);
     }
 
-    private void drawCenteredString(String text, int panelWidth, 
-    int panelHeight, Graphics g, int xOffset, int yOffset) {
+    public static void drawCenteredString(String text, int panelWidth,
+                                          int panelHeight, Graphics g, int xOffset, int yOffset) {
         FontMetrics fm = g.getFontMetrics();
         int x = (panelWidth - fm.stringWidth(text)) / 2;
         int y = (fm.getAscent() + (panelHeight - (fm.getAscent() + fm.getDescent())) / 2);
         g.drawString(text, x + xOffset, y + yOffset);
     }
+
     private BufferedImage getBrickImage(Brick b) {
         // Lấy level hiện tại từ GameWindow (parent)
         int currentLevel = parent.getCurrentLevel();
