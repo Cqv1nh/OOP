@@ -22,7 +22,6 @@ public class AssetManager {
     public static Map<Integer, BufferedImage> unbreakableBrick = new HashMap<>();
     
 
-
     // Them cac powerUp khac neu can
 
     /**
