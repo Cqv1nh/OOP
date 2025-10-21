@@ -52,7 +52,5 @@ public abstract class GameObject {
     public void setHeight(double height) {
         this.height = height;
     }
-
-    public abstract void update(String input); // Cap nhat vi tri theo phim bam
-    public abstract void render(); // Ve doi tuong trong man hinh terminal
+    
 } 

@@ -1,13 +1,10 @@
 
-import engine.KeybroadInputJPanel;
 import engine.KeybroadManager;
 import engine.MouseManager;
 import managers.GameStateManager;
-import managers.LevelState;
 import managers.LevelState2;
-import ui.GameRenderer;
-import ui.InputHandler;
-
+import util.AssetManager;
+import util.AudioManager;
 
 import javax.swing.*;
 import java.awt.*;
@@ -16,10 +13,8 @@ import static java.lang.Thread.sleep;
 
 public class Game extends JPanel implements Runnable {
     private GameStateManager gameStateManager;
-    private GameRenderer gameRenderer;
     private Thread thread;
     private boolean isRunning;
-    private KeybroadInputJPanel kij;
     private KeybroadManager km = new KeybroadManager();
     private MouseManager mm = new MouseManager();
 
@@ -40,7 +35,7 @@ public class Game extends JPanel implements Runnable {
 
         // Initialize the game state manager
         gameStateManager = new GameStateManager(km, mm);
-        gameRenderer = new GameRenderer();
+
 
         // Start at menu state
         gameStateManager.setState("menu");
@@ -60,8 +55,8 @@ public class Game extends JPanel implements Runnable {
             lastTime = currentTime;
 
             if (delta >= 1) {
-                //mm.update();
-                //km.update();
+                mm.update();
+                km.update();
                 gameStateManager.update();
 
                 repaint();
@@ -79,38 +74,22 @@ public class Game extends JPanel implements Runnable {
 
     @Override
     protected void paintComponent(Graphics g) {
-        super.paintComponent(g);
+        super.paintComponent(g); // Xóa nền cũ
 
-        // Check if renderer and manager are not null
-        if (gameRenderer == null) {
-            System.out.println("ERROR: gameRenderer is null!");
-            return;
-        }
-        if (gameStateManager == null) {
-            System.out.println("ERROR: gameStateManager is null!");
-            return;
-        }
+        // Kiểm tra gameStateManager có tồn tại không
+        if (gameStateManager != null) {
+            Graphics2D g2d = (Graphics2D) g; // Ép kiểu để có nhiều chức năng vẽ hơn
 
-        Graphics2D g2d = (Graphics2D) g;
+            // Bật khử răng cưa (làm đồ họa mượt hơn) - Tùy chọn
+            g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+            g2d.setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING, RenderingHints.VALUE_TEXT_ANTIALIAS_ON);
 
-        // Render based on current state
-        String currentStateName = getCurrentStateName();
-
-        switch (currentStateName) {
-            case "level":
-            case "menu":
-            case "pause":
-            case "game over":
-            case "settings":
-            case "victory":
-                gameStateManager.render(g2d);
-                break;
-
-            default:
-                // Fallback
-                g2d.setColor(Color.WHITE);
-                g2d.drawString("Unknown State", 100, 100);
-                break;
+            // Gọi phương thức render của GameState hiện tại
+            gameStateManager.render(g2d);
+        } else {
+            // Vẽ thông báo lỗi nếu gameStateManager chưa được khởi tạo
+            g.setColor(Color.RED);
+            g.drawString("ERROR: gameStateManager is null!", 100, 100);
         }
     }
 
@@ -156,6 +135,7 @@ public class Game extends JPanel implements Runnable {
 
     public static void main(String[] args) {
         SwingUtilities.invokeLater(() -> {
+            AssetManager.loadImages(); // được gọi chỉ một lần duy nhất khi game khởi động
             JFrame frame = new JFrame("Arkanoid Game");
             frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
             frame.setResizable(false);
@@ -174,6 +154,7 @@ public class Game extends JPanel implements Runnable {
                 @Override
                 public void windowClosing(java.awt.event.WindowEvent e) {
                     game.stopGame();
+                    AudioManager.closeAllSounds(); // <-- THÊM DÒNG NÀY VÀO ĐÂY
                 }
             });
         });

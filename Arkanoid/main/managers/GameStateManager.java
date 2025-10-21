@@ -2,14 +2,12 @@ package managers;
 
 import engine.KeybroadManager;
 import engine.MouseManager;
-import ui.InputHandler;
 import util.AudioManager;
 
 import java.awt.Graphics2D;
 import java.util.HashMap;
 import java.util.Map;
 
-import static com.sun.java.accessibility.util.AWTEventMonitor.addWindowListener;
 
 public class GameStateManager {
     private GameState currentState;
@@ -23,7 +21,6 @@ public class GameStateManager {
     private int lives;
     private String[] levelFiles;
     private int numberOfLevel = 5;
-    private InputHandler inputHandler;
 
     public GameStateManager(KeybroadManager km, MouseManager mm) {
         states = new HashMap<>();
@@ -32,14 +29,15 @@ public class GameStateManager {
         AudioManager.loadSound("/resources/sounds/sfx_ball_hit.wav", "ball_hit");
 
         // Đảm bảo đóng tài nguyên âm thanh khi cửa sổ đóng
-        addWindowListener(new java.awt.event.WindowAdapter() {
-            @Override
-            public void windowClosing(java.awt.event.WindowEvent windowEvent) {
-                AudioManager.closeAllSounds();
-            }
-        });
+        // addWindowListener(new java.awt.event.WindowAdapter() {
+        //     @Override
+        //     public void windowClosing(java.awt.event.WindowEvent windowEvent) {
+        //         AudioManager.closeAllSounds();
+        //     }
+        // });
+        // Thinh sua loi
         // Kích hoạt nhạc nền ngay khi game khởi động (vì trạng thái ban đầu là GAMESTART)
-        AudioManager.playBackgroundMusic("background_music");
+        // AudioManager.playBackgroundMusic("background_music"); // <-- XÓA DÒNG NÀY
 
         this.km = km;
         this.mm = mm;
@@ -69,6 +67,25 @@ public class GameStateManager {
     }
 
     public void setState(String stateName) {
+        // === THÊM LOGIC NHẠC NỀN VÀO ĐÂY ===
+        // Chỉ xử lý nếu stateName hợp lệ và khác state hiện tại (tránh bật/tắt liên tục)
+        GameState nextState = states.get(stateName);
+        if (nextState != null && nextState != currentState) {
+            // Logic: Bật nhạc cho các trạng thái chờ/kết thúc
+            if (stateName.equals("menu") ||
+                stateName.equals("game over") ||
+                stateName.equals("victory") ||
+                stateName.equals("transition")) // Transition cũng có nhạc nền? Nếu không thì bỏ đi
+            {
+                AudioManager.playBackgroundMusic("background_music");
+            }
+            // Logic: Tắt nhạc khi đang chơi hoặc tạm dừng
+            else if (stateName.equals("level") || stateName.equals("pause"))
+            {
+                AudioManager.stopBackgroundMusic();
+            }
+        }
+        // === KẾT THÚC LOGIC NHẠC NỀN ===
         if (currentState != null) {
             currentState.exit();
         }
@@ -86,38 +103,10 @@ public class GameStateManager {
         currentLevel = 1;
         score = 0;
         lives = 3;
-        //loadLevel(currentLevel);
-        loadLevel2(currentLevel);
-
-
-    }
-
-    public void loadLevel(int levelNum) {
-        if (levelNum > levelFiles.length) {
-            setState("victory");
-            return;
-        }
-
-        LevelState levelState = (LevelState) states.get("level");
-        levelState.initLevel(levelFiles[levelNum - 1], levelNum, score, lives);
-
-        if (levelNum == levelFiles.length) {
-            levelState.setLastLevel(true);
-        }
-
-        //setState("level");
-        setState("transition");
-    }
-
-    public void loadNextLevel() {
-        // Get current level data before switching
-        LevelState levelState = (LevelState) states.get("level");
-        score = levelState.getScore();
-        lives = levelState.getLives();
-
-        currentLevel++;
         loadLevel(currentLevel);
     }
+
+    
 
     public void update() {
         if (currentState != null) {
@@ -137,14 +126,14 @@ public class GameStateManager {
 
 
     //V2.
-    public void loadLevel2(int levelNum) {
+    public void loadLevel(int levelNum) {
         if (levelNum > numberOfLevel) {
             setState("victory");
             return;
         }
 
         LevelState2 levelState2 = (LevelState2) states.get("level");
-        levelState2.initLevel(levelFiles[levelNum - 1], levelNum, score, lives);
+        levelState2.initLevel(levelNum, score, lives);
 
         if (levelNum == levelFiles.length) {
             levelState2.setLastLevel(true);
@@ -154,14 +143,14 @@ public class GameStateManager {
         setState("transition");
     }
 
-    public void loadNextLevel2() {
+    public void loadNextLevel() {
         // Get current level data before switching
         LevelState2 levelState2 = (LevelState2) states.get("level");
         score = levelState2.getScore();
         lives = levelState2.getLives();
 
         currentLevel++;
-        loadLevel2(currentLevel);
+        loadLevel(currentLevel);
     }
 
 
@@ -181,14 +170,8 @@ public class GameStateManager {
         return lives;
     }
 
-    public LevelState getLevelState() {
-        if (currentState instanceof LevelState) {
-            return (LevelState) currentState;
-        }
-        return null;
-    }
 
-    public LevelState2 getLevelState2() {
+    public LevelState2 getLevelState() {
         if (currentState instanceof LevelState2) {
             return (LevelState2) currentState;
         }

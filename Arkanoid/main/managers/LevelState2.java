@@ -8,11 +8,12 @@ import entities.PowerUp;
 import ui.*;
 import util.*;
 
-import javax.swing.*;
+
 import java.awt.*;
 import java.awt.event.KeyEvent;
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
+import java.util.Iterator;
 
 public class LevelState2 extends GameState{
     private Paddle paddle; // Thanh truot
@@ -20,17 +21,15 @@ public class LevelState2 extends GameState{
     private ArrayList<Brick> brickList; // Danh sach gach
     private ArrayList<PowerUp> powerUps; // Danh sach luu cac powerUp dang roi
     private ArrayList<PowerUp> activePowerUpsEffects; // Danh sach hieu ung dang co hieu luc
-    private boolean extraLifeShieldActive = false; // Co trang thai "khien"
+    // private boolean extraLifeShieldActive = false; // Co trang thai "khien"
 
     private int lives = 3; // Khoi tao so mang la 3;
     private int score = 0;
     private int levelNum;
     private boolean ballLaunched = false; // Bong con dinh tren paddle hay da di chuyen
-    private String gameState = util.GameState.GAMESTART; // Trang thai game
-    private InputHandler inputHandler;  // Xu ly dau vao ban phim
+    // private String gameState = util.GameState.GAMESTART; // Trang thai game
     private BrickManager brickManager = new BrickManager(); // Quan ly gach cua level 1
 
-    private Timer timer;
 
     private final EntityManager entityManager = new EntityManager();
     private final CollisionHandler collisionHandler = new CollisionHandler();
@@ -39,8 +38,8 @@ public class LevelState2 extends GameState{
 
 
     private boolean isLastLevel = false;
-    private boolean levelWon = false;
-    private String levelFileName;
+    // private boolean levelWon = false;
+    // private String levelFileName;
 
     private ArrayList<Ball> balls;
 
@@ -51,17 +50,15 @@ public class LevelState2 extends GameState{
 
     }
 
-    public void initLevel(String levelFileName, int levelNum, int score, int lives) {
-        this.levelFileName = levelFileName;
+    public void initLevel(int levelNum, int score, int lives) {
+        // this.levelFileName = levelFileName;
         this.levelNum = levelNum;
         this.score = score;
         this.lives = lives;
 
-
-
         paddle = new Paddle(Constants.INIT_PADDLE_X,Constants.INIT_PADDLE_Y,
                 Constants.PADDLE_WIDTH,Constants.PADDLE_HEIGHT,0,0,null);
-        paddle.setSpeed(5);
+        paddle.setSpeed(Constants.PADDLE_SPEED);
 
         Ball initialBall = new Ball();
         initialBall.setSpeed(Constants.BALL_SPEED);
@@ -75,39 +72,64 @@ public class LevelState2 extends GameState{
         System.out.println(brickList.size());
         powerUps = new ArrayList<>();
         activePowerUpsEffects = new ArrayList<>();
+        // Đảm bảo rằng AssetManager.loadImages() được gọi một lần ở đâu đó khi 
+        // game bắt đầu (ví dụ: trong hàm tạo Game hoặc GameFrame nếu bạn tạo nó, 
+        // hoặc thậm chí trong main trước khi tạo cửa sổ). 
+        // (Kiểm tra lại xem bạn đã có lệnh gọi này ở đâu đó chưa).
+        // Reset trạng thái phóng bóng khi bắt đầu level mới
+        ballLaunched = false;
 
-        AssetManager.loadImages();
     }
 
     @Override
     public void enter() {
-        timer = new Timer(16, e -> update());
-        timer.start();
-        System.out.println("Enter level(v2)");
+        System.out.println("Entering Level " + levelNum);
+        // Đặt lại vị trí bóng và paddle (quan trọng khi chơi lại hoặc qua màn)
+        resetBallAndPaddle();
+        // Xóa các hiệu ứng power-up cũ (nếu có từ màn trước)
+        if (activePowerUpsEffects != null) {
+            // Cần gọi removeEffect trước khi clear để khôi phục trạng thái (vd: tốc độ bóng)
+            // Dùng Iterator để tránh ConcurrentModificationException
+            Iterator<PowerUp> iterator = activePowerUpsEffects.iterator();
+            while (iterator.hasNext()) {
+                 PowerUp p = iterator.next();
+                 p.removeEffect(this); // Gọi removeEffect
+                 iterator.remove();    // Xóa khỏi danh sách
+            }
+            // activePowerUpsEffects.clear(); // Dòng này giờ không cần nữa nếu dùng iterator.remove()
+        }
+        if (powerUps != null) {
+            powerUps.clear(); // Xóa power-up đang rơi
+        }
+
+        ballLaunched = false; // Đảm bảo bóng dính vào paddle khi vào màn mới
     }
 
     @Override
     public void exit() {
-
+        System.out.println("Exiting Level " + levelNum);
+        // Có thể thêm logic dọn dẹp nếu cần
     }
 
     @Override
     public void update() {
-        km.update();
+        // km.update(); //// km.update() đã được gọi trong Game.run(), không cần gọi lại ở đây
 
         if (km.getKey(KeyEvent.VK_ESCAPE)) {
-            km.clearAllKeys();
             manager.setState("pause");
+            return; // Thoát sớm sau khi đổi state
         }
 
         if (km.getKey(KeyEvent.VK_C)) {
-            km.clearAllKeys();
-            manager.loadNextLevel2();
+            // km.clearAllKeys();
+            manager.loadNextLevel();
+            return;
         }
 
         if(km.getKey(KeyEvent.VK_F)) {
             km.clearAllKeys();
             manager.setState("game over");
+            return;
         }
 
         int panelWidth = Constants.SCREEN_WIDTH;
@@ -131,8 +153,8 @@ public class LevelState2 extends GameState{
         }
 
         if (checkWin()) {
-            levelWon = true;
-            manager.loadNextLevel2();
+            System.out.println("Level " + levelNum + " Won!");
+            manager.loadNextLevel(); // Sửa thành tên mới
             return;
         }
 
@@ -302,6 +324,20 @@ public class LevelState2 extends GameState{
         }
     }
 
+    // Thêm phương thức reset vị trí bóng và paddle
+    private void resetBallAndPaddle() {
+         paddle.setX(Constants.INIT_PADDLE_X);
+         paddle.setY(Constants.INIT_PADDLE_Y);
+         paddle.setWidth(Constants.PADDLE_WIDTH); // Reset cả chiều rộng paddle
+         paddle.stopMoving();
+
+         balls.clear(); // Xóa hết bóng cũ
+         Ball newBall = new Ball(); // Tạo bóng mới với vị trí mặc định
+         // Đặt lại tốc độ (quan trọng nếu có power-up FastBall từ màn trước)
+         newBall.setSpeed(Constants.BALL_SPEED);
+         balls.add(newBall);
+         ballLaunched = false; // Bóng dính vào paddle
+    }
 
 
     public boolean isAlive() {
@@ -318,17 +354,19 @@ public class LevelState2 extends GameState{
 
     // Thu nhỏ thanh đỡ
     public void shrinkPaddle(int amount) {
-        this.paddle.setWidth(this.paddle.getWidth() - amount);
+        // Đảm bảo paddle không bị thu nhỏ quá mức
+         double newWidth = this.paddle.getWidth() - amount;
+         this.paddle.setWidth(Math.max(newWidth, Constants.PADDLE_WIDTH / 2.0)); // Giới hạn kích thước tối thiểu
     }
 
 
-    public String getGameState() {
-        return gameState;
-    }
+    // public String getGameState() {
+    //     return gameState;
+    // }
 
-    public void setGameState(String gameState) {
-        this.gameState = gameState;
-    }
+    // public void setGameState(String gameState) {
+    //     this.gameState = gameState;
+    // }
 
     public Paddle getPaddle() {
         return paddle;
@@ -356,15 +394,14 @@ public class LevelState2 extends GameState{
     }
     // Thay ham setLives bang loseLives de goi tu dong tru mang
     public void loseLives() {
-        this.lives --;
-    }
-
-    public boolean isExtraLifeShieldActive() {
-        return extraLifeShieldActive;
-    }
-
-    public void setExtraLifeShieldActive(boolean active) {
-        this.extraLifeShieldActive = active;
+        if (lives > 0) { // Chỉ trừ mạng nếu còn > 0
+               this.lives--;
+               if (this.lives > 0) {
+                    // Nếu còn mạng, reset vị trí
+                    resetBallAndPaddle();
+               }
+          }
+         System.out.println("Lost a life! Lives remaining: " + this.lives);
     }
 
     public ArrayList<PowerUp> getActivePowerUpEffects() {
@@ -391,4 +428,5 @@ public class LevelState2 extends GameState{
     public ArrayList<Ball> getBalls() {
         return balls;
     }
+
 }

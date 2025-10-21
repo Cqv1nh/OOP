@@ -1,7 +1,6 @@
 package entities;
 
 import managers.LevelState2;
-import ui.GameWindow;
 
 public abstract class PowerUp extends GameObject {
     private double duration; //Thời gian hiệu lực
@@ -38,11 +37,6 @@ public abstract class PowerUp extends GameObject {
     }
     
     //Áp dụng hiệu ứng:
-    // Thay doi tham so cua applyEffect 
-    public abstract void applyEffect(GameWindow game);
-
-    //Gỡ bỏ hiệu ứng:
-    public abstract void removeEffect(GameWindow game);
 
     //Kiểm tra Hiệu ứng đã ra khỏi màn hỉnh (tụt xuống đày chưa)
     public boolean isOutOfBounds (int worldHeight) {
@@ -53,11 +47,6 @@ public abstract class PowerUp extends GameObject {
         }
     }
 
-    @Override
-    public abstract void update(String input); //Cập nhật vị trí theo phím bấm
-
-    @Override
-    public abstract void render(); //Vẽ đối tượng trên terminal
 
     //Chỉnh sửa: Getter cho tốc độ rơi của bóng.
     public double getFallSpeed() {

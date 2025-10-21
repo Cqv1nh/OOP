@@ -1,11 +1,11 @@
 package managers;
 
-import engine.KeybroadInputJPanel;
+
 import engine.KeybroadManager;
 import engine.MouseManager;
 
 import java.awt.Graphics2D;
-import java.io.IOException;
+
 
 public abstract class GameState {
     protected GameStateManager manager;

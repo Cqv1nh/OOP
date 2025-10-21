@@ -1,7 +1,6 @@
 package engine;
 
 import managers.LevelState2;
-import ui.GameWindow;
 import java.util.ArrayList;
 import entities.Ball;
 import entities.Paddle;
@@ -15,10 +14,6 @@ public class EntityManager {
     public EntityManager() {
     }
 
-    public void updateEntities(GameWindow game, int panelWidth) {
-        updatePaddle(game.getPaddle(), panelWidth);
-        updateBall(game);
-    }
 
     public void updatePaddle(Paddle paddle, int panelWidth) {
         // Xu ly logic Paddle dau tien
@@ -32,18 +27,6 @@ public class EntityManager {
         }
     }
 
-    public void updateBall(GameWindow game) {
-        Ball ball = game.getBall();
-        Paddle paddle = game.getPaddle();
-        // Neu o trang thai phong
-        if (game.isBallLaunched()) {
-            ball.move();
-        } else {
-            // Giu bong tren thanh
-            ball.setX(paddle.getX()+paddle.getWidth() / 2 - ball.getRadius());
-            ball.setY(paddle.getY() - ball.getRadius() * 2 - 1);
-        }
-    }
 
     //V2.
     public void updateEntities(LevelState2 levelState2, int panelWidth) {

@@ -2,7 +2,6 @@ package entities;
 
 import managers.LevelState2;
 import util.Constants;
-import ui.GameWindow;
 
 import java.util.ArrayList;
 
@@ -16,38 +15,6 @@ public class FastBallPowerUp extends PowerUp {
         // Gian gia tri ban dau bang gia tri thoi gian vua bat dau
         this.initialDuration = duration;
         // Chi dung cho cac class co thoi gian
-    }
-
-    //Áp dụng hiệu ứng lên thanh trong tgian PU. sửa
-    @Override
-    public void applyEffect(GameWindow game) {
-        game.getActivePowerUpEffects().add(this);
-        Ball ball = game.getBall();
-        if (ball != null) {
-            ball.setSpeed(ball.getSpeed() * SPEED_MULTIPLIER);
-        }
-    }
-
-    //Xóa bỏ hiệu ứng sau khi hết duration. sửa
-    @Override
-    public void removeEffect(GameWindow game) {
-        Ball ball = game.getBall();
-        if (ball != null) {
-            ball.setSpeed(ball.getSpeed() / SPEED_MULTIPLIER); //Chia cho 1.25.
-        }
-    }
-
-    //Cập nhật vị trí đối tượng. sửa
-    @Override
-    public void update(String input) {
-        setY(getY() + getFallSpeed()); //tăng y lên 1 do đi xuống, lấy fallspeed = 1.
-    }
-
-    //Vẽ đối tượng ra màn hình.
-    @Override
-    public void render() {
-        // Vẽ ký tự '*' tại vị trí (x, y) theo ANSI escape code
-        System.out.print("\033[" + ((int)getY() + 1) + ";" + ((int)getX() + 1) + "HF");
     }
 
 

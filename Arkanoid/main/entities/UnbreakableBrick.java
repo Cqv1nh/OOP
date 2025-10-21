@@ -16,18 +16,4 @@ public class UnbreakableBrick extends Brick {
         return false;
     }
 
-    @Override
-    public void update(String input) {
-    }
-
-    @Override
-    public void render() {
-         for (int i = 0; i < getHeight(); i++) {
-            // Di chuyen con tro den (y+i,x)
-            System.out.print("\033[" + ((int)getY() + i + 1) + ";" + ((int)getX()+1) + "H");
-            for (int j = 0; j < (int) getWidth(); j++) {
-                System.out.print("█");
-            }
-        }
-    }
 }

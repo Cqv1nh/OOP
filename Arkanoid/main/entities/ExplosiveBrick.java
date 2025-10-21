@@ -23,20 +23,6 @@ public class ExplosiveBrick extends Brick{
        return getHitPoints() <= 0;
     }
 
-    @Override
-    public void update(String input) {
-    }
-
-    @Override
-    public void render() {
-        for(int i = 0; i < getHeight(); i++) {
-            System.out.print("\033["+((int)getY() + i + 1) + ";" + ((int)getX() + 1) + "H");
-            for (int j = 0; j < getWidth(); j++) {
-                System.out.print("*");
-            } 
-        }
-    }
-    
     // Ham kich hoat vu no
     public void explode(List<Brick> Brick) {
         // Lay tamm

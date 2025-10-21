@@ -5,7 +5,7 @@ import util.Constants;
 import java.awt.*;
 import java.awt.event.KeyEvent;
 
-import static ui.GamePanel.drawCenteredString;
+import static util.RenderUtil.drawCenteredString; // DÒNG MỚI (ĐÚNG)
 
 public class PauseState extends GameState {
 
@@ -21,7 +21,7 @@ public class PauseState extends GameState {
     public void enter() {
 
     }
-
+    
     @Override
     public void exit() {
         km.clearAllKeys();

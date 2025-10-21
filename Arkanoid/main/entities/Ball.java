@@ -117,16 +117,8 @@ public class Ball extends MovableObject {
         this.setY(this.getY() + this.getDy());
     }
 
-    //sửa đổi phương thức update cập nhật vị trí mới
-    @Override
-    public void update(String input) {
-        move();
-    }
 
-    //sửa đổi phương thức render:
-    @Override
-    public void render() {
-    }
+    
 
     //phương thức ktra bóng va cham vs đối tượng khác.
     // Sap dc xoa bo vi da dc xu ly torng GameLoop

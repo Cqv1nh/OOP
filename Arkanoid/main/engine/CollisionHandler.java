@@ -7,7 +7,6 @@ import entities.Brick;
 import entities.ExplosiveBrick;
 import entities.Paddle;
 import managers.LevelState2;
-import ui.GameWindow;
 import util.BrickType;
 import util.Constants;
 import util.AudioManager;
@@ -22,16 +21,6 @@ public class CollisionHandler {
     // Quan ly cac powerUp
     private final PowerUpManager powerUpManager = new PowerUpManager();
 
-    public void handleCollisions(GameWindow game, int panelWidth) {
-        // Neu bong van con tren paddle, khong thuc hien tinh toan va cham
-        if (!game.isBallLaunched()) {
-            return;
-        }
-        // Phuong thuc xu ly
-        handleBallWallCollision(game.getBall(), panelWidth);
-        handleBallPaddleCollision(game.getBall(), game.getPaddle());
-        handleBallBrickCollision(game);
-    }
     // Va cham bong voi tuong
     public void handleBallWallCollision(Ball ball, int panelWidth) {
         // va cham voi tuong
@@ -81,56 +70,6 @@ public class CollisionHandler {
     }   
     
     // Va cham voi Gach
-    private void handleBallBrickCollision(GameWindow game) {
-        Ball ball = game.getBall();
-        ArrayList<Brick> brickList = game.getBricks();
-        for (Brick b : brickList) {
-            // Tinh tam cua ball
-            double centerBallX = ball.getX() + ball.getRadius();
-            double centerBallY = ball.getY() + ball.getRadius();
-            // Tinh diem tren hinh chu nhat co toa do gan ball nhat
-            double closetX = Math.max(b.getX(), Math.min(centerBallX, b.getX() + b.getWidth()));
-            double closetY = Math.max(b.getY(), Math.min(centerBallY, b.getY() + b.getHeight()));
-            // Tinh khoang tu diem do den tam qua bong
-            double distance = Math.sqrt((centerBallX - closetX) * (centerBallX - closetX)
-            + (centerBallY - closetY) * (centerBallY - closetY));
-            // Dk va cham: khoang cach nho hon ban kinh
-            if (distance < ball.getRadius()) {
-                // Xử lý vật lý va chạm
-                processCollisionPhysics(ball, closetX, closetY, distance);
-                // Xử lý logic gạch
-                if (b.getType() != BrickType.UNBREAKABLE) {
-                    b.takeHit();
-                }
-                // Xu ly gach no
-                if (b.isDestroyed() && b instanceof ExplosiveBrick) {
-                    ExplosiveBrick e = (ExplosiveBrick) b;
-                    e.explode(brickList);
-                }
-
-                // Chỉ xử lý một va chạm gạch mỗi khung hình để tránh lỗi
-                break;
-            }
-        }
-
-        // Dọn dẹp gạch đã bị phá hủy
-        brickList.removeIf(brick -> {
-            if (brick.isDestroyed()) {
-                // Cong diem truoc khi xoa
-                game.addScore(brick.getScore());
-                // Tao powerup khi gach vo
-                if (brick.hasPowerUp()) {
-                    powerUpManager.spawnPowerUp(game, brick);
-                }
-                return true;
-            }
-            return false;
-        });
-    }
-
-
-
-
     // V2
     public void handleCollisions(LevelState2 game, int panelWidth, int panelHeight) {
         // Neu bong van con tren paddle, khong thuc hien tinh toan va cham
@@ -138,48 +77,63 @@ public class CollisionHandler {
             return;
         }
 
-        ArrayList<Ball> balls = new ArrayList<>();
-        balls = game.getBalls();
-
-        if (balls.size() == 1) {
-            if (handleBallWallCollision(balls.getFirst())) {
-                game.setBallLaunched(false);
-                game.loseLives();
-            }
-        }
+        // if (balls.size() == 1) {
+        //     if (handleBallWallCollision(balls.getFirst())) {
+        //         game.setBallLaunched(false);
+        //         game.loseLives(); // <-- LỖI TRỪ MẠNG Ở ĐÂY
+        //     }
+        // }
         for (Ball ball : game.getBalls()) {
-            handleBallWallCollision(ball);
+            // SỬA LẠI KHỐI NÀY:
+            if (handleBallWallCollision(ball)) { // Nếu va chạm cạnh dưới (true)
+                 // Đánh dấu bóng này cần xóa (KHÔNG xóa ngay lập tức)
+                 // Bạn có thể thêm một cờ boolean vào lớp Ball, ví dụ: ball.markForRemoval = true;
+                 // Hoặc tạo một danh sách riêng để lưu các bóng cần xóa
+                 // Tạm thời để trống, EntityManager sẽ xử lý việc xóa
+            }
             handleBallPaddleCollision(ball, game.getPaddle());
             handleBallBrickCollision(game, ball); // Truyền quả bóng hiện tại vào
         }
     }
 
-    //V2
+    // V2 Sửa lỗi: Xử lý va chạm cả 4 cạnh và trả về boolean đúng
     public boolean handleBallWallCollision(Ball ball) {
-        // va cham voi tuong
-        if (ball.getX() < 10) {
-            ball.setX(10);
-            ball.setDx(ball.getSpeed());
-            return false;
+        boolean hitWall = false; // Biến để kiểm tra có va chạm tường (trên, trái, phải) không
+
+        // Va chạm tường TRÁI
+        if (ball.getX() <= 0) { // Dùng <= 0 thay vì < 10 để sát mép
+            ball.setX(0); // Đặt lại vị trí sát mép
+            ball.setDirectionX(-ball.getDirectionX()); // Đổi hướng X
+            ball.setDx(ball.getSpeed() * ball.getDirectionX()); // Cập nhật Dx
+            hitWall = true;
+        }
+        // Va chạm tường PHẢI
+        else if (ball.getX() + Constants.BALL_DIAMETER >= Constants.SCREEN_WIDTH) { // Dùng >= thay vì >
+            ball.setX(Constants.SCREEN_WIDTH - Constants.BALL_DIAMETER); // Đặt lại vị trí sát mép
+            ball.setDirectionX(-ball.getDirectionX()); // Đổi hướng X
+            ball.setDx(ball.getSpeed() * ball.getDirectionX()); // Cập nhật Dx
+            hitWall = true;
         }
 
-        if (ball.getX() > Constants.SCREEN_WIDTH - Constants.BALL_DIAMETER) {
-            ball.setX(Constants.SCREEN_WIDTH - Constants.BALL_DIAMETER);
-            ball.setDx(-ball.getSpeed());
-            return false;
+        // Va chạm tường TRÊN
+        if (ball.getY() <= 0) { // Dùng <= 0 thay vì < 10
+            ball.setY(0); // Đặt lại vị trí sát mép
+            ball.setDirectionY(-ball.getDirectionY()); // Đổi hướng Y
+            ball.setDy(ball.getSpeed() * ball.getDirectionY()); // Cập nhật Dy
+            hitWall = true;
+        }
+        // Va chạm cạnh DƯỚI (Rơi ra ngoài)
+        else if (ball.getY() + Constants.BALL_DIAMETER >= Constants.SCREEN_HEIGHT) { // Dùng >= thay vì >
+            // Không đổi hướng, chỉ báo hiệu là bóng đã rơi
+            return true; // Trả về true để báo hiệu bóng rơi
         }
 
-        if (ball.getY() < 10) {
-            ball.setY(10);
-            ball.setDy(ball.getSpeed());
-            return false;
+        // Nếu có va chạm tường (trên, trái, phải), phát âm thanh
+        if (hitWall) {
+            AudioManager.playSound("ball_hit");
         }
 
-        if (ball.getY() > Constants.SCREEN_HEIGHT - Constants.BALL_DIAMETER ) {
-
-            return true;
-        }
-
+        // Nếu không va chạm cạnh dưới, trả về false
         return false;
     }
 
@@ -265,7 +219,7 @@ public class CollisionHandler {
 
         // Cập nhật hướng và tốc độ mới
         double newSpeed = Math.sqrt(newBallDx * newBallDx + newBallDy * newBallDy);
-        ball.setSpeed(3);
+        ball.setSpeed(newSpeed);
         ball.setDirectionX(newBallDx / ball.getSpeed());
         ball.setDirectionY(newBallDy / ball.getSpeed());
     }

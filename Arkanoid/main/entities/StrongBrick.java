@@ -16,18 +16,4 @@ public class StrongBrick extends Brick{
         return getHitPoints() <= 0;
     }
 
-    @Override
-    public void update(String input) {
-    }
-
-    @Override  // Su dung escape code ANSI  
-    public void render() {
-        for (int i = 0; i < getHeight(); i++) {
-            // Di chuyen con tro den (y+i,x)
-            System.out.print("\033[" + ((int)getY() + i + 1) + ";" + ((int)getX()+1) + "H");
-            for (int j = 0; j < getWidth(); j++) {
-                System.out.print("%");
-            }
-        }
-    }  
 }

@@ -62,15 +62,4 @@ public class Paddle extends MovableObject {
         return false;
     }
 
-    @Override
-    public void update(String input) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'update'");
-    }
-
-    @Override
-    public void render() {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'render'");
-    }
 }

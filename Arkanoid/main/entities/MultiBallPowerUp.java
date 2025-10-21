@@ -2,7 +2,6 @@ package entities;
 
 import managers.LevelState2;
 import util.Constants;
-import ui.GameWindow;
 
 import java.util.ArrayList;
 
@@ -12,33 +11,6 @@ public class MultiBallPowerUp extends PowerUp {
     public MultiBallPowerUp(double x, double y, double width, double height, double duration) {
         super(x, y, Constants.POWERUP_WIDTH, Constants.POWERUP_HEIGHT, "MULTI_BALL", INSTANT_DURATION);
     }
-
-    //Áp dụng hiệu ứng.
-    @Override
-    public void applyEffect(GameWindow game) {
-
-    }
-
-
-    //Cập nhật vị trí đối tượng.
-    @Override
-    public void update(String input) {
-        setY(getY() + getFallSpeed()); //tăng y lên 1 do đi xuống, lấy fallspeed = 1.
-    }
-
-    //Vẽ đối tượng ra màn hình.
-    @Override
-    public void render() {
-        System.out.print("\033[" + ((int)getY() + 1) + ";" + ((int)getX() + 1) + "HM");
-    }
-
-    //Xóa bỏ hiệu ứng.
-    @Override
-    public void removeEffect(GameWindow game) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'removeEffect'");
-    } //Hàm này sẽ không làm gì vì bóng sẽ tồn tại đến khi rơi vực.
-
 
     @Override
     public void applyEffect(LevelState2 game) {
