@@ -7,7 +7,7 @@ import managers.LevelState;
 import managers.LevelState2;
 import ui.GameRenderer;
 import ui.InputHandler;
-import ui.InputHandler2;
+
 
 import javax.swing.*;
 import java.awt.*;
@@ -23,7 +23,7 @@ public class Game extends JPanel implements Runnable {
     private KeybroadManager km = new KeybroadManager();
     private MouseManager mm = new MouseManager();
 
-    private InputHandler2 inputHandler2;
+
     // Game loop timing
     private final int FPS = 60;
     private final double UPDATE_INTERVAL = 1000000000.0 / FPS;
@@ -42,8 +42,6 @@ public class Game extends JPanel implements Runnable {
         gameStateManager = new GameStateManager(km, mm);
         gameRenderer = new GameRenderer();
 
-        inputHandler2 = new InputHandler2(gameStateManager);
-        this.addKeyListener(inputHandler2);
         // Start at menu state
         gameStateManager.setState("menu");
 
