@@ -2,16 +2,19 @@ package managers;
 
 import engine.CollisionDetector;
 import engine.KeybroadInputJPanel;
+import engine.KeybroadManager;
 import entities.Ball;
 import entities.Brick;
 import entities.Paddle;
 import util.Constants;
 import util.FileLevelLoader;
 
+import java.awt.*;
 import java.io.IOException;
 import java.util.List;
+import java.awt.event.KeyEvent;
 
-public class LevelState {
+public class LevelState extends GameState {
     private Paddle paddle;
     private Ball ball;
     private List<Brick> bricks;
@@ -22,32 +25,125 @@ public class LevelState {
     private int score;
     private int lives;
     private boolean followPaddle = false;
+    KeybroadManager km;
+    // Level configuration
+    private String levelFileName;
+    private int levelNum;
 
-    public LevelState(String levelFileName, int levelNum, int score, int lives) {
+    public LevelState(GameStateManager manager) {
+        super(manager);  // Pass manager to parent
+        km = manager.getKm();
+    }
+
+    // Initialize level with specific parameters
+    public void initLevel(String levelFileName, int levelNum, int score, int lives) {
+        this.levelFileName = levelFileName;
+        this.levelNum = levelNum;
+        this.score = score;
+        this.lives = lives;
+
         paddle = new Paddle(
                 Constants.INIT_PADDLE_X,
                 Constants.INIT_PADDLE_Y,
                 Constants.PADDLE_WIDTH,
                 Constants.PADDLE_HEIGHT,
-                0, 0, "None"
+                0, 0, "null"
         );
 
-        this.score = score;
-        this.lives = lives;
+        ball = new Ball(
+                Constants.INIT_BALL_X,
+                Constants.INIT_BALL_Y,
+                Constants.BALL_DIAMETER,
+                Constants.BALL_DIAMETER,
+                1, 1, 1,
+                Constants.BALL_DIAMETER / 2.0
+        );
 
-        ball = new Ball ( Constants.INIT_PADDLE_X, Constants.INIT_PADDLE_Y,
-                Constants.BALL_DIAMETER, Constants.BALL_DIAMETER, 5, 5, 5,
-                Constants.BALL_DIAMETER / 2.0);
+        paddle.setSpeed(2);
         bricks = FileLevelLoader.loadLevelFromFile(levelFileName);
-
         brickNum = bricks.size();
         levelId = levelNum;
     }
 
+    @Override
+    public void enter() {
+        // Called when entering this state
+        System.out.println("Entering Level " + levelId);
+
+    }
+
+    @Override
+    public void exit() {
+        System.out.println("Exiting Level " + levelId);
+    }
+
+
+    @Override
+    public void update() {
+        if (checkWin()) {
+            levelWon = true;
+            if (isLastLevel) {
+                // Game completed - go to victory screen
+                manager.setState("victory");
+            } else {
+                // Load next level
+                manager.loadNextLevel();
+            }
+
+        }
+
+        if (km.isKeyJustPressed(KeyEvent.VK_ESCAPE)) {
+            manager.setState("pause");
+            return;
+        }
+
+        km.updatePaddle(paddle);
+
+        if (!CollisionDetector.checkWallCollision(ball)) {
+            lives--;
+            if (!isAlive()) {
+                // Game Over - transition to game over state
+                manager.setState("gameover");
+                return;
+            }
+            resetPaddle();
+        }
+
+        CollisionDetector.handlePaddleCollision(paddle, ball);
+
+        // Handle brick collisions
+        int pointScore;
+        for (Brick brick : bricks) {
+            pointScore = CollisionDetector.handleBrickCollision(brick, ball);
+            if (pointScore > 0) {
+                brickNum--;
+                score += pointScore;
+            }
+        }
+
+        paddle.move();
+
+        if (followPaddle) {
+            if (km.outFollow(ball)) {
+                followPaddle = false;
+            }
+            followPaddle();
+        }
+
+        ball.move();
+    }
+
+    @Override
+    public void render(Graphics2D g) {
+
+    }
+
+    // Your existing methods stay the same
     public boolean checkWin() {
         return brickNum == 0;
     }
-    public void getKeybroadInput(KeybroadInputJPanel kij) throws IOException {
+
+    public void getKeybroadInput(KeybroadInputJPanel kij) {
         kij.update(paddle);
     }
 
@@ -57,7 +153,6 @@ public class LevelState {
 
     public void followPaddle() {
         double paddleCentre = paddle.getX() + Constants.PADDLE_WIDTH / 2.0;
-
         ball.setX(paddleCentre);
     }
 
@@ -74,116 +169,21 @@ public class LevelState {
         followPaddle = true;
     }
 
-    public void update(KeybroadInputJPanel kij) throws IOException {
+    // All your getters and setters remain the same
+    public Paddle getPaddle() { return paddle; }
 
-        getKeybroadInput(kij);
+    public Ball getBall() { return ball; }
 
-        if (!CollisionDetector.checkWallCollision(ball)) {
-            lives--;
-            resetPaddle();
-        };
-        CollisionDetector.handlePaddleCollision(paddle, ball);
+    public List<Brick> getBricks() { return bricks; }
 
-        int pointScore;
-        for (Brick brick : bricks) {
-            pointScore = CollisionDetector.handleBrickCollision(brick, ball);
-            if (pointScore > 0) {
-                brickNum--;
-                score += pointScore;
-            }
-        }
+    public int getScore() { return score; }
 
-        paddle.move();
+    public int getLives() { return lives; }
 
-        if (followPaddle) {
-            if (kij.outFollow(ball)){
-                followPaddle = false;
-            }
-            followPaddle();
-        }
+    public int getLevelId() { return levelId; }
 
-        ball.move();
-    }
+    public boolean isLastLevel() { return isLastLevel; }
 
+    public void setLastLevel(boolean lastLevel) { this.isLastLevel = lastLevel; }
 
-    public Paddle getPaddle() {
-        return paddle;
-    }
-
-    public void setPaddle(Paddle paddle) {
-        this.paddle = paddle;
-    }
-
-    public Ball getBall() {
-        return ball;
-    }
-
-    public void setBall(Ball ball) {
-        this.ball = ball;
-    }
-
-    public List<Brick> getBricks() {
-        return bricks;
-    }
-
-    public void setBricks(List<Brick> bricks) {
-        this.bricks = bricks;
-    }
-
-    public boolean isLastLevel() {
-        return isLastLevel;
-    }
-
-    public void setLastLevel(boolean lastLevel) {
-        this.isLastLevel = lastLevel;
-    }
-
-    public int getLevelId() {
-        return levelId;
-    }
-
-    public void setLevelId(int levelId) {
-        this.levelId = levelId;
-    }
-
-    public int getBrickNum() {
-        return brickNum;
-    }
-
-    public void setBrickNum(int brickNum) {
-        this.brickNum = brickNum;
-    }
-
-    public boolean isLevelWon() {
-        return levelWon;
-    }
-
-    public void setLevelWon(boolean levelWon) {
-        this.levelWon = levelWon;
-    }
-
-    public int getScore() {
-        return score;
-    }
-
-    public void setScore(int score) {
-        this.score = score;
-    }
-
-    public int getLives() {
-        return lives;
-    }
-
-    public void setLives(int lives) {
-        this.lives = lives;
-    }
-
-    public static void main(String[] args) {
-        LevelState levelState = new LevelState("main/resources/level2.txt", 1 ,0 ,0);
-        List<Brick> test = levelState.getBricks();
-
-        for (Brick brick : test) {
-            System.out.println(String.format("%f + %f", brick.getX(), brick.getY()));
-        }
-    }
 }
