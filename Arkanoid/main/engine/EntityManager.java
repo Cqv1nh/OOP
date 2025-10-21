@@ -1,15 +1,20 @@
 package engine;
 
+import managers.LevelState2;
 import ui.GameWindow;
 import java.util.ArrayList;
 import entities.Ball;
 import entities.Paddle;
+import util.Constants;
 
 // Thinh
 // Lớp này chịu trách nhiệm cập nhật trạng thái 
 //(chủ yếu là vị trí) của các thực thể di chuyển được Ball va paddle
-
 public class EntityManager {
+
+    public EntityManager() {
+    }
+
     public void updateEntities(GameWindow game, int panelWidth) {
         updatePaddle(game.getPaddle(), panelWidth);
         updateBall(game);
@@ -28,48 +33,47 @@ public class EntityManager {
     }
 
     public void updateBall(GameWindow game) {
-        // /cũ
-        //Ball ball = game.getBall();
-
-        // /mới
-        ArrayList<Ball> balls = game.getBalls();
+        Ball ball = game.getBall();
         Paddle paddle = game.getPaddle();
-
-        // /cũ
-        /* Neu o trang thai phong
+        // Neu o trang thai phong
         if (game.isBallLaunched()) {
             ball.move();
         } else {
-            // Giu bong tren thanh 
-            ball.setX(paddle.getX() + paddle.getWidth() / 2 - ball.getRadius());
+            // Giu bong tren thanh
+            ball.setX(paddle.getX()+paddle.getWidth() / 2 - ball.getRadius());
             ball.setY(paddle.getY() - ball.getRadius() * 2 - 1);
-        } */
+        }
+    }
 
-        // /mới
-        // 1. XÓA TẤT CẢ bóng rơi ra ngoài (KHÔNG PHÂN BIỆT CHÍNH/PHỤ)
-        balls.removeIf(ball -> ball.getY() > game.getHeight());
+    //V2.
+    public void updateEntities(LevelState2 levelState2, int panelWidth) {
+        updatePaddle(levelState2.getPaddle(), panelWidth);
+        updateBall(levelState2);
+    }
 
-        // 2. KIỂM TRA MẤT MẠNG: Nếu danh sách bóng trở nên rỗng sau khi xóa
+    //V2.
+    public void updateBall(LevelState2 game) {
+        ArrayList<Ball> balls = game.getBalls();
+        Paddle paddle = game.getPaddle();
+
+
+        // Neu o trang thai phong
+        balls.removeIf(ball -> ball.getY() > Constants.SCREEN_HEIGHT);
+
+
         if (balls.isEmpty()) {
             game.loseLives();
-            if (game.getLives() <= 0) {
-                // MẠNG HẾT -> KẾT THÚC GAME
-                game.setGameState(util.GameState.GAMEEND); // Chuyển trạng thái GAME OVER
-                return; // Dừng cập nhật
-            }
-            game.resetAfterLifeLost();
-            return;
         }
-    
-        // Lặp qua tất cả các quả bóng hiện có để di chuyển
-        for (Ball ball : balls) {
-            if (game.isBallLaunched()) {
+
+
+        if (game.isBallLaunched()) {
+            for (Ball ball : balls) {
                 ball.move();
-            } else if (ball == balls.get(0)) {
-                // Giữ QUẢ BÓNG ĐẦU TIÊN trên Paddle khi chưa Launch
-                ball.setX(paddle.getX() + paddle.getWidth() / 2 - ball.getRadius());
-                ball.setY(paddle.getY() - ball.getRadius() * 2 - 1);
             }
+        } else {
+            Ball ball = balls.get(0);
+            ball.setX(paddle.getX() + paddle.getWidth() / 2 - ball.getRadius());
+            ball.setY(paddle.getY() - ball.getRadius() * 2 - 1);
         }
     }
 }

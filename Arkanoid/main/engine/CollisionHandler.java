@@ -1,19 +1,24 @@
 package engine;
 
 import java.util.ArrayList;
+
 import entities.Ball;
 import entities.Brick;
 import entities.ExplosiveBrick;
 import entities.Paddle;
+import managers.LevelState2;
 import ui.GameWindow;
 import util.BrickType;
-// === BẮT ĐẦU CHỈNH SỬA ===
-import util.AudioManager; // Import AudioManager
-// === KẾT THÚC CHỈNH SỬA ===
+import util.Constants;
+import util.AudioManager;
 
 // Thinh
 // Lớp này tập trung toàn bộ logic xử lý va chạm phức tạp.
 public class CollisionHandler {
+
+    public CollisionHandler() {
+    }
+
     // Quan ly cac powerUp
     private final PowerUpManager powerUpManager = new PowerUpManager();
 
@@ -22,19 +27,10 @@ public class CollisionHandler {
         if (!game.isBallLaunched()) {
             return;
         }
-
-        // /cũ
-        /*// Phuong thuc xu ly
+        // Phuong thuc xu ly
         handleBallWallCollision(game.getBall(), panelWidth);
         handleBallPaddleCollision(game.getBall(), game.getPaddle());
-        handleBallBrickCollision(game); */
-
-        // /mới
-        for (Ball ball : game.getBalls()) { 
-            handleBallWallCollision(ball, panelWidth);
-            handleBallPaddleCollision(ball, game.getPaddle());
-            handleBallBrickCollision(game, ball); // Truyền quả bóng hiện tại vào
-        }
+        handleBallBrickCollision(game);
     }
     // Va cham bong voi tuong
     public void handleBallWallCollision(Ball ball, int panelWidth) {
@@ -51,6 +47,7 @@ public class CollisionHandler {
             ball.setY(0);
             ball.setDirectionY(-ball.getDirectionY());
         }
+
     }
     // Xu ly bong voi paddle
     private void handleBallPaddleCollision(Ball ball, Paddle paddle) {
@@ -84,11 +81,8 @@ public class CollisionHandler {
     }   
     
     // Va cham voi Gach
-    // /cũ:private void handleBallBrickCollision(GameWindow game) {
-    // /mới
-    private void handleBallBrickCollision(GameWindow game, Ball ball) {
-        // /cũ:Ball ball = game.getBall();
-        // /mới
+    private void handleBallBrickCollision(GameWindow game) {
+        Ball ball = game.getBall();
         ArrayList<Brick> brickList = game.getBricks();
         for (Brick b : brickList) {
             // Tinh tam cua ball
@@ -98,14 +92,10 @@ public class CollisionHandler {
             double closetX = Math.max(b.getX(), Math.min(centerBallX, b.getX() + b.getWidth()));
             double closetY = Math.max(b.getY(), Math.min(centerBallY, b.getY() + b.getHeight()));
             // Tinh khoang tu diem do den tam qua bong
-            double distance = Math.sqrt((centerBallX - closetX) * (centerBallX - closetX) 
+            double distance = Math.sqrt((centerBallX - closetX) * (centerBallX - closetX)
             + (centerBallY - closetY) * (centerBallY - closetY));
             // Dk va cham: khoang cach nho hon ban kinh
             if (distance < ball.getRadius()) {
-                // === BẮT ĐẦU CHỈNH SỬA ===
-                AudioManager.playSound("ball_hit"); // Phát âm thanh khi va chạm gạch
-                // === KẾT THÚC CHỈNH SỬA ===
-                
                 // Xử lý vật lý va chạm
                 processCollisionPhysics(ball, closetX, closetY, distance);
                 // Xử lý logic gạch
@@ -119,7 +109,7 @@ public class CollisionHandler {
                 }
 
                 // Chỉ xử lý một va chạm gạch mỗi khung hình để tránh lỗi
-                break; 
+                break;
             }
         }
 
@@ -133,7 +123,111 @@ public class CollisionHandler {
                     powerUpManager.spawnPowerUp(game, brick);
                 }
                 return true;
-            } 
+            }
+            return false;
+        });
+    }
+
+
+
+
+    // V2
+    public void handleCollisions(LevelState2 game, int panelWidth, int panelHeight) {
+        // Neu bong van con tren paddle, khong thuc hien tinh toan va cham
+        if (!game.isBallLaunched()) {
+            return;
+        }
+
+        ArrayList<Ball> balls = new ArrayList<>();
+        balls = game.getBalls();
+
+        if (balls.size() == 1) {
+            if (handleBallWallCollision(balls.getFirst())) {
+                game.setBallLaunched(false);
+                game.loseLives();
+            }
+        }
+        for (Ball ball : game.getBalls()) {
+            handleBallWallCollision(ball);
+            handleBallPaddleCollision(ball, game.getPaddle());
+            handleBallBrickCollision(game, ball); // Truyền quả bóng hiện tại vào
+        }
+    }
+
+    //V2
+    public boolean handleBallWallCollision(Ball ball) {
+        // va cham voi tuong
+        if (ball.getX() < 10) {
+            ball.setX(10);
+            ball.setDx(ball.getSpeed());
+            return false;
+        }
+
+        if (ball.getX() > Constants.SCREEN_WIDTH - Constants.BALL_DIAMETER) {
+            ball.setX(Constants.SCREEN_WIDTH - Constants.BALL_DIAMETER);
+            ball.setDx(-ball.getSpeed());
+            return false;
+        }
+
+        if (ball.getY() < 10) {
+            ball.setY(10);
+            ball.setDy(ball.getSpeed());
+            return false;
+        }
+
+        if (ball.getY() > Constants.SCREEN_HEIGHT - Constants.BALL_DIAMETER ) {
+
+            return true;
+        }
+
+        return false;
+    }
+
+
+    //V2
+    private void handleBallBrickCollision(LevelState2 game, Ball ball) {
+        ArrayList<Brick> brickList = game.getBricks();
+        for (Brick b : brickList) {
+            // Tinh tam cua ball
+            double centerBallX = ball.getX() + ball.getRadius();
+            double centerBallY = ball.getY() + ball.getRadius();
+            // Tinh diem tren hinh chu nhat co toa do gan ball nhat
+            double closetX = Math.max(b.getX(), Math.min(centerBallX, b.getX() + b.getWidth()));
+            double closetY = Math.max(b.getY(), Math.min(centerBallY, b.getY() + b.getHeight()));
+            // Tinh khoang tu diem do den tam qua bong
+            double distance = Math.sqrt((centerBallX - closetX) * (centerBallX - closetX)
+                    + (centerBallY - closetY) * (centerBallY - closetY));
+            // Dk va cham: khoang cach nho hon ban kinh
+            if (distance < ball.getRadius()) {
+                AudioManager.playSound("ball_hit");
+                // Xử lý vật lý va chạm
+                processCollisionPhysics(ball, closetX, closetY, distance);
+                // Xử lý logic gạch
+                if (b.getType() != BrickType.UNBREAKABLE) {
+                    b.takeHit();
+                }
+                // Xu ly gach no
+                if (b.isDestroyed() && b instanceof ExplosiveBrick) {
+                    ExplosiveBrick e = (ExplosiveBrick) b;
+                    e.explode(brickList);
+                }
+
+                // Chỉ xử lý một va chạm gạch mỗi khung hình để tránh lỗi
+                break;
+            }
+        }
+
+        // Dọn dẹp gạch đã bị phá hủy
+        brickList.removeIf(brick -> {
+            if (brick != null && brick.isDestroyed()) {
+                // Cong diem truoc khi xoa
+                game.addScore(brick.getScore());
+                // Tao powerup khi gach vo
+                if (brick.hasPowerUp()) {
+                    powerUpManager.spawnPowerUp(game, brick);
+                }
+                return true;
+            }
             return false;
         });
     }
@@ -171,7 +265,7 @@ public class CollisionHandler {
 
         // Cập nhật hướng và tốc độ mới
         double newSpeed = Math.sqrt(newBallDx * newBallDx + newBallDy * newBallDy);
-        ball.setSpeed(newSpeed);
+        ball.setSpeed(3);
         ball.setDirectionX(newBallDx / ball.getSpeed());
         ball.setDirectionY(newBallDy / ball.getSpeed());
     }
