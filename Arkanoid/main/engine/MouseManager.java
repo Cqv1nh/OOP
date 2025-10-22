@@ -9,11 +9,9 @@ public class MouseManager implements MouseListener, MouseMotionListener {
 
 
     private boolean leftPressed, rightPressed;
-
     private boolean leftJustPressed, rightJustPressed;
-
     private boolean leftCantPress, rightCantPress;
-
+    private boolean leftWasPressed, rightWasPressed; // Trạng thái của frame trước
     private int mouseX, mouseY;
 
 
@@ -22,13 +20,13 @@ public class MouseManager implements MouseListener, MouseMotionListener {
 
 
     public void update() {
-
-        if (leftCantPress && !leftPressed) {
-            leftCantPress = false;
-        } else if (leftJustPressed) {
-            leftCantPress = true;
-            leftJustPressed = false;
-        }
+        // Cập nhật trạng thái "vừa nhấn" dựa trên trạng thái hiện tại và trạng thái cũ
+        leftJustPressed = leftPressed && !leftWasPressed;
+        rightJustPressed = rightPressed && !rightWasPressed;
+        
+        // Lưu trạng thái hiện tại để sử dụng trong frame tiếp theo
+        leftWasPressed = leftPressed;
+        rightWasPressed = rightPressed;
     }
 
     public boolean isLeftPressed() {
@@ -57,11 +55,8 @@ public class MouseManager implements MouseListener, MouseMotionListener {
         // update(); // <-- XÓA DÒNG NÀY
         if (e.getButton() == MouseEvent.BUTTON1) {
             leftPressed = true;
-
-            if (!leftCantPress) {
-                leftJustPressed = true;
-            }
-
+        } else if (e.getButton() == MouseEvent.BUTTON3) {
+            rightPressed = true;
         }
     }
 
@@ -69,6 +64,8 @@ public class MouseManager implements MouseListener, MouseMotionListener {
     public void mouseReleased(MouseEvent e) {
         if (e.getButton() == MouseEvent.BUTTON1) {
             leftPressed = false;
+        } else if (e.getButton() == MouseEvent.BUTTON3) {
+            rightPressed = false;
         }
     }
 

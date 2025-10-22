@@ -4,6 +4,12 @@ package managers;
 import engine.KeybroadManager;
 import engine.MouseManager;
 import entities.Button;
+import util.GameStateData; // Import lớp lưu trữ
+import java.io.FileInputStream; // Import để đọc file
+import java.io.IOException;     // Import để xử lý lỗi
+import java.io.ObjectInputStream; // Import để đọc đối tượng
+import java.io.File; // Import để kiểm tra file tồn tại
+
 
 import java.awt.*;
 import java.util.ArrayList;
@@ -16,13 +22,12 @@ public class MenuState extends GameState {
 
     public MenuState(GameStateManager manager) {
         super(manager);
-
         km = manager.getKm();
         mm = manager.getMm();
 
         buttons = new ArrayList<>();
         buttons.add(new Button(275, 170, 250, 50, "New Game"));
-        buttons.add(new Button(275, 240, 250, 50, "Load Game"));
+        buttons.add(new Button(275, 240, 250, 50, "Load Game")); // Nút này sẽ được xử lý
         buttons.add(new Button(275, 310, 250, 50, "Options"));
         buttons.add(new Button(275, 380, 250, 50, "Quit"));
     }
@@ -39,14 +44,14 @@ public class MenuState extends GameState {
 
     @Override
     public void update() {
-        km.update();
+        // mm.update(); // Cập nhật chuột để check click
 
         // Check each button for mouse interaction
         for (Button button : buttons) {
             // Check if the mouse is hovering over this button
             if (button.isHovering(mm.getMouseX(), mm.getMouseY())) {
                 // Check if left mouse button was clicked
-                if (mm.isLeftPressed()) {
+                if (mm.isLeftJustPressed()) {
                     handleButtonClick(button.getText());
                     return; // Exit early after handling click
                 }   
@@ -92,7 +97,7 @@ public class MenuState extends GameState {
 
             case "Load Game":
                 // Load a saved game (implement your save/load system)
-                System.out.println("Load Game clicked (not implemented)");
+                loadGame(); // Gọi hàm tải game
                 // manager.loadGame();
                 break;
 
@@ -113,4 +118,52 @@ public class MenuState extends GameState {
                 break;
         }
     }
+
+    // === THÊM HÀM TẢI GAME ===
+    private void loadGame() {
+        File saveFile = new File("savegame.dat");
+        // Kiểm tra xem file lưu có tồn tại không
+        if (!saveFile.exists()) {
+            System.out.println("No save file found.");
+            return;
+        }
+        try (FileInputStream fis = new FileInputStream(saveFile);
+             ObjectInputStream ois = new ObjectInputStream(fis)) {
+
+            GameStateData loadedData = (GameStateData) ois.readObject(); // Đọc đối tượng
+
+            System.out.println("Game loaded successfully! Level: " + loadedData.currentLevel +
+                               ", Score: " + loadedData.score + ", Lives: " + loadedData.lives);
+
+            // Cập nhật dữ liệu trong GameStateManager
+            // **QUAN TRỌNG:** Cần có setter trong GameStateManager hoặc cách khác để cập nhật
+            // Hoặc sửa lại hàm loadLevel để nhận score, lives
+            // => Cách tốt nhất: Sửa loadLevel để nhận score, lives
+            manager.setCurrentLevelForLoad(loadedData.currentLevel); // Thêm hàm helper này vào GSM
+            manager.setScoreForLoad(loadedData.score);
+            manager.setLivesForLoad(loadedData.lives);
+
+            // 1. Đặt cờ báo hiệu đang load game
+            manager.setLoadingGameFlag(true);
+
+            // Tải level tương ứng VỚI DỮ LIỆU ĐÃ LOAD
+            manager.loadLevel(loadedData.currentLevel);
+
+            // Yêu cầu LevelState2 bắt đầu đếm ngược sau khi tải
+            // LevelState2 levelState = manager.getCurrentLevelState();
+            // if (levelState != null) {
+            //      // Chúng ta sẽ thêm hàm startLoadCountdown() vào LevelState2
+            //      levelState.startLoadCountdown();
+            // } else {
+            //      System.err.println("Error transitioning to level state after load.");
+            //      // Có thể quay lại menu nếu lỗi
+            //      manager.setState("menu");
+            // }
+        } catch (IOException | ClassNotFoundException e) {
+            System.err.println("Error loading game: " + e.getMessage());
+            e.printStackTrace();
+            // Có thể hiển thị thông báo lỗi file lưu bị hỏng
+            // Cân nhắc xóa file lưu bị lỗi: saveFile.delete();
+        }
+    }    
 }

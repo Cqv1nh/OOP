@@ -2,7 +2,7 @@
 import engine.KeybroadManager;
 import engine.MouseManager;
 import managers.GameStateManager;
-import managers.LevelState2;
+// import managers.LevelState2;
 import util.AssetManager;
 import util.AudioManager;
 
@@ -67,6 +67,7 @@ public class Game extends JPanel implements Runnable {
                 sleep(1);
             } catch (InterruptedException e) {
                 e.printStackTrace();
+                Thread.currentThread().interrupt();
             }
 
         }
@@ -93,21 +94,21 @@ public class Game extends JPanel implements Runnable {
         }
     }
 
-    // Helper method to get current state name
-    private String getCurrentStateName() {
-        if (gameStateManager.getCurrentState() == null) {
-            return "unknown";
-        }
+    // // Helper method to get current state name
+    // private String getCurrentStateName() {
+    //     if (gameStateManager.getCurrentState() == null) {
+    //         return "unknown";
+    //     }
 
-        // Check instance type to determine state name
-        if (gameStateManager.getCurrentState() instanceof LevelState2 ) {
-            return "level";
-        }
-        // You can add more checks for other states if needed
-        // For now, we'll use a simple approach
+    //     // Check instance type to determine state name
+    //     if (gameStateManager.getCurrentState() instanceof LevelState2 ) {
+    //         return "level";
+    //     }
+    //     // You can add more checks for other states if needed
+    //     // For now, we'll use a simple approach
 
-        return "menu"; // Default fallback
-    }
+    //     return "menu"; // Default fallback
+    // }
 
     public void startGame() {
         if (thread == null) {
@@ -125,6 +126,7 @@ public class Game extends JPanel implements Runnable {
             }
         } catch (InterruptedException e) {
             e.printStackTrace();
+            Thread.currentThread().interrupt(); // Re-interrupt thread
         }
     }
 
