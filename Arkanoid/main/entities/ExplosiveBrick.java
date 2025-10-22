@@ -19,8 +19,8 @@ public class ExplosiveBrick extends Brick{
 
     @Override
     public boolean isDestroyed() {
-        // TODO Auto-generated method stub
-       return getHitPoints() <= 0;
+        
+        return getHitPoints() <= 0;
     }
 
     // Ham kich hoat vu no

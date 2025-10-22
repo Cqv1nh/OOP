@@ -4,6 +4,7 @@ import util.Constants;
 import util.GameStateData;
 import entities.Button; // Import Button
 
+// Cần Point
 import java.awt.*;
 import java.awt.event.KeyEvent;
 import java.io.FileOutputStream; // Import để ghi file
@@ -11,6 +12,9 @@ import java.io.IOException;     // Import để xử lý lỗi file
 import java.io.ObjectOutputStream; // Import để ghi đối tượng
 import java.util.ArrayList; // Import ArrayList
 import java.util.List;     // Import List
+import java.util.HashSet;
+
+import entities.Brick;
 
 import static util.RenderUtil.drawCenteredString; // DÒNG MỚI (ĐÚNG)
 
@@ -124,33 +128,65 @@ public class PauseState extends GameState {
 
     // === THÊM HÀM LƯU GAME ===
     private void saveGame() {
-        
-        // LevelState2 currentLevelState = manager.getCurrentLevelState();
-        // if (currentLevelState == null) {
-        //     System.out.println("Cannot save game: Not in a level state!");
-        //     return;
-        // }
+        LevelState2 lastActiveLevelState = manager.getLastLevelStateInstance(); // Lấy state level hiện tại
+        if (lastActiveLevelState != null) {
+            int level = manager.getCurrentLevel();
+            int score = lastActiveLevelState.getScore(); // <-- LẤY TỪ lastActiveLevelState
+            int lives = lastActiveLevelState.getLives();
 
-        // Lấy dữ liệu hiện tại
-        int level = manager.getCurrentLevel(); // Lấy từ GameStateManager là chính xác nhất
-        int score = manager.getScore();
-        int lives = manager.getLives();
+            // Lấy danh sách gạch còn lại
+            HashSet<Point> remainingBrickIndices = new HashSet<>();
+            ArrayList<Brick> currentBricks = lastActiveLevelState.getBricks();
 
-        if (level <= 0) {
-            System.err.println("Cannot save game: Invalid game data (perhaps not started?).");
-             return; // Không lưu nếu dữ liệu không hợp lệ
+            // Lấy layout gốc để biết vị trí tương ứng
+            int[][] originalLayout = util.LevelData.getLayoutForLevel(level);
+            if (originalLayout != null) {
+                // Tính toán startX, startY giống như trong BrickManager để so sánh vị trí
+                int numRows = originalLayout.length;
+                int numCols = originalLayout[0].length;
+                double totalBricksWidth = numCols * Constants.BRICK_WIDTH + ((numCols) - 1) * 5;
+                double startX = (Constants.SCREEN_WIDTH - totalBricksWidth) / 2;
+                double startY = 60; // Vi tri bat dau theo truc y
+
+                // Duyệt qua layout gốc
+                for (int r = 0; r < numRows; r++) {
+                    for (int c = 0; c < numCols; c++) {
+                        if (originalLayout[r][c] > 0) { // Nếu vị trí này có gạch trong layout gốc
+                            // Tính tọa độ pixel dự kiến của gạch này
+                            double expectedX = startX + c * (Constants.BRICK_WIDTH + 5);
+                            double expectedY = startY + r * (Constants.BRICK_HEIGHT + 5);
+
+                            // Kiểm tra xem có viên gạch nào trong danh sách hiện tại khớp vị trí này không
+                            for (Brick brick : currentBricks) {
+                                // So sánh vị trí co sai so nho
+                                if (Math.abs(brick.getX() - expectedX) < 1 && Math.abs(brick.getY() - expectedY) < 1) {
+                                    remainingBrickIndices.add(new Point(r, c)); // Lưu chỉ số (hàng, cột)
+                                    break; // Tìm thấy, chuyển sang vị trí layout tiếp theo
+                                }
+                            }
+                        }
+                    }
+                }
+            } else {
+                System.err.println("Cannot save brick state: Original layout not found for level " + level);
+                remainingBrickIndices = null; 
+            }
+            // Tao doi tuong du lieu
+            GameStateData data = new GameStateData(level, score, lives, remainingBrickIndices);
+            try (FileOutputStream fos = new FileOutputStream("savegame.dat");
+                ObjectOutputStream oos = new ObjectOutputStream(fos)) {
+
+                oos.writeObject(data);
+                System.out.println("Game saved successfully! Level: " + level + ", Score: " + score + ", Lives: " + lives);
+            } catch (IOException e) {
+                System.err.println("Error saving game:" + e.getMessage());
+                e.printStackTrace();
+            }
+
+        } else {
+            System.err.println("Cannot save game: Not in a level state!");
+            return; // Thoát nếu không ở trong level state
         }
-        // Tao doi tuong du lieu
-        GameStateData data = new GameStateData(level, score, lives);
-
-        try (FileOutputStream fos = new FileOutputStream("savegame.dat");
-            ObjectOutputStream oos = new ObjectOutputStream(fos)) {
-
-            oos.writeObject(data);
-            System.out.println("Game saved successfully! Level: " + level + ", Score: " + score + ", Lives: " + lives);
-        } catch (IOException e) {
-            System.err.println("Error saving game:" + e.getMessage());
-            e.printStackTrace();
-        }
+ 
     }
 }

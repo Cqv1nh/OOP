@@ -7,7 +7,8 @@ import util.AudioManager;
 import java.awt.Graphics2D;
 import java.util.HashMap;
 import java.util.Map;
-
+import java.awt.Point;
+import java.util.HashSet;
 
 public class GameStateManager {
     private GameState currentState;
@@ -22,6 +23,8 @@ public class GameStateManager {
     private int numberOfLevel = 5;
     private boolean isLoadingGame = false; // <-- THÊM BIẾN NÀY
     // Thêm một biến boolean để đánh dấu xem chúng ta có đang trong quá trình load game hay không.
+    // Thêm biến để lưu trữ LevelState2 gần đây nhất
+    private LevelState2 lastLevelStateInstance;
 
     public GameStateManager(KeybroadManager km, MouseManager mm) {
         states = new HashMap<>();
@@ -60,7 +63,6 @@ public class GameStateManager {
     }
 
     public void setState(String stateName) {
-        // === THÊM LOGIC NHẠC NỀN VÀO ĐÂY ===
         // Chỉ xử lý nếu stateName hợp lệ và khác state hiện tại (tránh bật/tắt liên tục)
         GameState nextState = states.get(stateName);
         if (nextState != null && nextState != currentState) {
@@ -79,7 +81,10 @@ public class GameStateManager {
             }
         }
         // === KẾT THÚC LOGIC NHẠC NỀN ===
-
+        if (currentState instanceof LevelState2) {
+            // Lưu lại instance hiện tại trước khi chuyển state
+            lastLevelStateInstance = (LevelState2) currentState;
+        }
         // Nếu state hiện tại LÀ level VÀ state tiếp theo KHÔNG PHẢI level (ví dụ về menu, pause...)
         // thì reset cờ loading
         if (currentState instanceof LevelState2 && !stateName.equals("level")) {
@@ -89,9 +94,7 @@ public class GameStateManager {
         if (currentState != null) {
             currentState.exit();
         }
-
-        currentState = states.get(stateName);
-
+        currentState = states.get(stateName); // Lấy state tiếp theo
         if (currentState != null) {
             currentState.enter();
         } else {
@@ -105,8 +108,6 @@ public class GameStateManager {
         lives = 3;
         loadLevel(currentLevel);
     }
-
-    
 
     public void update() {
         if (currentState != null) {
@@ -126,7 +127,10 @@ public class GameStateManager {
 
 
     //V2.
-    public void loadLevel(int levelNum) {
+    public void loadLevel(int levelNum, int score, int lives, HashSet<Point> remainingBrickIndices) {
+        this.currentLevel = levelNum;
+        this.score = score;
+        this.lives = lives;
         int totalLevels = util.LevelData.getTotalLevels(); // Lấy tổng số level động
         if (levelNum > numberOfLevel) {
             setState("victory");
@@ -136,7 +140,7 @@ public class GameStateManager {
         LevelState2 levelState = (LevelState2) states.get("level");
         if (levelState != null) {
             // **SỬA Ở ĐÂY:** Truyền score và lives hiện tại (đã được cập nhật khi load)
-            levelState.initLevel(levelNum, this.score, this.lives); // Bỏ levelFileName, thêm score, lives
+            levelState.initLevel(levelNum, this.score, this.lives, remainingBrickIndices); // Bỏ levelFileName, thêm score, lives
 
             if (levelNum == totalLevels) {
                 levelState.setLastLevel(true);
@@ -149,22 +153,37 @@ public class GameStateManager {
         }
     }
 
+    // Hàm loadLevel cho New Game / Next Level (truyền null cho brick indices)
+    public void loadLevel(int levelNum) {
+        // Lấy score và lives hiện tại nếu là next level
+        // LUÔN sử dụng score và lives hiện tại của GameStateManager.
+        // - Khi startGame() gọi: score=0, lives=3.
+        // - Khi loadGame() gọi hàm loadLevel đầy đủ: score/lives đã được set từ file.
+        // - Khi loadNextLevel() gọi: score/lives đã được lấy từ state trước.
+        int currentScore = this.score;
+        int currentLives = this.lives;
+        // Gọi hàm đầy đủ với remainingBrickIndices là null
+        loadLevel(levelNum, currentScore, currentLives, null);
+    }
+
+
     // loadNextLevel giữ nguyên, vì nó lấy score/lives từ state hiện tại trước khi gọi loadLevel
     public void loadNextLevel() {
         if (currentState instanceof LevelState2) {
             // Get current level data before switching
             LevelState2 currentLevelState = (LevelState2) currentState;
-            score = currentLevelState.getScore();
-            lives = currentLevelState.getLives();
+            this.score = currentLevelState.getScore();
+            // this.lives = currentLevelState.getLives(); // 
+            // LUÔN đặt lại số mạng thành 3 cho màn mới:
+            this.lives = 3;
             System.out.println("Loading next level. Score: " + score + ", Lives: " + lives);
-            currentLevel++;
+            currentLevel++; // Tăng level
             loadLevel(currentLevel);
         } else {
             System.err.println("Cannot load next level from non-LevelState2");
-             setState("menu");
+            setState("menu");
         } 
     }
-
 
     public GameState getCurrentState() {
         return currentState;
@@ -206,19 +225,6 @@ public class GameStateManager {
         this.km = km;
     }
 
-    // Dùng để MenuState cập nhật dữ liệu trước khi gọi loadLevel
-    public void setCurrentLevelForLoad(int level) {
-        this.currentLevel = (level > 0 && level <= numberOfLevel) ? level : 1;
-    }
-
-    public void setScoreForLoad(int score) {
-        this.score = Math.max(0, score); // Đảm bảo điểm không âm
-    }
-
-    public void setLivesForLoad(int lives) {
-        this.lives = Math.max(0, lives);
-    }
-
     public boolean isLoadingGame() {
         return isLoadingGame;
     }
@@ -226,4 +232,8 @@ public class GameStateManager {
         this.isLoadingGame = isLoading;
     }
 
+    // THÊM PHƯƠNG THỨC GETTER NÀY (để PauseState sử dụng)
+    public LevelState2 getLastLevelStateInstance() {
+        return lastLevelStateInstance;
+    }
 }

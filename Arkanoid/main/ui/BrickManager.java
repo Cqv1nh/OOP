@@ -3,8 +3,10 @@ package ui;
 import entities.*;
 import util.Constants;
 import util.LevelData;
-
+import java.awt.Point; // Cần Point
 import java.util.ArrayList;
+import java.util.HashSet; // Cần HashSet
+
 // Nang cap BrickManager voi LevelData nhan dau vao la so nguyen chi so level
 // Tao class tao cac brick va quan ly chung, dc goi trong GameWindow
 public class BrickManager {
@@ -12,8 +14,7 @@ public class BrickManager {
     //Thuoc tinh dinh nghia cau truc gach bang 1 mang 2D 
     // 0: NULL, 1: NormalBrick 2. StrongBrick, 3. ExplosiveBrick, 4.UnbreakableBrick
     
-
-    public ArrayList<Brick> createBricks(int levelNumber, int panelWidth) {
+    public ArrayList<Brick> createBricks(int levelNumber, int panelWidth, HashSet<Point> remainingBrickIndices) {
         ArrayList<Brick> brickList = new ArrayList<>();
         int[][] layout = LevelData.getLayoutForLevel(levelNumber);
 
@@ -39,27 +40,43 @@ public class BrickManager {
                 if (brickCode == 0) {
                     continue;
                 }
-                double x = startX + j * (Constants.BRICK_WIDTH + 5);
-                double y = startY + i * (Constants.BRICK_HEIGHT + 5);
-                
-                switch (brickCode) {
-                    case 1:
-                        brickList.add(new NormalBrick(x, y, Constants.BRICK_WIDTH, Constants.BRICK_HEIGHT));
-                        break;
-                    case 2:
-                        brickList.add(new StrongBrick(x, y, Constants.BRICK_WIDTH, Constants.BRICK_HEIGHT));
-                        break;
-                    case 3:
-                        brickList.add(new ExplosiveBrick(x, y, Constants.BRICK_WIDTH, Constants.BRICK_HEIGHT));
-                        break;
-                    case 4:
-                        brickList.add(new UnbreakableBrick(x, y, Constants.BRICK_WIDTH, Constants.BRICK_HEIGHT));
-                        break;
-                    default:
-                        break;
+
+                // === LOGIC KIỂM TRA KHI LOAD GAME ===
+                boolean shouldCreate = true; // Mặc định là tạo gạch
+                if (remainingBrickIndices != null) { // Nếu đang load game (danh sách không null)
+                    // Kiểm tra xem vị trí (i, j) này có trong danh sách gạch còn lại không
+                    if (!remainingBrickIndices.contains(new Point(i, j))) {
+                        shouldCreate = false; // Không tạo gạch này nếu nó không còn lại
+                    }
                 }
+                // === KẾT THÚC KIỂM TRA ===
+                if (shouldCreate) {
+                    double x = startX + j * (Constants.BRICK_WIDTH + 5);
+                    double y = startY + i * (Constants.BRICK_HEIGHT + 5);
+                    switch (brickCode) {
+                        case 1:
+                            brickList.add(new NormalBrick(x, y, Constants.BRICK_WIDTH, Constants.BRICK_HEIGHT));
+                            break;
+                        case 2:
+                            brickList.add(new StrongBrick(x, y, Constants.BRICK_WIDTH, Constants.BRICK_HEIGHT));
+                            break;
+                        case 3:
+                            brickList.add(new ExplosiveBrick(x, y, Constants.BRICK_WIDTH, Constants.BRICK_HEIGHT));
+                            break;
+                        case 4:
+                            brickList.add(new UnbreakableBrick(x, y, Constants.BRICK_WIDTH, Constants.BRICK_HEIGHT));
+                            break;
+                        default:
+                            break;
+                    }
+                }   
             }
         }
         return brickList;
     }
+    
+    // Thêm constructor mặc định nếu cần (ví dụ, nếu LevelState2 vẫn gọi new BrickManager())
+    public BrickManager() {
+        // Constructor rỗng
+     }
 }

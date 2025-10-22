@@ -5,15 +5,16 @@ import entities.Ball;
 import entities.Brick;
 import entities.Paddle;
 import entities.PowerUp;
-import ui.*;
+import ui.BrickManager; // Đảm bảo import đúng
 import util.*;
 
-
+// Cần Point
 import java.awt.*;
 import java.awt.event.KeyEvent;
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 import java.util.Iterator;
+import java.util.HashSet; // Cần HashSet
 
 public class LevelState2 extends GameState{
     private Paddle paddle; // Thanh truot
@@ -28,9 +29,8 @@ public class LevelState2 extends GameState{
     private int levelNum;
     private boolean ballLaunched = false; // Bong con dinh tren paddle hay da di chuyen
     // private String gameState = util.GameState.GAMESTART; // Trang thai game
-    private BrickManager brickManager = new BrickManager(); // Quan ly gach cua level 1
+    private BrickManager brickManager; // Chỉ khai báo, không khởi tạo ở đây
     
-
     private final EntityManager entityManager = new EntityManager();
     private final CollisionHandler collisionHandler = new CollisionHandler();
     private final PowerUpManager powerUpManager = new PowerUpManager();
@@ -50,11 +50,10 @@ public class LevelState2 extends GameState{
 
     }
 
-    public void initLevel(int levelNum, int score, int lives) {
+    public void initLevel(int levelNum, int score, int lives, HashSet<Point> remainingBrickIndices) {
         this.levelNum = levelNum;
         this.score = score;
         this.lives = lives;
-
         paddle = new Paddle(Constants.INIT_PADDLE_X,Constants.INIT_PADDLE_Y,
                 Constants.PADDLE_WIDTH,Constants.PADDLE_HEIGHT,0,0,null);
         paddle.setSpeed(Constants.PADDLE_SPEED);
@@ -63,12 +62,13 @@ public class LevelState2 extends GameState{
         initialBall.setSpeed(Constants.BALL_SPEED);
         balls = new ArrayList<>();
         balls.add(initialBall);
-
-
-        brickList = brickManager.createBricks(levelNum, Constants.SCREEN_WIDTH);
-        System.out.println("Level " + levelNum + " Initialized. Score: " + this.score + ", Lives: " + this.lives);
         powerUps = new ArrayList<>();
         activePowerUpsEffects = new ArrayList<>();
+
+        brickManager = new BrickManager();
+        brickList = brickManager.createBricks(levelNum, Constants.SCREEN_WIDTH, remainingBrickIndices);
+        System.out.println("Level " + levelNum + " Initialized. Score: " + this.score + ", Lives: " + this.lives);
+        
         // Đảm bảo rằng AssetManager.loadImages() được gọi một lần ở đâu đó khi 
         // game bắt đầu (ví dụ: trong hàm tạo Game hoặc GameFrame nếu bạn tạo nó, 
         // hoặc thậm chí trong main trước khi tạo cửa sổ). 

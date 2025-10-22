@@ -9,8 +9,7 @@ import java.io.FileInputStream; // Import để đọc file
 import java.io.IOException;     // Import để xử lý lỗi
 import java.io.ObjectInputStream; // Import để đọc đối tượng
 import java.io.File; // Import để kiểm tra file tồn tại
-
-
+// Cần Point
 import java.awt.*;
 import java.util.ArrayList;
 import java.util.List;
@@ -135,30 +134,16 @@ public class MenuState extends GameState {
             System.out.println("Game loaded successfully! Level: " + loadedData.currentLevel +
                                ", Score: " + loadedData.score + ", Lives: " + loadedData.lives);
 
-            // Cập nhật dữ liệu trong GameStateManager
-            // **QUAN TRỌNG:** Cần có setter trong GameStateManager hoặc cách khác để cập nhật
-            // Hoặc sửa lại hàm loadLevel để nhận score, lives
-            // => Cách tốt nhất: Sửa loadLevel để nhận score, lives
-            manager.setCurrentLevelForLoad(loadedData.currentLevel); // Thêm hàm helper này vào GSM
-            manager.setScoreForLoad(loadedData.score);
-            manager.setLivesForLoad(loadedData.lives);
-
             // 1. Đặt cờ báo hiệu đang load game
             manager.setLoadingGameFlag(true);
 
-            // Tải level tương ứng VỚI DỮ LIỆU ĐÃ LOAD
-            manager.loadLevel(loadedData.currentLevel);
-
-            // Yêu cầu LevelState2 bắt đầu đếm ngược sau khi tải
-            // LevelState2 levelState = manager.getCurrentLevelState();
-            // if (levelState != null) {
-            //      // Chúng ta sẽ thêm hàm startLoadCountdown() vào LevelState2
-            //      levelState.startLoadCountdown();
-            // } else {
-            //      System.err.println("Error transitioning to level state after load.");
-            //      // Có thể quay lại menu nếu lỗi
-            //      manager.setState("menu");
-            // }
+            // 1. Tải level tương ứng VỚI DỮ LIỆU ĐÃ LOAD
+            // 2. Gọi loadLevel phiên bản đầy đủ, truyền TẤT CẢ dữ liệu đã load
+            manager.loadLevel(loadedData.currentLevel, 
+                                loadedData.score, 
+                                loadedData.lives, 
+                                loadedData.remainingBrickIndices);
+            
         } catch (IOException | ClassNotFoundException e) {
             System.err.println("Error loading game: " + e.getMessage());
             e.printStackTrace();
