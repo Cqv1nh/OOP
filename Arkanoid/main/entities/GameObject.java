@@ -52,5 +52,4 @@ public abstract class GameObject {
     public void setHeight(double height) {
         this.height = height;
     }
-    
 } 

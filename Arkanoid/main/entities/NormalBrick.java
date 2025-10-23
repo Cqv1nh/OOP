@@ -16,5 +16,4 @@ public class NormalBrick extends Brick {
     public boolean isDestroyed() {
         return getHitPoints() <= 0;
     }
-
 }

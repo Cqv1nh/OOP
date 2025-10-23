@@ -151,8 +151,15 @@ public class LevelState2 extends GameState{
 
         // 1. Cập nhật vị trí các thực thể (Bóng, Thanh trượt)
         entityManager.updateEntities(this, panelWidth);
+
+        // === THÊM BƯỚC 1.5: CẬP NHẬT TRẠNG THÁI MỜ CỦA GẠCH ===
+        for (Brick b : brickList) {
+            b.updateFade(); // Gọi hàm updateFade() chúng ta đã tạo
+        }
+    
         // 2. Xử lý tất cả các va chạm
         collisionHandler.handleCollisions(this, panelWidth, panelHeight);
+
         // 3. Cập nhật và quản lý Power-up
         powerUpManager.update(this, panelHeight);
 
@@ -235,7 +242,28 @@ public class LevelState2 extends GameState{
             for (Brick b : brickList) {
                 BufferedImage brickImage = getBrickImage(b);
                 if (brickImage != null) {
-                    g.drawImage(brickImage, (int) b.getX(), (int) b.getY(), (int) b.getWidth(), (int) b.getHeight(), null);
+                    // cu : g.drawImage(brickImage, (int) b.getX(), (int) b.getY(), (int) b.getWidth(), (int) b.getHeight(), null);
+
+                    // LOGIC VẼ MỜ 
+                    if (b.isFading()) {
+                        // 1. Lấy độ mờ (alpha) từ viên gạch
+                        float alpha = b.getAlpha(); 
+                        // 2. Lưu lại thiết lập vẽ cũ
+                        Composite oldComposite = g.getComposite(); 
+                        
+                        // 3. Thiết lập chế độ vẽ mờ
+                        g.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, alpha));
+                        
+                        // 4. Vẽ viên gạch với độ mờ
+                        g.drawImage(brickImage, (int) b.getX(), (int) b.getY(), (int) b.getWidth(), (int) b.getHeight(), null);
+                        
+                        // 5. Khôi phục thiết lập vẽ cũ (RẤT QUAN TRỌNG)
+                        g.setComposite(oldComposite); 
+                    } else {
+                        // Vẽ bình thường (nếu không mờ)
+                        g.drawImage(brickImage, (int) b.getX(), (int) b.getY(), (int) b.getWidth(), (int) b.getHeight(), null);
+                    }
+                    // KẾT THÚC
                 }
             }
 
@@ -249,8 +277,7 @@ public class LevelState2 extends GameState{
             }
             drawHUD(g);
             drawPowerUpTimers(g);
-        }
-        
+        }        
     }
 
     private void drawHUD(Graphics2D g) {

@@ -156,6 +156,8 @@ public class CollisionHandler {
                 AudioManager.playSound("ball_hit");
                 // Xử lý vật lý va chạm
                 processCollisionPhysics(ball, closetX, closetY, distance);
+                
+                /* 
                 // Xử lý logic gạch
                 if (b.getType() != BrickType.UNBREAKABLE) {
                     b.takeHit();
@@ -164,7 +166,45 @@ public class CollisionHandler {
                 if (b.isDestroyed() && b instanceof ExplosiveBrick) {
                     ExplosiveBrick e = (ExplosiveBrick) b;
                     e.explode(brickList);
+                } */
+
+                // Chỉ xử lý va chạm nếu gạch CÒN SỐNG (hitPoints > 0)
+                if (b.getHitPoints() > 0) {
+                    if (b.getType() != BrickType.UNBREAKABLE) {
+                        b.takeHit(); // Gạch nhận sát thương
+                    }
+
+                    // Kiểm tra xem cú đánh này có VỪA PHÁ VỠ gạch không
+                    if (b.isDestroyed()) { // isDestroyed() vẫn là (hitPoints <= 0)
+                        
+                        // Xử lý GẠCH NỔ (nó sẽ bị xóa ngay ở `removeIf`)
+                        if (b instanceof ExplosiveBrick) {
+                            ExplosiveBrick e = (ExplosiveBrick) b;
+                            e.explode(brickList);
+                            // Cộng điểm và tạo powerup cho gạch nổ NGAY LẬP TỨC
+                            game.addScore(b.getScore()); 
+                            if (b.hasPowerUp()) {
+                                powerUpManager.spawnPowerUp(game, b);
+                            }
+                        } 
+                        // Xử lý GẠCH THƯỜNG / GẠCH MẠNH
+                        else if (b.getType().equals(BrickType.NORMAL) || b.getType().equals(BrickType.STRONG)) {
+                            b.startFading(); // <-- BẮT ĐẦU MỜ
+                            game.addScore(b.getScore()); // Cộng điểm ngay
+                            if (b.hasPowerUp()) { // Tạo power-up ngay
+                                powerUpManager.spawnPowerUp(game, b);
+                            }
+                        }
+                        // Xử lý các loại gạch vỡ được khác (nếu có)
+                        else if (!b.getType().equals(BrickType.UNBREAKABLE)) {
+                             game.addScore(b.getScore());
+                             if (b.hasPowerUp()) {
+                                powerUpManager.spawnPowerUp(game, b);
+                            }
+                        }
+                    }
                 }
+                // Het sua
 
                 // Chỉ xử lý một va chạm gạch mỗi khung hình để tránh lỗi
                 break;
@@ -173,13 +213,14 @@ public class CollisionHandler {
 
         // Dọn dẹp gạch đã bị phá hủy
         brickList.removeIf(brick -> {
-            if (brick != null && brick.isDestroyed()) {
-                // Cong diem truoc khi xoa
+            // cu : if (brick != null && brick.isDestroyed()) {
+            if (brick != null && brick.isReadyForRemoval()) {
+                /*  Cong diem truoc khi xoa
                 game.addScore(brick.getScore());
                 // Tao powerup khi gach vo
                 if (brick.hasPowerUp()) {
                     powerUpManager.spawnPowerUp(game, brick);
-                }
+                } */
                 return true;
             }
             return false;

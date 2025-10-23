@@ -1,5 +1,7 @@
 package entities;
 
+import util.BrickType;
+
 public abstract class Brick extends GameObject {
     private int hitPoints; //Số lần va chạm để gạch bị phá hủy.
     private String type; //Loại gạch.
@@ -9,6 +11,11 @@ public abstract class Brick extends GameObject {
     private String powerUpType; //Loại powerup nếu có.
 
     private int score; //Điểm từng loại gạch.
+
+    private boolean isFading = false; //Trang thai dang mo dan
+    private float alpha = 1.0f; //do trong suot
+
+    private static final float FADE_SPEED = 0.05f; // Toc do lam mo khoang 1/3 giay
 
     //Phần này sửa constructor này thêm 2 thuộc tính vừa thêm.
     public Brick(double x, double y, double width, double height, int hitPoints, String type, int score) {
@@ -80,4 +87,59 @@ public abstract class Brick extends GameObject {
     
     public abstract void takeHit();
     public abstract boolean isDestroyed();
+
+
+    //Them code:
+    /**
+     * Bắt đầu quá trình mờ dần
+     */
+    public void startFading() {
+        if (!isFading) {
+            this.isFading = true;
+        }
+    }
+
+    /**
+     * Trả về trạng thái có đang mờ hay không
+     */
+    public boolean isFading() {
+        return isFading;
+    }
+
+    /**
+     * Lấy độ trong suốt hiện tại
+     */
+    public float getAlpha() {
+        return alpha;
+    }
+
+    /**
+     * Cập nhật logic mờ (sẽ được gọi mỗi frame từ LevelState2)
+     */
+    public void updateFade() {
+        if (isFading) {
+            alpha -= FADE_SPEED; // Giảm độ trong suốt
+            if (alpha < 0.0f) {
+                alpha = 0.0f;
+            }
+        }
+    }
+
+    /**
+     * Kiểm tra xem gạch đã sẵn sàng để bị xóa khỏi game chưa
+     */
+    public boolean isReadyForRemoval() {
+        // Gạch thường (NORMAL) và gạch mạnh (STRONG) chỉ bị xóa KHI MỜ HẾT
+        if (getType().equals(BrickType.NORMAL) || getType().equals(BrickType.STRONG)) {
+            return isFading && alpha <= 0.0f;
+        }
+        
+        // Gạch nổ (EXPLOSIVE) hoặc các loại gạch vỡ khác (không mờ)
+        // sẽ bị xóa ngay khi hitPoints <= 0
+        if (isDestroyed() && !getType().equals(BrickType.UNBREAKABLE)) {
+            return true;
+        }
+        
+        return false;
+    }
 }

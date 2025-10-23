@@ -15,5 +15,4 @@ public class StrongBrick extends Brick{
     public boolean isDestroyed() {
         return getHitPoints() <= 0;
     }
-
 }
