@@ -69,6 +69,7 @@ public class PowerUpManager {
     //V2.
     public void spawnPowerUp(LevelState2 game, Brick brick) {
         String type = brick.getPowerUpType();
+        // Chi sinh 1 powerUp tại 1 thời điểm
         PowerUp newPowerUp = null;
 
         double x = brick.getX() + brick.getWidth() / 2 - Constants.POWERUP_WIDTH / 2;

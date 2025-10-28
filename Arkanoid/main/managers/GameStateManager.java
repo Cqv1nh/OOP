@@ -28,7 +28,7 @@ public class GameStateManager {
 
     public GameStateManager(KeybroadManager km, MouseManager mm) {
         states = new HashMap<>();
-
+        
         AudioManager.loadSound("/resources/sounds/level_music_loop.wav", "background_music");
         AudioManager.loadSound("/resources/sounds/sfx_ball_hit.wav", "ball_hit");
 

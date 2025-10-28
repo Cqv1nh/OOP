@@ -8,7 +8,6 @@ public class Ball extends MovableObject {
     private double speed; //Tốc độ bóng.
     private double directionX; //Hướng đi của bóng theo chiều ngang.
     private double directionY; //Hướng đi của bóng theo chiều dọc.
-    private char symbol = 'O'; //Quy ước terminal.
     private double radius; //Bán kính của bóng.
 
     //Lưu vị trí ban đầu của bóng để reset khi bóng rơi.
@@ -91,10 +90,7 @@ public class Ball extends MovableObject {
         this.setDy(speed * directionY);
     }
 
-    public char getSymbol() {
-        return symbol;
-    }
-
+    
     //Getter và setter cho radius.
     public double getRadius() {
         return radius;
@@ -117,21 +113,6 @@ public class Ball extends MovableObject {
         this.setY(this.getY() + this.getDy());
     }
 
-
-    
-
-    //phương thức ktra bóng va cham vs đối tượng khác.
-    // Sap dc xoa bo vi da dc xu ly torng GameLoop
-    public boolean checkCollision(GameObject other) {
-        if ((this.getY() + this.getHeight() < other.getY())
-                || (this.getX() + this.getWidth() < other.getX())
-                || (other.getY() + other.getHeight() < this.getY())
-                || (other.getX() + other.getWidth() < this.getX())) {
-            return false;
-        } else {
-            return true;
-        }
-    }
 
     //Phương thức khi chạm paddle, brick, tường.
     public void bounceOff(GameObject other) {
