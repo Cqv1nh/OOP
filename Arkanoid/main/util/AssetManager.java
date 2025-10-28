@@ -1,6 +1,7 @@
 package util;
 
 import javax.imageio.ImageIO;
+import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.io.InputStream;
@@ -20,8 +21,8 @@ public class AssetManager {
     public static Map<Integer, BufferedImage> strongBrick_1hit = new HashMap<>();
     public static Map<Integer, BufferedImage> explosiveBrick = new HashMap<>();
     public static Map<Integer, BufferedImage> unbreakableBrick = new HashMap<>();
-    
 
+    public static BufferedImage trackImg, handleImg, fillImg;
     // Them cac powerUp khac neu can
 
     /**
@@ -89,6 +90,10 @@ public class AssetManager {
         unbreakableBrick.put(3, loadImage("/resources/images/Level3/UnbreakableBrickLevel3.png"));
         unbreakableBrick.put(4, loadImage("/resources/images/Level4/UnbreakableBrickLevel4.png"));
         unbreakableBrick.put(5, loadImage("/resources/images/Level5/UnbreakableBrickLevel5.png"));
+
+        trackImg = loadImage("/resources/slider/Track.png");
+        handleImg = loadImage("/resources/slider/Knob.png");
+        fillImg = loadImage("/resources/slider/TrackFill.png");
     }
 
     /**

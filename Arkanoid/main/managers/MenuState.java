@@ -27,7 +27,7 @@ public class MenuState extends GameState {
         buttons = new ArrayList<>();
         buttons.add(new Button(275, 170, 250, 50, "New Game"));
         buttons.add(new Button(275, 240, 250, 50, "Load Game")); // Nút này sẽ được xử lý
-        buttons.add(new Button(275, 310, 250, 50, "Options"));
+        buttons.add(new Button(275, 310, 250, 50, "Settings"));
         buttons.add(new Button(275, 380, 250, 50, "Quit"));
     }
 
@@ -100,10 +100,10 @@ public class MenuState extends GameState {
                 // manager.loadGame();
                 break;
 
-            case "Options":
+            case "Settings":
                 // Switch to options/settings state
-                System.out.println("Options clicked (not implemented)");
-                // manager.setState("options");
+                // System.out.println("Options clicked (not implemented)");
+                manager.setState("settings");
                 break;
 
             case "Quit":
