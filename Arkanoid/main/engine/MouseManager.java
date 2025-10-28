@@ -7,7 +7,7 @@ import java.awt.event.MouseMotionListener;
 
 public class MouseManager implements MouseListener, MouseMotionListener {
 
-
+    private int currentStatus;
     private boolean leftPressed, rightPressed;
     private boolean leftJustPressed, rightJustPressed;
     private boolean leftCantPress, rightCantPress;
@@ -52,7 +52,7 @@ public class MouseManager implements MouseListener, MouseMotionListener {
 
     @Override
     public void mousePressed(MouseEvent e) {
-        // update(); // <-- XÓA DÒNG NÀY
+        currentStatus = MouseEvent.MOUSE_PRESSED;
         if (e.getButton() == MouseEvent.BUTTON1) {
             leftPressed = true;
         } else if (e.getButton() == MouseEvent.BUTTON3) {
@@ -62,6 +62,7 @@ public class MouseManager implements MouseListener, MouseMotionListener {
 
     @Override
     public void mouseReleased(MouseEvent e) {
+        currentStatus = MouseEvent.MOUSE_RELEASED;
         if (e.getButton() == MouseEvent.BUTTON1) {
             leftPressed = false;
         } else if (e.getButton() == MouseEvent.BUTTON3) {
@@ -90,6 +91,7 @@ public class MouseManager implements MouseListener, MouseMotionListener {
 
     @Override
     public void mouseDragged(MouseEvent e) {
+        currentStatus = MouseEvent.MOUSE_DRAGGED;
         mouseX = e.getX();
         mouseY = e.getY();
     }
@@ -97,8 +99,13 @@ public class MouseManager implements MouseListener, MouseMotionListener {
 
     @Override
     public void mouseMoved(MouseEvent e) {
+        currentStatus = MouseEvent.MOUSE_MOVED;
         mouseX = e.getX();
         mouseY = e.getY();
+    }
+
+    public int getCurrentStatus() {
+        return currentStatus;
     }
 
     public boolean isRightPressed() {
@@ -112,4 +119,6 @@ public class MouseManager implements MouseListener, MouseMotionListener {
     public boolean isRightCantPress() {
         return rightCantPress;
     }
+
+
 }
