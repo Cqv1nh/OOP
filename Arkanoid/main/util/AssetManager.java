@@ -1,6 +1,7 @@
 package util;
 
 import javax.imageio.ImageIO;
+import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.io.InputStream;
@@ -24,7 +25,7 @@ public class AssetManager {
     // 28-10-25
     public static Map<Integer, BufferedImage> explosionFrames = new HashMap<>(); // Dùng Map để lưu 10 frame
     
-
+    public static BufferedImage trackImg, handleImg, fillImg;
     // Them cac powerUp khac neu can
 
     /**
@@ -94,10 +95,15 @@ public class AssetManager {
         unbreakableBrick.put(4, loadImage("/resources/images/Level4/UnbreakableBrickLevel4.png"));
         unbreakableBrick.put(5, loadImage("/resources/images/Level5/UnbreakableBrickLevel5.png"));
 
+
         // 28-10-25
         for (int i = 0; i < 10; i++) {
             explosionFrames.put(i, loadImage("/resources/images/explosion/explosion_" + i + ".png"));
         }
+
+        trackImg = loadImage("/resources/slider/Track.png");
+        handleImg = loadImage("/resources/slider/Knob.png");
+        fillImg = loadImage("/resources/slider/TrackFill.png");
     }
 
     /**

@@ -12,6 +12,10 @@ public class AudioManager {
     private static Map<String, Clip> sounds = new HashMap<>();
     private static Clip backgroundMusicClip; // Clip riêng cho nhạc nền để dễ quản lý
 
+    private static float masterVolume = 1.0f;
+    private static float soundFxVolume = 1.0f;
+    private static float backgroundMusicVolume = 1.0f;
+
     /**
      * Tải một tệp âm thanh WAV từ đường dẫn tài nguyên.
      *
@@ -86,6 +90,51 @@ public class AudioManager {
             backgroundMusicClip.loop(Clip.LOOP_CONTINUOUSLY); // Lặp vô hạn
         } else {
             System.err.println("Nhạc nền không tìm thấy: " + name);
+        }
+    }
+
+    public static void setMasterVolume(float volume) {
+        masterVolume = Math.max(0f, Math.min(1f, volume));
+        updateAllVolumes();
+    }
+
+    public static void setSoundFxVolume(float volume) {
+        soundFxVolume = Math.max(0f, Math.min(1f, volume));
+        updateAllVolumes();
+    }
+
+    public static void setBackgroundMusicVolume(float volume) {
+        backgroundMusicVolume = Math.max(0f, Math.min(1f, volume));
+        updateAllVolumes();
+    }
+
+    private static void updateAllVolumes() {
+        float fxFinal = masterVolume * soundFxVolume;
+        float bgFinal = masterVolume * backgroundMusicVolume;
+
+        // Update sound FX
+        for (Map.Entry<String, Clip> entry : sounds.entrySet()) {
+            if (entry.getValue() == backgroundMusicClip) continue;
+            setClipVolume(entry.getValue(), fxFinal);
+        }
+
+
+        if (backgroundMusicClip != null) {
+            setClipVolume(backgroundMusicClip, bgFinal);
+        }
+    }
+
+    private static void setClipVolume(Clip clip, float volume) {
+        if (clip == null) return;
+        try {
+            FloatControl gainControl = (FloatControl) clip.getControl(FloatControl.Type.MASTER_GAIN);
+            float min = gainControl.getMinimum();
+            float max = gainControl.getMaximum();
+            float dB = (float) (Math.log10(volume == 0.0 ? 0.0001 : volume) * 20.0);
+            dB = Math.max(min, Math.min(max, dB));
+            gainControl.setValue(dB);
+        } catch (IllegalArgumentException ignored) {
+            // Some clips might not support gain control
         }
     }
 

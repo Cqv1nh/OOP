@@ -28,7 +28,7 @@ public class GameStateManager {
 
     public GameStateManager(KeybroadManager km, MouseManager mm) {
         states = new HashMap<>();
-
+        
         AudioManager.loadSound("/resources/sounds/level_music_loop.wav", "background_music");
         AudioManager.loadSound("/resources/sounds/sfx_ball_hit.wav", "ball_hit");
 
@@ -51,7 +51,7 @@ public class GameStateManager {
         states.put("level", new LevelState2(this));
         states.put("pause", new PauseState(this));
         states.put("game over", new GameOverState(this));
-        //states.put("settings", new SettingsState(this));
+        states.put("settings", new SettingsState(this));
         states.put("victory", new VictoryState(this));
         states.put("transition", new TransitionState(this));
 
@@ -80,7 +80,7 @@ public class GameStateManager {
                 AudioManager.stopBackgroundMusic();
             }
         }
-        // === KẾT THÚC LOGIC NHẠC NỀN ===
+
         if (currentState instanceof LevelState2) {
             // Lưu lại instance hiện tại trước khi chuyển state
             lastLevelStateInstance = (LevelState2) currentState;

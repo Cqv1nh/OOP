@@ -135,6 +135,7 @@ public abstract class Brick extends GameObject {
     /**
      * Kiểm tra xem gạch đã sẵn sàng để bị xóa khỏi game chưa
      */
+    // Xem xet lai doan nay 
     public boolean isReadyForRemoval() {
         // Gạch thường (NORMAL) và gạch mạnh (STRONG) chỉ bị xóa KHI MỜ HẾT
         if (getType().equals(BrickType.NORMAL) || getType().equals(BrickType.STRONG)) {
