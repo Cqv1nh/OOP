@@ -1,6 +1,7 @@
 package engine;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import entities.Ball;
 import entities.Brick;
@@ -175,19 +176,24 @@ public class CollisionHandler {
                     }
 
                     // Kiểm tra xem cú đánh này có VỪA PHÁ VỠ gạch không
-                    if (b.isDestroyed()) { // isDestroyed() vẫn là (hitPoints <= 0)
+                    if (b.isDestroyed()) {
+                        List<Brick> totalDestroyed = new ArrayList<>(); // isDestroyed() vẫn là (hitPoints <= 0)
                         
                         // Xử lý GẠCH NỔ (nó sẽ bị xóa ngay ở `removeIf`)
                         if (b instanceof ExplosiveBrick) {
                             ExplosiveBrick e = (ExplosiveBrick) b;
-                            e.explode(brickList);
+                            totalDestroyed.addAll(e.startExplosion(brickList));
+                            //e.startExplosion(brickList);
                             // Cộng điểm và tạo powerup cho gạch nổ NGAY LẬP TỨC
                             game.addScore(b.getScore()); 
                             if (b.hasPowerUp()) {
                                 powerUpManager.spawnPowerUp(game, b);
                             }
                         } 
-                        // Xử lý GẠCH THƯỜNG / GẠCH MẠNH
+
+                        totalDestroyed.add(b);
+
+                        /*  Xử lý GẠCH THƯỜNG / GẠCH MẠNH
                         else if (b.getType().equals(BrickType.NORMAL) || b.getType().equals(BrickType.STRONG)) {
                             b.startFading(); // <-- BẮT ĐẦU MỜ
                             game.addScore(b.getScore()); // Cộng điểm ngay
@@ -200,6 +206,26 @@ public class CollisionHandler {
                              game.addScore(b.getScore());
                              if (b.hasPowerUp()) {
                                 powerUpManager.spawnPowerUp(game, b);
+                            }
+                        } */
+
+                        // 3. XỬ LÝ ĐIỂM VÀ POWER-UP CHO TẤT CẢ GẠCH BỊ HỦY TRONG CHUỖI PHẢN ỨNG
+                        for (Brick destroyedBrick : totalDestroyed) {
+                            // Kiểm tra để tránh cộng điểm cho Unbreakable
+                            if (!destroyedBrick.getType().equals(BrickType.UNBREAKABLE)) {
+                                // Chỉ cộng điểm/tạo powerup MỘT LẦN khi gạch VỪA BỊ PHÁ HỦY
+                                // (Cần đảm bảo logic Fading của gạch thường không bị trùng lặp)
+
+                                // Cộng điểm ngay lập tức
+                                game.addScore(destroyedBrick.getScore()); 
+                                if (destroyedBrick.hasPowerUp()) {
+                                    powerUpManager.spawnPowerUp(game, destroyedBrick);
+                                }
+
+                                // Kích hoạt Fading cho gạch thường nếu chưa được kích hoạt
+                                if ((destroyedBrick.getType().equals(BrickType.NORMAL) || destroyedBrick.getType().equals(BrickType.STRONG)) && !destroyedBrick.isFading()) {
+                                    destroyedBrick.startFading();
+                                }
                             }
                         }
                     }

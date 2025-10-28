@@ -113,6 +113,13 @@ public abstract class Brick extends GameObject {
         return alpha;
     }
 
+    // 28-10-25
+    @Override
+    public void update() {
+        super.update(); // Gọi update của GameObject (mặc dù rỗng)
+        updateFade();   // Gọi hàm làm mờ mà bạn đã định nghĩa
+    }
+
     /**
      * Cập nhật logic mờ (sẽ được gọi mỗi frame từ LevelState2)
      */

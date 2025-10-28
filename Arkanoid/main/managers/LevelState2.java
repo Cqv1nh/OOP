@@ -154,7 +154,7 @@ public class LevelState2 extends GameState{
 
         // === THÊM BƯỚC 1.5: CẬP NHẬT TRẠNG THÁI MỜ CỦA GẠCH ===
         for (Brick b : brickList) {
-            b.updateFade(); // Gọi hàm updateFade() chúng ta đã tạo
+            b.update(); // Gọi hàm updateFade() chúng ta đã tạo
         }
     
         // 2. Xử lý tất cả các va chạm
@@ -238,9 +238,52 @@ public class LevelState2 extends GameState{
                         (int) ball.getRadius() * 2,
                         (int) ball.getRadius() * 2, null);
             }
+
             // Vẽ Bricks
             for (Brick b : brickList) {
+                if (b instanceof entities.ExplosiveBrick) {
+                    entities.ExplosiveBrick eb = (entities.ExplosiveBrick) b;
+        
+                    if (eb.isExploding() && eb.getCurrentFrame() < eb.getTotalFrames()) {
+                        int frameIndex = eb.getCurrentFrame();
+                        BufferedImage frameImg = AssetManager.explosionFrames.get(frameIndex);
+            
+                        if (frameImg != null) {
+                            // Kích thước nổ to hơn 50% so với gạch
+                            final int PADDING = (int)(b.getWidth() * 0.5); 
+
+                            final double SCALE_FACTOR = 1.5; // Kích thước gấp rưỡi (150%)
+                            int newWidth = (int)(b.getWidth() * SCALE_FACTOR);
+                            int newHeight = (int)(b.getHeight() * SCALE_FACTOR);
+            
+                            // Tính toán PADDING: Lượng chênh lệch kích thước (1.5 - 1.0 = 0.5 lần)
+                            // Lượng dịch chuyển để căn giữa: (Kích thước mới - Kích thước cũ) / 2
+                            int xOffset = (newWidth - (int)b.getWidth()) / 2;
+                            int yOffset = (newHeight - (int)b.getHeight()) / 2;
+                
+                            g.drawImage(
+                                frameImg, 
+                                (int)b.getX() - xOffset,      // X: Dịch về bên trái
+                                (int)b.getY() - yOffset,      // Y: Dịch lên trên
+                                newWidth,                     // Chiều rộng mới
+                                newHeight,                    // Chiều cao mới
+                            null
+
+                                /*frameImg, 
+                                (int)b.getX() - PADDING/2,    // X: Dịch về bên trái để căn giữa
+                                (int)b.getY() - PADDING/2,    // Y: Dịch lên trên để căn giữa
+                                (int)b.getWidth() + PADDING,  // Chiều rộng mới
+                                (int)b.getHeight() + PADDING, // Chiều cao mới
+                                null */
+                            );
+                            // SAU KHI VẼ NỔ, CHUYỂN SANG GẠCH KẾ TIẾP
+                            continue; 
+                        }
+                    }
+                }
+
                 BufferedImage brickImage = getBrickImage(b);
+
                 if (brickImage != null) {
                     // cu : g.drawImage(brickImage, (int) b.getX(), (int) b.getY(), (int) b.getWidth(), (int) b.getHeight(), null);
 

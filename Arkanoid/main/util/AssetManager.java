@@ -20,6 +20,9 @@ public class AssetManager {
     public static Map<Integer, BufferedImage> strongBrick_1hit = new HashMap<>();
     public static Map<Integer, BufferedImage> explosiveBrick = new HashMap<>();
     public static Map<Integer, BufferedImage> unbreakableBrick = new HashMap<>();
+
+    // 28-10-25
+    public static Map<Integer, BufferedImage> explosionFrames = new HashMap<>(); // Dùng Map để lưu 10 frame
     
 
     // Them cac powerUp khac neu can
@@ -80,6 +83,7 @@ public class AssetManager {
         strongBrick_1hit.put(5, loadImage("/resources/images/Level5/StrongBrick2Level5.png"));
 
         // explosiveBrick
+        explosiveBrick.put(1, loadImage("/resources/images/Level1/ExplosiveBrickLevel1.png"));
         explosiveBrick.put(3, loadImage("/resources/images/Level3/ExplosiveBrickLevel3.png"));
         explosiveBrick.put(4, loadImage("/resources/images/Level4/ExplosiveBrickLevel4.png"));
         explosiveBrick.put(5, loadImage("/resources/images/Level5/ExplosiveBrickLevel5.png"));
@@ -89,6 +93,11 @@ public class AssetManager {
         unbreakableBrick.put(3, loadImage("/resources/images/Level3/UnbreakableBrickLevel3.png"));
         unbreakableBrick.put(4, loadImage("/resources/images/Level4/UnbreakableBrickLevel4.png"));
         unbreakableBrick.put(5, loadImage("/resources/images/Level5/UnbreakableBrickLevel5.png"));
+
+        // 28-10-25
+        for (int i = 0; i < 10; i++) {
+            explosionFrames.put(i, loadImage("/resources/images/explosion/explosion_" + i + ".png"));
+        }
     }
 
     /**

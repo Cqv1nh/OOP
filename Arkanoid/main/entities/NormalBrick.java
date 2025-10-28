@@ -9,7 +9,15 @@ public class NormalBrick extends Brick {
 
     @Override
     public void takeHit() {
-        setHitPoints(getHitPoints() - 1);
+        //setHitPoints(getHitPoints() - 1);
+        if (!isFading()) { 
+            setHitPoints(getHitPoints() - 1);
+
+            // KÍCH HOẠT HIỆU ỨNG MỜ (FADE)
+            if (isDestroyed()) { 
+                startFading();
+            }    
+        }
     }
 
     @Override
