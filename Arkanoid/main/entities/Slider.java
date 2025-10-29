@@ -3,7 +3,6 @@ package entities;
 import engine.MouseManager;
 
 import java.awt.*;
-import java.awt.event.MouseEvent;
 import java.awt.image.BufferedImage;
 
 
@@ -105,30 +104,28 @@ public class Slider {
         int mouseX = mouseManager.getMouseX();
         int mouseY = mouseManager.getMouseY();
 
-        switch (mouseManager.getCurrentStatus()) {
-            case MouseEvent.MOUSE_PRESSED:
-                if (handleBounds.contains(mouseX, mouseY)) {
-                    isDragging = true;
-                }
-                break;
-            case MouseEvent.MOUSE_RELEASED:
-                isDragging = false;
-                break;
-            case MouseEvent.MOUSE_DRAGGED:
-                if (isDragging) {
-                    float newValue = minValue + (mouseX - x) * valueStep;
-                    setValue(newValue); // setValue will clamp it
-                }
-                break;
-            case MouseEvent.MOUSE_MOVED:
-                isHovered = handleBounds.contains(mouseX, mouseY);
-                break;
+        // 1. Kiểm tra xem chuột có đang nằm trên núm kéo (handle) không
+        boolean isHoveringHandle = handleBounds.contains(mouseX,mouseY);
+        // Cập nhật trạng thái isHovered (có thể dùng để thay đổi con trỏ chuột sau này)
+        isHovered = isHoveringHandle;
+        // 2. Xử lý BẮT ĐẦU kéo (Nhấn chuột trái LẦN ĐẦU TIÊN trên núm kéo)
+        if (mouseManager.isLeftJustPressed() && isHoveringHandle) {
+            isDragging = true; // Bắt đầu kéo
+            // System.out.println("Start Dragging"); // Debug (Tùy chọn)
+        } 
+        
+        // 3. Xử lý KẾT THÚC kéo (Thả chuột trái ra ở bất kỳ đâu)
+        else if (!mouseManager.isLeftPressed()){ // Nếu nút trái KHÔNG còn được nhấn
+            isDragging = false;
         }
-    }
-
-    public void isHoveringButton(int mouseX, int mouseY) {
-        if (handleBounds.contains(mouseX, mouseY)) {
-
+        // 4. Xử lý KHI ĐANG kéo (Nút trái đang được giữ VÀ đang trong trạng thái kéo)
+        else if (isDragging && mouseManager.isLeftPressed()) {
+            // Giới hạn vị trí X của chuột trong phạm vi của thanh trượt (track)
+            int clampedMouseX = Math.max(x, Math.min(mouseX, x + width));
+            // Tính giá trị mới dựa trên vị trí tương đối của chuột trên thanh trượt
+            float newValue = minValue + (clampedMouseX - x) * valueStep;
+            // Cập nhật giá trị của slider (hàm setValue sẽ tự giới hạn trong min/max)
+            setValue(newValue);
         }
     }
 

@@ -1,7 +1,7 @@
 {
-  "masterVolume": 60,
-  "soundEffectsVolume": 100,
-  "backGroundMusic": 60,
+  "masterVolume": 55,
+  "soundEffectsVolume": 62,
+  "backGroundMusic": 71,
   "paddleLeft": 0,
   "paddleRight": 0
 }
