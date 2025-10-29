@@ -32,6 +32,12 @@ public class GameStateManager {
         AudioManager.loadSound("/resources/sounds/level_music_loop.wav", "background_music");
         AudioManager.loadSound("/resources/sounds/sfx_ball_hit.wav", "ball_hit");
 
+        // 29-10
+        AudioManager.loadSound("/resources/sounds/sfx_ball_vs_paddle.wav", "sfx_ball_vs_paddle");
+        AudioManager.loadSound("/resources/sounds/sfx_ball_vs_brick.wav", "sfx_ball_vs_brick");
+        AudioManager.loadSound("/resources/sounds/sfx_power_up.wav", "sfx_power_up");
+        AudioManager.loadSound("/resources/sounds/sfx_ball_vs_explosive_brick.wav", "sfx_ball_vs_explosive_brick");
+
         // Đảm bảo đóng tài nguyên âm thanh khi cửa sổ đóng
         // addWindowListener(new java.awt.event.WindowAdapter() {
         //     @Override

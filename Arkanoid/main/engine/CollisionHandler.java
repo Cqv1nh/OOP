@@ -47,6 +47,8 @@ public class CollisionHandler {
             && ball.getX() <= paddle.getX() + paddle.getWidth()
             && ball.getY() < paddle.getY() + paddle.getHeight()) {
 
+            AudioManager.playSound("sfx_ball_vs_paddle");
+            
             // Tính vị trí tương đối va chạm so với tâm paddle
             double paddleCenter = paddle.getX() + paddle.getWidth() / 2.0;
             double hitPosition = (ball.getX() + ball.getRadius()) - paddleCenter;
@@ -154,7 +156,7 @@ public class CollisionHandler {
                     + (centerBallY - closetY) * (centerBallY - closetY));
             // Dk va cham: khoang cach nho hon ban kinh
             if (distance < ball.getRadius()) {
-                AudioManager.playSound("ball_hit");
+                
                 // Xử lý vật lý va chạm
                 processCollisionPhysics(ball, closetX, closetY, distance);
                 
@@ -171,6 +173,17 @@ public class CollisionHandler {
 
                 // Chỉ xử lý va chạm nếu gạch CÒN SỐNG (hitPoints > 0)
                 if (b.getHitPoints() > 0) {
+                    if (b instanceof ExplosiveBrick) {
+                        // 1. Phát âm thanh gạch nổ
+                        AudioManager.playSound("sfx_ball_vs_explosive_brick");
+                    } else if (b.getType() != BrickType.UNBREAKABLE) {
+                        // 2. Phát âm thanh gạch thường/mạnh
+                        AudioManager.playSound("sfx_ball_vs_brick");
+                    } else {
+                        // 3. Nếu là gạch không vỡ, phát âm thanh va tường
+                        AudioManager.playSound("ball_hit"); 
+                    }
+
                     if (b.getType() != BrickType.UNBREAKABLE) {
                         b.takeHit(); // Gạch nhận sát thương
                     }

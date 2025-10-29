@@ -4,6 +4,7 @@ import java.util.Iterator;
 
 import entities.*;
 import managers.LevelState2;
+import util.AudioManager;
 import util.Constants;
 
 public class PowerUpManager {
@@ -34,6 +35,7 @@ public class PowerUpManager {
                     && p.getX() + p.getWidth() > paddle.getX()
                     && p.getY() < paddle.getY() + paddle.getHeight()
                     && p.getY() + p.getHeight() > paddle.getY()) {
+                AudioManager.playSound("sfx_power_up");
                 p.applyEffect(game);
                 iterator.remove();
             } else if (p.getY() > panelHeight) {

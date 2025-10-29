@@ -1,0 +1,319 @@
+Folder PATH listing for volume Acer
+Volume serial number is C61C-6DF7
+C:.
+¦   .gitignore
+¦   cautructhumuc.txt
+¦   pom.xml
+¦   README.md
+¦   savegame.dat
+¦   settings.json
+¦   
++---.idea
+¦       .gitignore
+¦       compiler.xml
+¦       jarRepositories.xml
+¦       misc.xml
+¦       vcs.xml
+¦       workspace.xml
+¦       
++---.vscode
+¦       settings.json
+¦       
++---Arkanoid
+¦   ¦   UML.drawio.svg
+¦   ¦   
+¦   +---.idea
+¦   ¦   +---libraries
+¦   +---main
+¦       ¦   Game.java
+¦       ¦   
+¦       +---engine
+¦       ¦       CollisionHandler.java
+¦       ¦       EntityManager.java
+¦       ¦       KeyboardManager.java
+¦       ¦       MouseManager.java
+¦       ¦       PowerUpManager.java
+¦       ¦       
+¦       +---entities
+¦       ¦       Ball.java
+¦       ¦       Brick.java
+¦       ¦       Button.java
+¦       ¦       ExpandPaddlePowerUp.java
+¦       ¦       ExplosiveBrick.java
+¦       ¦       ExtraLifePowerUp.java
+¦       ¦       FastBallPowerUp.java
+¦       ¦       GameObject.java
+¦       ¦       MovableObject.java
+¦       ¦       MultiBallPowerUp.java
+¦       ¦       NormalBrick.java
+¦       ¦       Paddle.java
+¦       ¦       PowerUp.java
+¦       ¦       Slider.java
+¦       ¦       StrongBrick.java
+¦       ¦       UnbreakableBrick.java
+¦       ¦       
+¦       +---lib
+¦       ¦       gson-2.10.1.jar
+¦       ¦       jline-3.26.1.jar
+¦       ¦       
+¦       +---managers
+¦       ¦       GameOverState.java
+¦       ¦       GameState.java
+¦       ¦       GameStateManager.java
+¦       ¦       LevelState2.java
+¦       ¦       MenuState.java
+¦       ¦       PauseState.java
+¦       ¦       Settings.java
+¦       ¦       SettingsState.java
+¦       ¦       TransitionState.java
+¦       ¦       VictoryState.java
+¦       ¦       
+¦       +---resources
+¦       ¦   ¦   level1.txt
+¦       ¦   ¦   level2.txt
+¦       ¦   ¦   level3.txt
+¦       ¦   ¦   level4.txt
+¦       ¦   ¦   level5.txt
+¦       ¦   ¦   
+¦       ¦   +---images
+¦       ¦   ¦   ¦   ball.png
+¦       ¦   ¦   ¦   
+¦       ¦   ¦   +---explosion
+¦       ¦   ¦   ¦       explosion_0.png
+¦       ¦   ¦   ¦       explosion_1.png
+¦       ¦   ¦   ¦       explosion_2.png
+¦       ¦   ¦   ¦       explosion_3.png
+¦       ¦   ¦   ¦       explosion_4.png
+¦       ¦   ¦   ¦       explosion_5.png
+¦       ¦   ¦   ¦       explosion_6.png
+¦       ¦   ¦   ¦       explosion_7.png
+¦       ¦   ¦   ¦       explosion_8.png
+¦       ¦   ¦   ¦       explosion_9.png
+¦       ¦   ¦   ¦       
+¦       ¦   ¦   +---Level1
+¦       ¦   ¦   ¦       BackGround1.jpg
+¦       ¦   ¦   ¦       BallLevel1.png
+¦       ¦   ¦   ¦       NormalBrickLevel1.png
+¦       ¦   ¦   ¦       PaddleLevel1.png
+¦       ¦   ¦   ¦       StrongBrick1Level1.png
+¦       ¦   ¦   ¦       StrongBrick2Level1.png
+¦       ¦   ¦   ¦       
+¦       ¦   ¦   +---Level2
+¦       ¦   ¦   ¦       BackGround2.jpg
+¦       ¦   ¦   ¦       BallLevel2.png
+¦       ¦   ¦   ¦       NormalBrickLevel2.png
+¦       ¦   ¦   ¦       PaddleLevel2.png
+¦       ¦   ¦   ¦       StrongBrick1Level2.png
+¦       ¦   ¦   ¦       StrongBrick2Level2.png
+¦       ¦   ¦   ¦       UnbreakableBrickLevel2.png
+¦       ¦   ¦   ¦       
+¦       ¦   ¦   +---Level3
+¦       ¦   ¦   ¦       BackGround3.jpg
+¦       ¦   ¦   ¦       BallLevel3.png
+¦       ¦   ¦   ¦       ExplosiveBrickLevel3.png
+¦       ¦   ¦   ¦       NormalBrickLevel3.png
+¦       ¦   ¦   ¦       PaddleLevel3.png
+¦       ¦   ¦   ¦       StrongBrick1Level3.png
+¦       ¦   ¦   ¦       StrongBrick2Level3.png
+¦       ¦   ¦   ¦       UnbreakableBrickLevel3.png
+¦       ¦   ¦   ¦       
+¦       ¦   ¦   +---Level4
+¦       ¦   ¦   ¦       BackGround4.jpg
+¦       ¦   ¦   ¦       BallLevel4.png
+¦       ¦   ¦   ¦       ExplosiveBrickLevel4.png
+¦       ¦   ¦   ¦       NormalBrickLevel4.png
+¦       ¦   ¦   ¦       PaddleLevel4.png
+¦       ¦   ¦   ¦       StrongBrick1Level4.png
+¦       ¦   ¦   ¦       StrongBrick2Level4.png
+¦       ¦   ¦   ¦       UnbreakableBrickLevel4.png
+¦       ¦   ¦   ¦       
+¦       ¦   ¦   +---Level5
+¦       ¦   ¦   ¦       BackGround5.jpg
+¦       ¦   ¦   ¦       BallLevel5.png
+¦       ¦   ¦   ¦       ExplosiveBrickLevel5.png
+¦       ¦   ¦   ¦       NormalBrickLevel5.png
+¦       ¦   ¦   ¦       PaddleLevel5.png
+¦       ¦   ¦   ¦       StrongBrick1Level5.png
+¦       ¦   ¦   ¦       StrongBrick2Level5.png
+¦       ¦   ¦   ¦       UnbreakableBrickLevel5.png
+¦       ¦   ¦   ¦       
+¦       ¦   ¦   +---PowerUp
+¦       ¦   ¦           expandpaddle.png
+¦       ¦   ¦           extralife.png
+¦       ¦   ¦           increasespeed.png
+¦       ¦   ¦           multiball.png
+¦       ¦   ¦           
+¦       ¦   +---slider
+¦       ¦   ¦       Knob.png
+¦       ¦   ¦       Track.png
+¦       ¦   ¦       TrackFill.png
+¦       ¦   ¦       
+¦       ¦   +---sounds
+¦       ¦           level_music_loop.wav
+¦       ¦           sfx_ball_hit.wav
+¦       ¦           sfx_ball_vs_brick.wav
+¦       ¦           sfx_ball_vs_explosive_brick.wav
+¦       ¦           sfx_ball_vs_paddle.wav
+¦       ¦           sfx_power_up.wav
+¦       ¦           
+¦       +---ui
+¦       ¦       BrickManager.java
+¦       ¦       
+¦       +---util
+¦               AssetManager.java
+¦               AudioManager.java
+¦               BrickType.java
+¦               Constants.java
+¦               GameState.java
+¦               GameStateData.java
+¦               LevelData.java
+¦               RenderUtil.java
+¦               
++---target
+    +---classes
+    ¦   ¦   Game$1.class
+    ¦   ¦   Game.class
+    ¦   ¦   
+    ¦   +---engine
+    ¦   ¦       CollisionHandler.class
+    ¦   ¦       EntityManager.class
+    ¦   ¦       KeyboardManager.class
+    ¦   ¦       MouseManager.class
+    ¦   ¦       PowerUpManager.class
+    ¦   ¦       
+    ¦   +---entities
+    ¦   ¦       Ball.class
+    ¦   ¦       Brick.class
+    ¦   ¦       Button.class
+    ¦   ¦       ExpandPaddlePowerUp.class
+    ¦   ¦       ExplosiveBrick.class
+    ¦   ¦       ExtraLifePowerUp.class
+    ¦   ¦       FastBallPowerUp.class
+    ¦   ¦       GameObject.class
+    ¦   ¦       MovableObject.class
+    ¦   ¦       MultiBallPowerUp.class
+    ¦   ¦       NormalBrick.class
+    ¦   ¦       Paddle.class
+    ¦   ¦       PowerUp.class
+    ¦   ¦       Slider.class
+    ¦   ¦       StrongBrick.class
+    ¦   ¦       UnbreakableBrick.class
+    ¦   ¦       
+    ¦   +---lib
+    ¦   ¦       gson-2.10.1.jar
+    ¦   ¦       jline-3.26.1.jar
+    ¦   ¦       
+    ¦   +---managers
+    ¦   ¦       GameOverState.class
+    ¦   ¦       GameState.class
+    ¦   ¦       GameStateManager.class
+    ¦   ¦       LevelState2.class
+    ¦   ¦       MenuState.class
+    ¦   ¦       PauseState.class
+    ¦   ¦       Settings.class
+    ¦   ¦       SettingsState.class
+    ¦   ¦       TransitionState.class
+    ¦   ¦       VictoryState.class
+    ¦   ¦       
+    ¦   +---resources
+    ¦   ¦   ¦   level1.txt
+    ¦   ¦   ¦   level2.txt
+    ¦   ¦   ¦   level3.txt
+    ¦   ¦   ¦   level4.txt
+    ¦   ¦   ¦   level5.txt
+    ¦   ¦   ¦   
+    ¦   ¦   +---images
+    ¦   ¦   ¦   ¦   ball.png
+    ¦   ¦   ¦   ¦   
+    ¦   ¦   ¦   +---explosion
+    ¦   ¦   ¦   ¦       explosion_0.png
+    ¦   ¦   ¦   ¦       explosion_1.png
+    ¦   ¦   ¦   ¦       explosion_2.png
+    ¦   ¦   ¦   ¦       explosion_3.png
+    ¦   ¦   ¦   ¦       explosion_4.png
+    ¦   ¦   ¦   ¦       explosion_5.png
+    ¦   ¦   ¦   ¦       explosion_6.png
+    ¦   ¦   ¦   ¦       explosion_7.png
+    ¦   ¦   ¦   ¦       explosion_8.png
+    ¦   ¦   ¦   ¦       explosion_9.png
+    ¦   ¦   ¦   ¦       
+    ¦   ¦   ¦   +---Level1
+    ¦   ¦   ¦   ¦       BackGround1.jpg
+    ¦   ¦   ¦   ¦       BallLevel1.png
+    ¦   ¦   ¦   ¦       NormalBrickLevel1.png
+    ¦   ¦   ¦   ¦       PaddleLevel1.png
+    ¦   ¦   ¦   ¦       StrongBrick1Level1.png
+    ¦   ¦   ¦   ¦       StrongBrick2Level1.png
+    ¦   ¦   ¦   ¦       
+    ¦   ¦   ¦   +---Level2
+    ¦   ¦   ¦   ¦       BackGround2.jpg
+    ¦   ¦   ¦   ¦       BallLevel2.png
+    ¦   ¦   ¦   ¦       NormalBrickLevel2.png
+    ¦   ¦   ¦   ¦       PaddleLevel2.png
+    ¦   ¦   ¦   ¦       StrongBrick1Level2.png
+    ¦   ¦   ¦   ¦       StrongBrick2Level2.png
+    ¦   ¦   ¦   ¦       UnbreakableBrickLevel2.png
+    ¦   ¦   ¦   ¦       
+    ¦   ¦   ¦   +---Level3
+    ¦   ¦   ¦   ¦       BackGround3.jpg
+    ¦   ¦   ¦   ¦       BallLevel3.png
+    ¦   ¦   ¦   ¦       ExplosiveBrickLevel3.png
+    ¦   ¦   ¦   ¦       NormalBrickLevel3.png
+    ¦   ¦   ¦   ¦       PaddleLevel3.png
+    ¦   ¦   ¦   ¦       StrongBrick1Level3.png
+    ¦   ¦   ¦   ¦       StrongBrick2Level3.png
+    ¦   ¦   ¦   ¦       UnbreakableBrickLevel3.png
+    ¦   ¦   ¦   ¦       
+    ¦   ¦   ¦   +---Level4
+    ¦   ¦   ¦   ¦       BackGround4.jpg
+    ¦   ¦   ¦   ¦       BallLevel4.png
+    ¦   ¦   ¦   ¦       ExplosiveBrickLevel4.png
+    ¦   ¦   ¦   ¦       NormalBrickLevel4.png
+    ¦   ¦   ¦   ¦       PaddleLevel4.png
+    ¦   ¦   ¦   ¦       StrongBrick1Level4.png
+    ¦   ¦   ¦   ¦       StrongBrick2Level4.png
+    ¦   ¦   ¦   ¦       UnbreakableBrickLevel4.png
+    ¦   ¦   ¦   ¦       
+    ¦   ¦   ¦   +---Level5
+    ¦   ¦   ¦   ¦       BackGround5.jpg
+    ¦   ¦   ¦   ¦       BallLevel5.png
+    ¦   ¦   ¦   ¦       ExplosiveBrickLevel5.png
+    ¦   ¦   ¦   ¦       NormalBrickLevel5.png
+    ¦   ¦   ¦   ¦       PaddleLevel5.png
+    ¦   ¦   ¦   ¦       StrongBrick1Level5.png
+    ¦   ¦   ¦   ¦       StrongBrick2Level5.png
+    ¦   ¦   ¦   ¦       UnbreakableBrickLevel5.png
+    ¦   ¦   ¦   ¦       
+    ¦   ¦   ¦   +---PowerUp
+    ¦   ¦   ¦           expandpaddle.png
+    ¦   ¦   ¦           extralife.png
+    ¦   ¦   ¦           increasespeed.png
+    ¦   ¦   ¦           multiball.png
+    ¦   ¦   ¦           
+    ¦   ¦   +---slider
+    ¦   ¦   ¦       Knob.png
+    ¦   ¦   ¦       Track.png
+    ¦   ¦   ¦       TrackFill.png
+    ¦   ¦   ¦       
+    ¦   ¦   +---sounds
+    ¦   ¦           level_music_loop.wav
+    ¦   ¦           sfx_ball_hit.wav
+    ¦   ¦           sfx_ball_vs_brick.wav
+    ¦   ¦           sfx_ball_vs_explosive_brick.wav
+    ¦   ¦           sfx_ball_vs_paddle.wav
+    ¦   ¦           sfx_power_up.wav
+    ¦   ¦           
+    ¦   +---ui
+    ¦   ¦       BrickManager.class
+    ¦   ¦       
+    ¦   +---util
+    ¦           AssetManager.class
+    ¦           AudioManager.class
+    ¦           BrickType.class
+    ¦           Constants.class
+    ¦           GameState.class
+    ¦           GameStateData.class
+    ¦           LevelData.class
+    ¦           RenderUtil.class
+    ¦           
+    +---test-classes
