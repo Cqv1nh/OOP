@@ -105,11 +105,11 @@ public class Slider {
         int mouseY = mouseManager.getMouseY();
 
         // 1. Kiểm tra xem chuột có đang nằm trên núm kéo (handle) không
-        boolean isHoveringHandle = handleBounds.contains(mouseX,mouseY);
+        isHovered = handleBounds.contains(mouseX,mouseY);
         // Cập nhật trạng thái isHovered (có thể dùng để thay đổi con trỏ chuột sau này)
-        isHovered = isHoveringHandle;
+        
         // 2. Xử lý BẮT ĐẦU kéo (Nhấn chuột trái LẦN ĐẦU TIÊN trên núm kéo)
-        if (mouseManager.isLeftJustPressed() && isHoveringHandle) {
+        if (mouseManager.isLeftJustPressed() && isHovered) {
             isDragging = true; // Bắt đầu kéo
             // System.out.println("Start Dragging"); // Debug (Tùy chọn)
         } 

@@ -114,9 +114,11 @@ public abstract class Brick extends GameObject {
     }
 
     // 28-10-25
-    @Override
+    // Trong entities/Brick.java
+    // Xóa @Override vì GameObject không còn update()
+    // @Override
     public void update() {
-        super.update(); // Gọi update của GameObject (mặc dù rỗng)
+        // super.update(); 
         updateFade();   // Gọi hàm làm mờ mà bạn đã định nghĩa
     }
 
@@ -149,5 +151,6 @@ public abstract class Brick extends GameObject {
         }
         
         return false;
+       
     }
 }
