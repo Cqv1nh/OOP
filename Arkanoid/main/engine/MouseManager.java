@@ -16,7 +16,11 @@ public class MouseManager implements MouseListener, MouseMotionListener {
     public MouseManager() {
     }
 
-
+    // leftJustPressed = leftPressed && !leftWasPressed;:
+    // Điều kiện này chỉ đúng (true) khi:
+    // leftPressed là true (nút đang được nhấn trong frame này).
+    // !leftWasPressed là true (nghĩa là leftWasPressed là false - nút chưa được nhấn trong frame trước).
+    // Ngay sau frame này, ở frame tiếp theo, leftWasPressed sẽ được cập nhật thành true (vì leftPressed vẫn đang là true nếu bạn giữ nút). Lúc đó, điều kiện !leftWasPressed sẽ trở thành false, làm cho leftJustPressed trở về false, kể cả khi bạn vẫn giữ nút.
     public void update() {
         // Cập nhật trạng thái "vừa nhấn" dựa trên trạng thái hiện tại và trạng thái cũ
         leftJustPressed = leftPressed && !leftWasPressed;

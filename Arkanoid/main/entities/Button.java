@@ -4,7 +4,6 @@ import java.awt.Color;
 import java.awt.Font;
 import java.awt.FontMetrics;
 import java.awt.Graphics2D;
-import java.awt.Rectangle;
 import java.awt.image.BufferedImage;
 
 
@@ -18,7 +17,6 @@ public class Button {
     private Color color;
     private Color textColor;
     private Font font;
-    private Rectangle bounds;
 
     private BufferedImage buttonImage;
     private BufferedImage buttonWhenHover;
@@ -33,7 +31,6 @@ public class Button {
         this.color = color;
         this.textColor = textColor;
         this.font = font;
-        this.bounds = new Rectangle(x, y, width, height);
     }
 
 
@@ -46,7 +43,6 @@ public class Button {
         this.textColor = Color.decode("#FFFAFA");
         this.color = new Color(0, 149, 221);
         this.font = new Font("Arial", Font.BOLD, 16);
-        this.bounds = new Rectangle(x, y, width, height);
     }
 
     public void drawImage(Graphics2D g, int mouseX, int mouseY) {

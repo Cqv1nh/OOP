@@ -49,6 +49,7 @@ public class MenuState extends GameState {
         for (Button button : buttons) {
             // Check if the mouse is hovering over this button
             if (button.isHovering(mm.getMouseX(), mm.getMouseY())) {
+                // Thoa man ca 2 dieu kien la chuot nam trong nut va dc nhan 
                 // Check if left mouse button was clicked
                 if (mm.isLeftJustPressed()) {
                     handleButtonClick(button.getText());
