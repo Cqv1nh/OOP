@@ -10,21 +10,21 @@ public class LevelData {
     // Sử dụng khối static để khởi tạo dữ liệu ngay khi lớp được tải
     static {
         // 0: Rỗng, 1: Normal, 2: Strong, 3: Explosive, 4: Unbreakable
-        /*  LEVEL 1: Giới thiệu cơ bản
+        // LEVEL 1: Giới thiệu cơ bản
         levels.put(1, new int[][]{
             {0, 0, 1, 1, 1, 1, 1, 1, 1, 0, 0},
             {0, 1, 1, 1, 2, 2, 2, 1, 1, 1, 0},
             {1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1}
             // {1, 0, 0}
-        }); */
+        }); 
 
         // LEVEL 1: Giới thiệu cơ bản
-        levels.put(1, new int[][]{
-            {0, 0, 1, 1, 2, 2, 2, 1, 1, 0, 0},
-            {0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0},
-            {1, 1, 3, 1, 1, 3, 1, 1, 3, 1, 1}
-            // {1, 0, 0}
-        });
+        // levels.put(1, new int[][]{
+        //     {0, 0, 1, 1, 2, 2, 2, 1, 1, 0, 0},
+        //     {0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0},
+        //     {1, 1, 3, 1, 1, 3, 1, 1, 3, 1, 1}
+        //     // {1, 0, 0}
+        // });
 
         // LEVEL 2: Thêm gạch Unbreakable và Strong
         levels.put(2, new int[][]{

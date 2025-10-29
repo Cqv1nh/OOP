@@ -6,7 +6,7 @@ import entities.Paddle;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 
-public class KeybroadManager implements KeyListener {
+public class KeyboardManager implements KeyListener {
     private final boolean[] keys = new boolean[256];
     private final boolean[] justPressed = new boolean[256];
     private final boolean[] justReleased = new boolean[256];

@@ -1,6 +1,6 @@
 package managers;
 
-import engine.KeybroadManager;
+import engine.KeyboardManager;
 import util.Constants;
 
 import java.awt.*;
@@ -10,7 +10,7 @@ import static util.RenderUtil.drawCenteredString; // DÒNG MỚI (ĐÚNG)
 
 public class VictoryState extends GameState {
 
-    private KeybroadManager km;
+    private KeyboardManager km;
 
     public VictoryState(GameStateManager manager) {
         super(manager);

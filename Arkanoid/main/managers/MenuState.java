@@ -1,7 +1,7 @@
 package managers;
 
 
-import engine.KeybroadManager;
+import engine.KeyboardManager;
 import engine.MouseManager;
 import entities.Button;
 import util.GameStateData; // Import lớp lưu trữ
@@ -16,7 +16,7 @@ import java.util.List;
 
 public class MenuState extends GameState {
     private List<Button> buttons;
-    private KeybroadManager km;
+    private KeyboardManager km;
     private MouseManager mm;
 
     public MenuState(GameStateManager manager) {

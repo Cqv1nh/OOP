@@ -1,7 +1,7 @@
 package managers;
 
 
-import engine.KeybroadManager;
+import engine.KeyboardManager;
 import engine.MouseManager;
 
 import java.awt.Graphics2D;
@@ -9,7 +9,7 @@ import java.awt.Graphics2D;
 
 public abstract class GameState {
     protected GameStateManager manager;
-    protected KeybroadManager km = new KeybroadManager();
+    protected KeyboardManager km = new KeyboardManager();
     protected MouseManager mm = new MouseManager();
 
     public GameState(GameStateManager manager) {

@@ -1,7 +1,6 @@
 package util;
 
 import javax.imageio.ImageIO;
-import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.io.InputStream;
@@ -84,7 +83,6 @@ public class AssetManager {
         strongBrick_1hit.put(5, loadImage("/resources/images/Level5/StrongBrick2Level5.png"));
 
         // explosiveBrick
-        explosiveBrick.put(1, loadImage("/resources/images/Level1/ExplosiveBrickLevel1.png"));
         explosiveBrick.put(3, loadImage("/resources/images/Level3/ExplosiveBrickLevel3.png"));
         explosiveBrick.put(4, loadImage("/resources/images/Level4/ExplosiveBrickLevel4.png"));
         explosiveBrick.put(5, loadImage("/resources/images/Level5/ExplosiveBrickLevel5.png"));

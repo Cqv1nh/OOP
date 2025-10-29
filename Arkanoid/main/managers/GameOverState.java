@@ -1,6 +1,6 @@
 package managers;
 
-import engine.KeybroadManager;
+import engine.KeyboardManager;
 import engine.MouseManager;
 import entities.Button;
 
@@ -11,7 +11,7 @@ import java.util.List;
 
 public class GameOverState extends GameState {
     private List<Button> buttons;
-    private KeybroadManager km;
+    private KeyboardManager km;
     private MouseManager mm;
 
     public GameOverState(GameStateManager manager) {

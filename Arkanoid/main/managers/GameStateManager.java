@@ -1,6 +1,6 @@
 package managers;
 
-import engine.KeybroadManager;
+import engine.KeyboardManager;
 import engine.MouseManager;
 import util.AudioManager;
 
@@ -13,7 +13,7 @@ import java.util.HashSet;
 public class GameStateManager {
     private GameState currentState;
     private Map<String, GameState> states;
-    private KeybroadManager km;
+    private KeyboardManager km;
     private MouseManager mm ;
 
     // Game data shared across states
@@ -26,7 +26,7 @@ public class GameStateManager {
     // Thêm biến để lưu trữ LevelState2 gần đây nhất
     private LevelState2 lastLevelStateInstance;
 
-    public GameStateManager(KeybroadManager km, MouseManager mm) {
+    public GameStateManager(KeyboardManager km, MouseManager mm) {
         states = new HashMap<>();
         
         AudioManager.loadSound("/resources/sounds/level_music_loop.wav", "background_music");
@@ -213,7 +213,7 @@ public class GameStateManager {
         return mm;
     }
 
-    public KeybroadManager getKm() {
+    public KeyboardManager getKm() {
         return km;
     }
 
@@ -221,7 +221,7 @@ public class GameStateManager {
         this.mm = mm;
     }
 
-    public void setKm(KeybroadManager km) {
+    public void setKm(KeyboardManager km) {
         this.km = km;
     }
 

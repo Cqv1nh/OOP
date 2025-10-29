@@ -1,5 +1,5 @@
 
-import engine.KeybroadManager;
+import engine.KeyboardManager;
 import engine.MouseManager;
 import managers.GameStateManager;
 import util.AssetManager;
@@ -14,7 +14,7 @@ public class Game extends JPanel implements Runnable {
     private GameStateManager gameStateManager;
     private Thread thread;
     private boolean isRunning;
-    private KeybroadManager km = new KeybroadManager();
+    private KeyboardManager km = new KeyboardManager();
     private MouseManager mm = new MouseManager();
 
 
