@@ -9,9 +9,10 @@ import javax.swing.*;
 import java.awt.*;
 
 import static java.lang.Thread.sleep;
-
+// Game.java implements Runnable.
 public class Game extends JPanel implements Runnable {
     private GameStateManager gameStateManager;
+    // Một Thread mới (thread = new Thread(this);) được tạo, lấy chính đối tượng Game (là một Runnable) làm nhiệm vụ.
     private Thread thread;
     private boolean isRunning;
     private KeyboardManager km = new KeyboardManager();
@@ -41,23 +42,26 @@ public class Game extends JPanel implements Runnable {
 
         System.out.println("Game initialized successfully");
     }
-
+    // Thread Game (Luồng 1 - Logic):
     @Override
     public void run() {
         double delta = 0;
         long lastTime = System.nanoTime();
         long currentTime;
-
+        // isRunning = true khi startGame
+        // isRunning = false khi stopGame
         while (isRunning) {
             currentTime = System.nanoTime();
             delta += (currentTime - lastTime) / UPDATE_INTERVAL;
             lastTime = currentTime;
 
             if (delta >= 1) {
+                // Cập nhật input (km.update(), mm.update()).
                 mm.update();
                 km.update();
+                // Cập nhật logic game (gameStateManager.update())
                 gameStateManager.update();
-
+                // Yêu cầu vẽ lại (repaint())
                 repaint();
                 delta--;
             }
@@ -71,7 +75,11 @@ public class Game extends JPanel implements Runnable {
 
         }
     }
-
+    // Event Dispatch Thread (EDT) (Luồng 2 - Giao diện):
+    // Đây là luồng mặc định của Java Swing, chịu trách nhiệm xử lý tất cả các tương tác giao diện.
+    // Khi luồng game (Luồng 1) gọi repaint(), nó không vẽ ngay lập tức. Nó chỉ yêu cầu EDT rằng lúc nào rảnh thì vẽ lại.
+    // EDT, khi đến lượt, sẽ gọi phương thức paintComponent(Graphics g) của Game.java
+    // Luồng này sau đó thực thi gameStateManager.render(g2d) để vẽ mọi thứ lên màn hình.
     @Override
     protected void paintComponent(Graphics g) {
         super.paintComponent(g); // Xóa nền cũ
@@ -93,27 +101,16 @@ public class Game extends JPanel implements Runnable {
         }
     }
 
-    // // Helper method to get current state name
-    // private String getCurrentStateName() {
-    //     if (gameStateManager.getCurrentState() == null) {
-    //         return "unknown";
-    //     }
-
-    //     // Check instance type to determine state name
-    //     if (gameStateManager.getCurrentState() instanceof LevelState2 ) {
-    //         return "level";
-    //     }
-    //     // You can add more checks for other states if needed
-    //     // For now, we'll use a simple approach
-
-    //     return "menu"; // Default fallback
-    // }
-
     public void startGame() {
         if (thread == null) {
+            // Tao 1 luong moi
             thread = new Thread(this);
             isRunning = true;
+            // Khi game.startGame() được gọi, thread.start() được thực thi.
             thread.start();
+            // thread.start() tự động gọi phương thức run() của lớp Game.
+            // cả hai luồng hoạt động độc lập và song song. Hệ điều hành sẽ liên tục chuyển đổi CPU giữa hai luồng (và các luồng khác), 
+            // tạo cảm giác chúng đang chạy cùng một lúc.
         }
     }
 
@@ -121,11 +118,17 @@ public class Game extends JPanel implements Runnable {
         isRunning = false;
         try {
             if (thread != null) {
+                // Lệnh này bảo luồng hiện tại (thường là luồng chính hoặc luồng 
+                // giao diện) phải chờ cho đến khi luồng game (thread) 
+                // tắt hẳn (tức là đã thoát ra khỏi phương thức run()).
                 thread.join();
             }
         } catch (InterruptedException e) {
             e.printStackTrace();
             Thread.currentThread().interrupt(); // Re-interrupt thread
+            // Nếu luồng hiện tại bị gián đoạn, dòng này sẽ đặt lại 
+            // "cờ gián đoạn" để code khác (nếu có) sau đó có 
+            // thể biết rằng nó đã bị gián đoạn.
         }
     }
 
@@ -134,6 +137,7 @@ public class Game extends JPanel implements Runnable {
         return gameStateManager;
     }
 
+    // Game.main(), một JFrame (cửa sổ) được tạo ra.
     public static void main(String[] args) {
         SwingUtilities.invokeLater(() -> {
             AssetManager.loadImages(); // được gọi chỉ một lần duy nhất khi game khởi động

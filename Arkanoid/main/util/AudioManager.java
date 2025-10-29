@@ -6,6 +6,8 @@ import java.io.InputStream;
 import java.util.HashMap;
 import java.util.Map;
 
+// Âm thanh: Lớp AudioManager đã tự động chạy trên các luồng ngầm (background threads) của riêng Java. 
+// Không cần tạo luồng riêng cho nó.
 public class AudioManager {
 
     // Dùng Map để lưu trữ các Clip âm thanh, key là tên file (hoặc một định danh)

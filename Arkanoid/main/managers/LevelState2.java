@@ -5,6 +5,7 @@ import entities.Ball;
 import entities.Brick;
 import entities.Paddle;
 import entities.PowerUp;
+import entities.ExplosiveBrick;
 import ui.BrickManager; // Đảm bảo import đúng
 import util.*;
 
@@ -47,7 +48,6 @@ public class LevelState2 extends GameState{
         super(manager);
         km = manager.getKm();
         mm = manager.getMm();
-
     }
 
     public void initLevel(int levelNum, int score, int lives, HashSet<Point> remainingBrickIndices) {
@@ -58,8 +58,7 @@ public class LevelState2 extends GameState{
                 Constants.PADDLE_WIDTH,Constants.PADDLE_HEIGHT,0,0,null);
         paddle.setSpeed(Constants.PADDLE_SPEED);
 
-        Ball initialBall = new Ball();
-        initialBall.setSpeed(Constants.BALL_SPEED);
+        Ball initialBall = new Ball(); // da co Speed roi
         balls = new ArrayList<>();
         balls.add(initialBall);
         powerUps = new ArrayList<>();
@@ -147,7 +146,6 @@ public class LevelState2 extends GameState{
 
 
         km.updatePaddle(paddle);
-
 
         // 1. Cập nhật vị trí các thực thể (Bóng, Thanh trượt)
         entityManager.updateEntities(this, panelWidth);
@@ -241,10 +239,10 @@ public class LevelState2 extends GameState{
 
             // Vẽ Bricks
             for (Brick b : brickList) {
-                if (b instanceof entities.ExplosiveBrick) {
-                    entities.ExplosiveBrick eb = (entities.ExplosiveBrick) b;
+                if (b instanceof ExplosiveBrick) {
+                    ExplosiveBrick eb = (ExplosiveBrick) b;
         
-                    if (eb.isExploding() && eb.getCurrentFrame() < eb.getTotalFrames()) {
+                    if (eb.isExploding() && eb.getCurrentFrame() < ExplosiveBrick.getTotalFrames()) {
                         int frameIndex = eb.getCurrentFrame();
                         BufferedImage frameImg = AssetManager.explosionFrames.get(frameIndex);
             
