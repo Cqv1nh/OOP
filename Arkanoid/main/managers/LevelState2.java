@@ -435,6 +435,15 @@ public class LevelState2 extends GameState{
 
     // Thêm phương thức reset vị trí bóng và paddle
     private void resetBallAndPaddle() {
+        // 1. GỌI HÀM DỌN DẸP LÊN TRÊN ĐẦU
+        // Thao tác này sẽ gọi removeEffect() CỦA các power-up
+        // đưa thanh trượt đang LỚN về BÌNH THƯỜNG và bóng đang NHANH về BÌNH THƯỜNG.
+        // Phải gọi resetPowerups trước vì nếu gọi sau các code reset vị trí và kích thước bên dưới
+        // thì sẽ làm paddle nhỏ hơn và tốc độ bóng chậm hơn.
+        // Vì bản chất clearEffectsAndPowerups gọi p.removeEffect(this)
+        clearEffectsAndPowerups();
+
+        // 2. SAU ĐÓ mới thực hiện reset vị trí và kích thước
         paddle.setX(Constants.INIT_PADDLE_X);
         paddle.setY(Constants.INIT_PADDLE_Y);
         paddle.setWidth(Constants.PADDLE_WIDTH); // Reset cả chiều rộng paddle
@@ -457,6 +466,7 @@ public class LevelState2 extends GameState{
                 iterator.remove();
             }
         }
+        // Kiểm tra xem danh sách các power-up đang rơi trên màn hình có tồn tại không.
         if (powerUps != null) {
             powerUps.clear();
         }
