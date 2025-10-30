@@ -167,13 +167,18 @@ public class LevelState2 extends GameState{
             }
         }
 
-        if (checkWin()) {
+        if (checkWin()) { // Xu ly khi qua 1 level
             System.out.println("Level " + levelNum + " Won!");
             manager.loadNextLevel(); // Sửa thành tên mới
             return;
         }
 
         if (!isAlive()) {
+            System.out.println("Game Over. Saving score...");
+            // Ghi lại điểm cao khi thua
+            // (this.score là điểm cuối cùng, this.levelNum là level cao nhất đạt được)
+            long totalPlayTime = System.currentTimeMillis() - manager.getGameRunStartTime();
+            HighScoreManager.addScore(new ScoreEntry(this.score, totalPlayTime, this.levelNum));
             manager.setState("game over");
             return;
         }

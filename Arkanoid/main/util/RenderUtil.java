@@ -19,4 +19,22 @@ public class RenderUtil {
         g.drawString(text, x + xOffset, y + yOffset);
     }
 
+    /**
+     * (HÀM MỚI) Vẽ một chuỗi ký tự căn giữa CỘT.
+     *
+     * @param g         Đối tượng Graphics
+     * @param text      Chuỗi cần vẽ
+     * @param colStartX Tọa độ X BẮT ĐẦU của cột
+     * @param colWidth  ĐỘ RỘNG của cột
+     * @param y         Tọa độ Y để vẽ
+     */
+    public static void drawCenteredStringInColumn(Graphics g, String text, int colStartX, int colWidth, int y) {
+        FontMetrics fm = g.getFontMetrics();
+        int textWidth = fm.stringWidth(text);
+        
+        // Tính vị trí x để văn bản được căn giữa cột
+        int x = colStartX + (colWidth - textWidth) / 2;
+        
+        g.drawString(text, x, y);
+    }
 }

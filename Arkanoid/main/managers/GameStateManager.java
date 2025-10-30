@@ -3,6 +3,8 @@ package managers;
 import engine.KeyboardManager;
 import engine.MouseManager;
 import util.AudioManager;
+import util.HighScoreManager;
+import util.ScoreEntry;
 
 import java.awt.Graphics2D;
 import java.util.HashMap;
@@ -21,10 +23,11 @@ public class GameStateManager {
     private int score;
     private int lives;
     private int numberOfLevel = 5;
-    private boolean isLoadingGame = false; // <-- THÊM BIẾN NÀY
+    private boolean isLoadingGame = false;
     // Thêm một biến boolean để đánh dấu xem chúng ta có đang trong quá trình load game hay không.
     // Thêm biến để lưu trữ LevelState2 gần đây nhất
     private LevelState2 lastLevelStateInstance;
+    private long gameRunStartTime;
 
     public GameStateManager(KeyboardManager km, MouseManager mm) {
         states = new HashMap<>();
@@ -38,17 +41,6 @@ public class GameStateManager {
         AudioManager.loadSound("/resources/sounds/sfx_power_up.wav", "sfx_power_up");
         AudioManager.loadSound("/resources/sounds/sfx_ball_vs_explosive_brick.wav", "sfx_ball_vs_explosive_brick");
 
-        // Đảm bảo đóng tài nguyên âm thanh khi cửa sổ đóng
-        // addWindowListener(new java.awt.event.WindowAdapter() {
-        //     @Override
-        //     public void windowClosing(java.awt.event.WindowEvent windowEvent) {
-        //         AudioManager.closeAllSounds();
-        //     }
-        // });
-        // Thinh sua loi
-        // Kích hoạt nhạc nền ngay khi game khởi động (vì trạng thái ban đầu là GAMESTART)
-        // AudioManager.playBackgroundMusic("background_music"); // <-- XÓA DÒNG NÀY
-
         this.km = km;
         this.mm = mm;
 
@@ -60,6 +52,7 @@ public class GameStateManager {
         states.put("settings", new SettingsState(this));
         states.put("victory", new VictoryState(this));
         states.put("transition", new TransitionState(this));
+        states.put("highscores", new HighScoreState(this));
 
         // Initialize game data
         currentLevel = 1;
@@ -112,6 +105,7 @@ public class GameStateManager {
         currentLevel = 1;
         score = 0;
         lives = 3;
+        gameRunStartTime = System.currentTimeMillis(); // Bat dau tinh gio
         loadLevel(currentLevel);
     }
 
@@ -139,6 +133,12 @@ public class GameStateManager {
         this.lives = lives;
         int totalLevels = util.LevelData.getTotalLevels(); // Lấy tổng số level động
         if (levelNum > numberOfLevel) {
+            // Ghi lại điểm cao khi thắng toàn bộ game
+            // (this.score là điểm số cuối cùng, totalLevels là level cao nhất đã hoàn thành)
+            System.out.println("Victory! Saving final score...");
+            long totalPlayTime = System.currentTimeMillis() - this.gameRunStartTime;
+            HighScoreManager.addScore(new ScoreEntry(this.score, totalPlayTime, totalLevels));
+            // Da choi het ca 5 man choi 
             setState("victory");
             return;
         }
@@ -241,5 +241,13 @@ public class GameStateManager {
     // THÊM PHƯƠNG THỨC GETTER NÀY (để PauseState sử dụng)
     public LevelState2 getLastLevelStateInstance() {
         return lastLevelStateInstance;
+    }
+    
+    public long getGameRunStartTime() {
+        return gameRunStartTime;
+    }
+
+    public void setGameRunStartTime(long time) {
+         this.gameRunStartTime = time;
     }
 }

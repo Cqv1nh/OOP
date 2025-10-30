@@ -27,8 +27,9 @@ public class MenuState extends GameState {
         buttons = new ArrayList<>();
         buttons.add(new Button(275, 170, 250, 50, "New Game"));
         buttons.add(new Button(275, 240, 250, 50, "Load Game")); // Nút này sẽ được xử lý
-        buttons.add(new Button(275, 310, 250, 50, "Settings"));
-        buttons.add(new Button(275, 380, 250, 50, "Quit"));
+        buttons.add(new Button(275, 310, 250, 50, "High Scores")); // Them nut
+        buttons.add(new Button(275, 380, 250, 50, "Settings"));
+        buttons.add(new Button(275, 450, 250, 50, "Quit"));
     }
 
     @Override
@@ -100,6 +101,11 @@ public class MenuState extends GameState {
                 loadGame(); // Gọi hàm tải game
                 // manager.loadGame();
                 break;
+            
+            case "High Scores":
+                manager.setState("highscores"); // Chuyen sang state diem cao
+                // Dc thuc hien trong GameStateManager
+                break;
 
             case "Settings":
                 // Switch to options/settings state
@@ -144,12 +150,16 @@ public class MenuState extends GameState {
                                 loadedData.score, 
                                 loadedData.lives, 
                                 loadedData.remainingBrickIndices);
+
+            // Khi load game, thời gian chơi bắt đầu lại từ thời điểm load
+            manager.setGameRunStartTime(System.currentTimeMillis());
             
         } catch (IOException | ClassNotFoundException e) {
             System.err.println("Error loading game: " + e.getMessage());
             e.printStackTrace();
             // Có thể hiển thị thông báo lỗi file lưu bị hỏng
             // Cân nhắc xóa file lưu bị lỗi: saveFile.delete();
+
         }
     }    
 }
