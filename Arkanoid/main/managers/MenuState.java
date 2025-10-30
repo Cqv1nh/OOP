@@ -4,11 +4,11 @@ package managers;
 import engine.KeyboardManager;
 import engine.MouseManager;
 import entities.Button;
-import util.GameStateData; // Import lớp lưu trữ
-import java.io.FileInputStream; // Import để đọc file
-import java.io.IOException;     // Import để xử lý lỗi
-import java.io.ObjectInputStream; // Import để đọc đối tượng
-import java.io.File; // Import để kiểm tra file tồn tại
+// import util.GameStateData; // Import lớp lưu trữ
+// import java.io.FileInputStream; // Import để đọc file
+// import java.io.IOException;     // Import để xử lý lỗi
+// import java.io.ObjectInputStream; // Import để đọc đối tượng
+// import java.io.File; // Import để kiểm tra file tồn tại
 // Cần Point
 import java.awt.*;
 import java.util.ArrayList;
@@ -98,8 +98,9 @@ public class MenuState extends GameState {
 
             case "Load Game":
                 // Load a saved game (implement your save/load system)
-                loadGame(); // Gọi hàm tải game
-                // manager.loadGame();
+                // Nút "Load Game" không nên tự động tải file nữa, 
+                // mà chuyển sang một GameState mới là LoadGameState
+                manager.setState("loadgame");
                 break;
             
             case "High Scores":
@@ -122,44 +123,6 @@ public class MenuState extends GameState {
             default:
                 System.err.println("Unknown button: " + buttonText);
                 break;
-        }
-    }
-
-    // === THÊM HÀM TẢI GAME ===
-    private void loadGame() {
-        File saveFile = new File("savegame.dat");
-        // Kiểm tra xem file lưu có tồn tại không
-        if (!saveFile.exists()) {
-            System.out.println("No save file found.");
-            return;
-        }
-        try (FileInputStream fis = new FileInputStream(saveFile);
-             ObjectInputStream ois = new ObjectInputStream(fis)) {
-
-            GameStateData loadedData = (GameStateData) ois.readObject(); // Đọc đối tượng
-
-            System.out.println("Game loaded successfully! Level: " + loadedData.currentLevel +
-                               ", Score: " + loadedData.score + ", Lives: " + loadedData.lives);
-
-            // 1. Đặt cờ báo hiệu đang load game
-            manager.setLoadingGameFlag(true);
-
-            // 1. Tải level tương ứng VỚI DỮ LIỆU ĐÃ LOAD
-            // 2. Gọi loadLevel phiên bản đầy đủ, truyền TẤT CẢ dữ liệu đã load
-            manager.loadLevel(loadedData.currentLevel, 
-                                loadedData.score, 
-                                loadedData.lives, 
-                                loadedData.remainingBrickIndices);
-
-            // Khi load game, thời gian chơi bắt đầu lại từ thời điểm load
-            manager.setGameRunStartTime(System.currentTimeMillis());
-            
-        } catch (IOException | ClassNotFoundException e) {
-            System.err.println("Error loading game: " + e.getMessage());
-            e.printStackTrace();
-            // Có thể hiển thị thông báo lỗi file lưu bị hỏng
-            // Cân nhắc xóa file lưu bị lỗi: saveFile.delete();
-
         }
     }    
 }

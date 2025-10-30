@@ -21,6 +21,11 @@ import static util.RenderUtil.drawCenteredString; // DÒNG MỚI (ĐÚNG)
 public class PauseState extends GameState {
 
     private List<Button> buttons; // Them danh sach button
+    // Kích thước và vị trí của khung Pause
+    private final int FRAME_X = 200;
+    private final int FRAME_Y = 100;
+    private final int FRAME_WIDTH = 400;
+    private final int FRAME_HEIGHT = 450; // Tăng chiều cao khung để chứa nhiều nút hơn
 
     public PauseState(GameStateManager manager) {
         super(manager);
@@ -29,10 +34,30 @@ public class PauseState extends GameState {
         
         // Them button
         buttons = new ArrayList<>();
+
+        // Căn giữa các nút trong khung pause
+        int buttonWidth = 200;
+        int buttonHeight = 50;
+        int startButtonX = FRAME_X + (FRAME_WIDTH - buttonWidth) / 2;
+        int currentButtonY = FRAME_Y + 70; // Vị trí Y bắt đầu cho nút đầu tiên (Resume)
+        int spacing = 60; // Khoảng cách giữa các nút
+
         // Resume Button 
-        buttons.add(new Button(300, 200, 200, 50, "Resume"));
+        buttons.add(new Button(startButtonX, currentButtonY, buttonWidth, buttonHeight, "Resume"));
         // Nút Save and Quit (lưu và về menu)
-        buttons.add(new Button(300, 270, 200, 50, "Save and Quit"));
+        // Them cac nut slot 1 2 3 va nut chuyen ve menu 
+        currentButtonY += spacing;
+        buttons.add(new Button(startButtonX, currentButtonY, buttonWidth, buttonHeight, "Save Slot 1"));
+
+        currentButtonY += spacing;
+        buttons.add(new Button(startButtonX, currentButtonY, buttonWidth, buttonHeight, "Save Slot 2"));
+
+        currentButtonY += spacing;
+        buttons.add(new Button(startButtonX, currentButtonY, buttonWidth, buttonHeight, "Save Slot 3"));
+        
+        currentButtonY += spacing; // Tăng khoảng cách thêm chút nếu muốn tách biệt
+        buttons.add(new Button(startButtonX, currentButtonY, buttonWidth, buttonHeight, "Back to Menu"));
+
     }
 
     @Override
@@ -47,9 +72,6 @@ public class PauseState extends GameState {
 
     @Override
     public void update() {
-        // km.update(); Khong can goi lai update
-        // mm.update();
-        // Dùng isKeyJustPressed ===
         // Nhấn ESC hoặc R để Resume (quay lại game)
         if (km.isKeyJustPressed(KeyEvent.VK_R) || km.isKeyJustPressed(KeyEvent.VK_ESCAPE)) {
             manager.setState("level"); // Quay lại LevelState2
@@ -77,6 +99,7 @@ public class PauseState extends GameState {
             levelState.render(g); // Vẽ lại màn hình game
         }
 
+        
         // Vẽ một lớp màu đen bán trong suốt lên trên
         g.setColor(new Color(0, 0, 0, 150)); // Màu đen với độ trong suốt alpha=150
         g.fillRect(0, 0, Constants.SCREEN_WIDTH, Constants.SCREEN_HEIGHT);
@@ -85,16 +108,16 @@ public class PauseState extends GameState {
 
         // Vẽ khung Pause
         g.setColor(Color.decode("#FAB12F"));
-        g.fillRect(200, 100, 400, 300); // Tọa độ và kích thước khung Pause
+        g.fillRect(FRAME_X, FRAME_Y, FRAME_WIDTH, FRAME_HEIGHT); // Tọa độ và kích thước khung Pause
         g.setColor(Color.BLACK);
-        g.drawRect(200, 100, 400, 300); // Viền khung
+        g.drawRect(FRAME_X, FRAME_Y, FRAME_WIDTH, FRAME_HEIGHT); // Viền khung
 
         // Vẽ chữ "GAME PAUSED"
         g.setColor(Color.decode("#DD0303"));
         g.setFont(new Font("Arial", Font.BOLD, 36));
         // Căn giữa trong khung Pause
-        drawCenteredString("GAME PAUSED", Constants.SCREEN_WIDTH, Constants.SCREEN_HEIGHT,
-                g, 0, -120); // Điều chỉnh Y offset
+        // Căn giữa trong khung Pause, điều chỉnh Y offset cho phù hợp với khung mới
+        drawCenteredString("GAME PAUSED", FRAME_WIDTH, FRAME_HEIGHT, g, FRAME_X, FRAME_Y - 50); // Offset trong khung
 
         // === VẼ CÁC BUTTON ===
         for (Button button : buttons) {
@@ -105,8 +128,7 @@ public class PauseState extends GameState {
         // Vẽ hướng dẫn nhỏ ở dưới (tùy chọn)
         g.setColor(Color.WHITE);
         g.setFont(new Font("Arial", Font.PLAIN, 14));
-        drawCenteredString("Press ESC or R to Resume", Constants.SCREEN_WIDTH, Constants.SCREEN_HEIGHT,
-                g, 0, 150); // Điều chỉnh Y offset
+        drawCenteredString("Press ESC or R to Resume", Constants.SCREEN_WIDTH, Constants.SCREEN_HEIGHT, g, 0, 200);
     }
 
     // Ham xu ly click
@@ -115,8 +137,19 @@ public class PauseState extends GameState {
             case "Resume":
                 manager.setState("level"); // Quay lại game
                 break;
-            case "Save and Quit":
-                saveGame(); // Gọi hàm lưu game
+            case "Save Slot 1":
+                saveGame(1); // Gọi hàm save với số slot
+                manager.setState("menu");
+                break;
+            case "Save Slot 2":
+                saveGame(2); // Gọi hàm save với số slot
+                manager.setState("menu");
+                break;
+            case "Save Slot 3":
+                saveGame(3); // Gọi hàm save với số slot
+                manager.setState("menu");
+                break;
+            case "Back to Menu":
                 manager.setState("menu"); // Quay về menu chính
                 break;
             default:
@@ -127,7 +160,9 @@ public class PauseState extends GameState {
 
 
     // === THÊM HÀM LƯU GAME ===
-    private void saveGame() {
+    // Co them chi so luu danh cho 3 file luu
+    // loadGame nam trong LoadGameState
+    private void saveGame(int slotNumber) {
         LevelState2 lastActiveLevelState = manager.getLastLevelStateInstance(); // Lấy state level hiện tại
         if (lastActiveLevelState != null) {
             int level = manager.getCurrentLevel();
@@ -173,7 +208,9 @@ public class PauseState extends GameState {
             }
             // Tao doi tuong du lieu
             GameStateData data = new GameStateData(level, score, lives, remainingBrickIndices);
-            try (FileOutputStream fos = new FileOutputStream("savegame.dat");
+            // Sua ten file luu
+            String filename = "savegame" + slotNumber + ".dat";
+            try (FileOutputStream fos = new FileOutputStream(filename);
                 ObjectOutputStream oos = new ObjectOutputStream(fos)) {
 
                 oos.writeObject(data);

@@ -53,6 +53,7 @@ public class GameStateManager {
         states.put("victory", new VictoryState(this));
         states.put("transition", new TransitionState(this));
         states.put("highscores", new HighScoreState(this));
+        states.put("loadgame", new LoadGameState(this));
 
         // Initialize game data
         currentLevel = 1;
