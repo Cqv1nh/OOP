@@ -37,11 +37,33 @@ public class AssetManager {
     public static BufferedImage buttonHover;
     // Them cac powerUp khac neu can
 
+    public static BufferedImage UkFlag;
+    public static BufferedImage vietnamFlag;
+    public static BufferedImage germanyFlag;
+    public static BufferedImage franceFlag;
+    public static BufferedImage spainFlag;
+    public static BufferedImage portugalFlag;
+    public static BufferedImage netherlandsFlag;
+    public static BufferedImage russiaFlag;
+    public static BufferedImage romaniaFlag;
+    public static BufferedImage italyFlag;
+
     /**
      * Tải tất cả các hình ảnh từ thư mục /resources/images vào bộ nhớ.
      * Phương thức này nên được gọi một lần duy nhất khi game khởi động.
      */
     public static void loadImages() {
+
+        UkFlag = loadImage("/resources/flag/Flag_of_the_United_Kingdom.png");
+        vietnamFlag = loadImage("/resources/flag/Flag_of_Vietnam.png");
+        germanyFlag = loadImage("/resources/flag/Flag_of_Germany.png");
+        franceFlag = loadImage("/resources/flag/Flag_of_France.png");
+        spainFlag = loadImage("/resources/flag/Flag_of_Spain.png");
+        portugalFlag = loadImage("/resources/flag/Flag_of_Portugal.png");
+        netherlandsFlag = loadImage("/resources/flag/Flag_of_theNetherlands.png");
+        russiaFlag = loadImage("/resources/flag/Flag_of_Russia.png");
+        romaniaFlag = loadImage("/resources/flag/Flag_of_Romania.png");
+        italyFlag = loadImage("/resources/flag/Flag_of_Italy.png");
         
         // Tải hình ảnh power-up. Sửa code:
         extraLife = loadImage("/resources/images/PowerUp/extralife.png");
