@@ -55,7 +55,7 @@ public class PauseState extends GameState {
         currentButtonY += spacing;
         buttons.add(new Button(startButtonX, currentButtonY, buttonWidth, buttonHeight, "Save Slot 3"));
         
-        currentButtonY += spacing; // Tăng khoảng cách thêm chút nếu muốn tách biệt
+        currentButtonY += spacing; 
         buttons.add(new Button(startButtonX, currentButtonY, buttonWidth, buttonHeight, "Back to Menu"));
 
     }
@@ -115,9 +115,8 @@ public class PauseState extends GameState {
         // Vẽ chữ "GAME PAUSED"
         g.setColor(Color.decode("#DD0303"));
         g.setFont(new Font("Arial", Font.BOLD, 36));
-        // Căn giữa trong khung Pause
-        // Căn giữa trong khung Pause, điều chỉnh Y offset cho phù hợp với khung mới
-        drawCenteredString("GAME PAUSED", FRAME_WIDTH, FRAME_HEIGHT, g, FRAME_X, FRAME_Y - 50); // Offset trong khung
+        // điều chỉnh Y offset cho phù hợp với khung mới
+        drawCenteredString("GAME PAUSED", FRAME_WIDTH, FRAME_HEIGHT, g, FRAME_X, FRAME_Y - 185); // Offset trong khung
 
         // === VẼ CÁC BUTTON ===
         for (Button button : buttons) {

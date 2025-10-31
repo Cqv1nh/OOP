@@ -70,7 +70,10 @@ public class GameStateManager {
             if (stateName.equals("menu") ||
                 stateName.equals("game over") ||
                 stateName.equals("victory") ||
-                stateName.equals("transition")) // Transition cũng có nhạc nền? Nếu không thì bỏ đi
+                stateName.equals("transition") ||
+                stateName.equals("settings") ||
+                stateName.equals("highscores") ||
+                stateName.equals("loadgame")) 
             {
                 AudioManager.playBackgroundMusic("background_music");
             }

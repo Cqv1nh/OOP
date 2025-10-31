@@ -4,11 +4,9 @@ package managers;
 import engine.KeyboardManager;
 import engine.MouseManager;
 import entities.Button;
-// import util.GameStateData; // Import lớp lưu trữ
-// import java.io.FileInputStream; // Import để đọc file
-// import java.io.IOException;     // Import để xử lý lỗi
-// import java.io.ObjectInputStream; // Import để đọc đối tượng
-// import java.io.File; // Import để kiểm tra file tồn tại
+import util.AssetManager;
+import util.Constants;
+
 // Cần Point
 import java.awt.*;
 import java.util.ArrayList;
@@ -48,6 +46,8 @@ public class MenuState extends GameState {
 
         // Check each button for mouse interaction
         for (Button button : buttons) {
+            // Cap nhat trang thai nut bam
+            button.setHoveringState(button.isHovering(mm.getMouseX(), mm.getMouseY()));
             // Check if the mouse is hovering over this button
             if (button.isHovering(mm.getMouseX(), mm.getMouseY())) {
                 // Thoa man ca 2 dieu kien la chuot nam trong nut va dc nhan 
@@ -62,27 +62,22 @@ public class MenuState extends GameState {
 
     @Override
     public void render(Graphics2D g) {
-        // Clear background
-        g.setColor(Color.decode("#2C3E50"));
-        g.fillRect(0, 0, 800, 600); // Adjust to your screen size
-
+        
+        // background
+        g.drawImage(AssetManager.menuBackground, 0, 0, Constants.SCREEN_WIDTH, Constants.SCREEN_HEIGHT, null);
+        
         // Draw game title
-        g.setColor(Color.WHITE);
-        g.setFont(new Font("Arial", Font.BOLD, 56));
-        FontMetrics fm = g.getFontMetrics();
-        String titleText = "ARKANOID";
-        int titleX = (800 - fm.stringWidth(titleText)) / 2;
-        g.drawString(titleText, titleX, 100);
+        int logoWidth = 400; // Chiều rộng mong muốn
+        int logoHeight = 100; // Chiều cao mong muốn
+        int logoX = (Constants.SCREEN_WIDTH - logoWidth) / 2;
+        int logoY = 50; // Cách đỉnh 50px
+        g.drawImage(AssetManager.gameLogo, logoX, logoY, logoWidth, logoHeight, null);
 
         // Draw buttons
         for (Button button : buttons) {
             button.draw(g);
         }
 
-        // Draw version or credits at bottom
-        g.setFont(new Font("Arial", Font.PLAIN, 14));
-        g.setColor(Color.LIGHT_GRAY);
-        g.drawString("v1.0", 10, 580);
     }
 
     /**

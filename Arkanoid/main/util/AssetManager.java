@@ -7,9 +7,11 @@ import java.io.InputStream;
 import java.util.HashMap;
 import java.util.Map;
 
+// 31/10 them phan hinh anh cho menu
 public class AssetManager {
 
     // Khai bao bien luu tru hinh anh
+    // LEVEL
     public static BufferedImage  extraLife, expandPaddle, multiBall, increaseSpeed;
     // Dung map de luu tru cac anh nen , key = so level
     public static Map<Integer, BufferedImage> levelBackgrounds = new HashMap<>();
@@ -22,9 +24,17 @@ public class AssetManager {
     public static Map<Integer, BufferedImage> unbreakableBrick = new HashMap<>();
 
     // 28-10-25
+    // HIEU UNG NO CUA EXPLOSIVE BRICK
     public static Map<Integer, BufferedImage> explosionFrames = new HashMap<>(); // Dùng Map để lưu 10 frame
     
+    // Xu ly thanh truot cho phan settings
     public static BufferedImage trackImg, handleImg, fillImg;
+
+    // MENU
+    public static BufferedImage menuBackground;
+    public static BufferedImage gameLogo;
+    public static BufferedImage buttonNormal;
+    public static BufferedImage buttonHover;
     // Them cac powerUp khac neu can
 
     /**
@@ -102,6 +112,12 @@ public class AssetManager {
         trackImg = loadImage("/resources/slider/Track.png");
         handleImg = loadImage("/resources/slider/Knob.png");
         fillImg = loadImage("/resources/slider/TrackFill.png");
+        // load hinh anh cho phan menu
+        menuBackground = loadImage("/resources/images/menu/menuBackground.png");
+        gameLogo = loadImage("/resources/images/menu/gameLogo.png");
+        buttonNormal = loadImage("/resources/images/menu/buttonNormal.png");
+        buttonHover = loadImage("/resources/images/menu/buttonHover.png");
+
     }
 
     /**

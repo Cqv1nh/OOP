@@ -98,15 +98,13 @@ private final int SPACING = 40; // Khoảng cách giữa các slot
             Button slot = slotButtons[i];
             GameStateData data = slotData[i];
 
-            // Vẽ khung chữ nhật (button)
-            slot.draw(g); // Dùng hàm draw() có sẵn của Button
-
             // Lấy tọa độ của button
             int x = (int) slot.getX();
             int y = (int) slot.getY();
             int w = (int) slot.getWidth();
             int h = (int) slot.getHeight();
-
+            
+            // Các nút slot chỉ đóng vai trò làm logic kiểm tra xem nút có được nhấn hay không thôi.
             // Vẽ khung tổng thể của slot (để bao gồm cả ảnh và chữ)
             g.setColor(Color.decode("#3498DB")); // Màu nền cho slot
             g.fillRect(x, y, w, h);
@@ -141,7 +139,7 @@ private final int SPACING = 40; // Khoảng cách giữa các slot
                 g.setFont(FONT_SLOT_INFO);
                 // Vị trí cho thông tin chi tiết (bên dưới ảnh)
                 int infoY = imgY + imgH + 10; // Khoảng cách từ đáy ảnh
-                g.drawString("Lvl: " + data.currentLevel, x + 10, infoY);
+                g.drawString("Level: " + data.currentLevel, x + 10, infoY);
                 g.drawString("Score: " + data.score, x + 80, infoY);
                 g.drawString("Lives: " + data.lives, x + 10, infoY + 20); // Lives bên dưới Level
                 // === VẼ TÊN SLOT "Save Game X" ===
@@ -162,7 +160,7 @@ private final int SPACING = 40; // Khoảng cách giữa các slot
                 RenderUtil.drawCenteredStringInColumn(g, "Save Game " + (i + 1), x, w, y + h - 10);
             }
         }
-
+        // Chỉ có nút backButton mới sử dụng phương thức vẽ đc cài đặt từ trước
         backButton.draw(g);
     }
 
