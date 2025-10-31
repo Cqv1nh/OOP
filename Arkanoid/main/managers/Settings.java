@@ -10,7 +10,7 @@ public class Settings {
     private static final int DEFAULT_PADDLE_LEFT = KeyEvent.VK_A;
     private static final int DEFAULT_PADDLE_RIGHT = KeyEvent.VK_D;
 
-    private static final String DEFAULT_LANGUAGE = "english";
+    private static final String DEFAULT_LANGUAGE = "en";
 
     private int masterVolume;
     private int soundEffectsVolume;
@@ -19,6 +19,7 @@ public class Settings {
     private int paddleLeft;
     private int paddleRight;
 
+    private String language;
 
     public void setDefault() {
         masterVolume = DEFAULT_MASTER_VOLUME;
@@ -27,6 +28,8 @@ public class Settings {
 
         paddleLeft =  DEFAULT_PADDLE_LEFT;
         paddleRight = DEFAULT_PADDLE_RIGHT;
+
+        language = DEFAULT_LANGUAGE;
     }
 
     public Settings() {
@@ -70,6 +73,14 @@ public class Settings {
 
     public void setPaddleRight(int paddleRight) {
         this.paddleRight = paddleRight;
+    }
+
+    public String getLanguage() {
+        return language;
+    }
+
+    public void setLanguage(String language) {
+        this.language = language;
     }
 }
 

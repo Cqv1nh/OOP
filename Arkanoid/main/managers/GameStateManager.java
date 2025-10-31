@@ -1,5 +1,6 @@
 package managers;
 
+import com.google.gson.Gson;
 import engine.KeyboardManager;
 import engine.MouseManager;
 import util.AudioManager;
@@ -7,10 +8,15 @@ import util.HighScoreManager;
 import util.ScoreEntry;
 
 import java.awt.Graphics2D;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.HashMap;
 import java.util.Map;
 import java.awt.Point;
 import java.util.HashSet;
+import java.util.Properties;
 
 public class GameStateManager {
     private GameState currentState;
@@ -18,6 +24,8 @@ public class GameStateManager {
     private KeyboardManager km;
     private MouseManager mm ;
 
+    private String langCode;
+    private Properties languageProps = new Properties();
     // Game data shared across states
     private int currentLevel;
     private int score;
@@ -29,6 +37,7 @@ public class GameStateManager {
     private LevelState2 lastLevelStateInstance;
     private long gameRunStartTime;
 
+    private static final String SETTINGS_FILE = "settings.json";
     public GameStateManager(KeyboardManager km, MouseManager mm) {
         states = new HashMap<>();
         
@@ -43,6 +52,7 @@ public class GameStateManager {
 
         this.km = km;
         this.mm = mm;
+        loadSettingsFromFile();
 
         // Initialize all states
         states.put("menu", new MenuState(this));
@@ -195,6 +205,29 @@ public class GameStateManager {
         } 
     }
 
+    private void loadSettingsFromFile() {
+        Path path = Paths.get(SETTINGS_FILE);
+
+        if (Files.exists(path)) {
+            try {
+                String json = new String(Files.readAllBytes(path));
+                Gson gson = new Gson();
+                Settings settings = gson.fromJson(json, Settings.class);
+
+                AudioManager.setMasterVolume((float) settings.getMasterVolume() / 100);
+                AudioManager.setSoundFxVolume((float) settings.getSoundEffectsVolume() / 100);
+                AudioManager.setBackgroundMusicVolume((float) settings.getBackGroundMusic() / 100);
+                langCode = settings.getLanguage();
+
+                System.out.println("Settings loaded from " + SETTINGS_FILE);
+            } catch (IOException e) {
+                System.err.println("Error reading settings: " + e.getMessage());
+            }
+        } else {
+            System.out.println("Settings file not found, using default values.");
+        }
+    }
+
     public GameState getCurrentState() {
         return currentState;
     }
@@ -253,5 +286,21 @@ public class GameStateManager {
 
     public void setGameRunStartTime(long time) {
          this.gameRunStartTime = time;
+    }
+
+    public String getLangCode() {
+        return langCode;
+    }
+
+    public void setLangCode(String langCode) {
+        this.langCode = langCode;
+    }
+
+    public Properties getLanguageProps() {
+        return languageProps;
+    }
+
+    public void setLanguageProps(Properties languageProps) {
+        this.languageProps = languageProps;
     }
 }

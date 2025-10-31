@@ -176,4 +176,11 @@ public class Slider {
         this.valueTextColor = valueTextColor;
     }
 
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
 }
