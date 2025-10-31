@@ -9,8 +9,14 @@ import util.Constants;
 
 // Cần Point
 import java.awt.*;
+import java.awt.image.BufferedImage;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Properties;
 
 public class MenuState extends GameState {
     private List<Button> buttons;
@@ -22,17 +28,23 @@ public class MenuState extends GameState {
         km = manager.getKm();
         mm = manager.getMm();
 
+        BufferedImage buttonIdle = AssetManager.buttonNormal;
+        BufferedImage buttonHover = AssetManager.buttonHover;
+
         buttons = new ArrayList<>();
-        buttons.add(new Button(275, 170, 250, 50, "New Game"));
-        buttons.add(new Button(275, 240, 250, 50, "Load Game")); // Nút này sẽ được xử lý
-        buttons.add(new Button(275, 310, 250, 50, "High Scores")); // Them nut
-        buttons.add(new Button(275, 380, 250, 50, "Settings"));
-        buttons.add(new Button(275, 450, 250, 50, "Quit"));
+        buttons.add(new Button(275, 170, 250, 50, "New Game", "New Game",
+                buttonIdle, buttonHover));
+        buttons.add(new Button(275, 240, 250, 50, "Load Game", "Load Game",
+                buttonIdle, buttonHover)); // Nút này sẽ được xử lý
+        buttons.add(new Button(275, 310, 250, 50, "Settings", "Settings",
+                buttonIdle, buttonHover));
+        buttons.add(new Button(275, 380, 250, 50, "Quit", "Quit",
+                buttonIdle, buttonHover));
     }
 
     @Override
     public void enter() {
-
+        loadLanguage(manager.getLangCode());
     }
 
     @Override
@@ -46,16 +58,14 @@ public class MenuState extends GameState {
 
         // Check each button for mouse interaction
         for (Button button : buttons) {
-            // Cap nhat trang thai nut bam
-            button.setHoveringState(button.isHovering(mm.getMouseX(), mm.getMouseY()));
             // Check if the mouse is hovering over this button
             if (button.isHovering(mm.getMouseX(), mm.getMouseY())) {
-                // Thoa man ca 2 dieu kien la chuot nam trong nut va dc nhan 
+                // Thoa man ca 2 dieu kien la chuot nam trong nut va dc nhan
                 // Check if left mouse button was clicked
                 if (mm.isLeftJustPressed()) {
-                    handleButtonClick(button.getText());
+                    handleButtonClick(button.getFunction());
                     return; // Exit early after handling click
-                }   
+                }
             }
         }
     }
@@ -119,5 +129,32 @@ public class MenuState extends GameState {
                 System.err.println("Unknown button: " + buttonText);
                 break;
         }
-    }    
+    }
+
+    private void loadLanguage(String langCode) {
+        Properties Props = manager.getLanguageProps();
+        Props.clear();
+
+        String fileName = "language/lang_" + langCode + ".properties";
+
+        try (InputStream input = getClass().getClassLoader().getResourceAsStream(fileName)) {
+            if (input == null) {
+                System.err.println("Language file not found: " + fileName);
+                return;
+            }
+
+            Props.load(new InputStreamReader(input, StandardCharsets.UTF_8));
+
+            System.out.println(Props.getProperty("settings.save"));
+
+            buttons.get(0).setText(Props.getProperty("menu.new_game", "New Game"));
+            buttons.get(1).setText(Props.getProperty("menu.load_game", "Load Game"));
+            buttons.get(2).setText(Props.getProperty("menu.settings", "Settings"));
+            buttons.get(3).setText(Props.getProperty("menu.quit", "Quit"));
+
+            System.out.println("Language loaded: " + langCode);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
 }
