@@ -38,8 +38,12 @@ public class MenuState extends GameState {
                 buttonIdle, buttonHover)); // Nút này sẽ được xử lý
         buttons.add(new Button(275, 310, 250, 50, "Settings", "Settings",
                 buttonIdle, buttonHover));
-        buttons.add(new Button(275, 380, 250, 50, "Quit", "Quit",
+        buttons.add(new Button(275, 380,250, 50, "High Scores", "High Scores",
                 buttonIdle, buttonHover));
+        buttons.add(new Button(275, 450, 250, 50, "Quit", "Quit",
+                buttonIdle, buttonHover));
+
+
     }
 
     @Override
@@ -150,7 +154,9 @@ public class MenuState extends GameState {
             buttons.get(0).setText(Props.getProperty("menu.new_game", "New Game"));
             buttons.get(1).setText(Props.getProperty("menu.load_game", "Load Game"));
             buttons.get(2).setText(Props.getProperty("menu.settings", "Settings"));
-            buttons.get(3).setText(Props.getProperty("menu.quit", "Quit"));
+            buttons.get(3).setText(Props.getProperty("menu.highScore", "Settings"));
+            buttons.get(4).setText(Props.getProperty("menu.quit", "Quit"));
+
 
             System.out.println("Language loaded: " + langCode);
         } catch (IOException e) {
