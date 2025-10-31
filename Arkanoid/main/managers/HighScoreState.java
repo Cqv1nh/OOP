@@ -8,7 +8,12 @@ import util.RenderUtil;
 
 import java.awt.*;
 import java.awt.event.KeyEvent;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
+import java.util.Properties;
 import java.util.concurrent.TimeUnit; // Dùng để format thời gian
 
 public class HighScoreState extends GameState {
@@ -23,7 +28,8 @@ public class HighScoreState extends GameState {
         km = manager.getKm();
         mm = manager.getMm();
 
-        backButton = new Button(300, 500, 200, 50, "Back to Menu");
+        backButton = new Button(300, 500, 200, 50, "Back to Menu",
+                "Back to Menu", null, null);
     }
 
     @Override
@@ -56,36 +62,54 @@ public class HighScoreState extends GameState {
 
     @Override
     public void render(Graphics2D g) {
-        // Ve nen
+        Properties languageProps = manager.getLanguageProps();
+        languageProps.clear();
+
+        String fileName = "language/lang_" + manager.getLangCode() + ".properties";
+
+        try (InputStream input = getClass().getClassLoader().getResourceAsStream(fileName)) {
+            if (input == null) {
+                System.err.println("Language file not found: " + fileName);
+                return;
+            }
+
+            languageProps.load(new InputStreamReader(input, StandardCharsets.UTF_8));
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
         g.setColor(Color.decode("#2C3E50"));
         g.fillRect(0, 0, Constants.SCREEN_WIDTH, Constants.SCREEN_HEIGHT);
-
 
         // Ve tieu de
         g.setColor(Color.WHITE);
         g.setFont(FONT_TITLE);
-        RenderUtil.drawCenteredString("HIGH SCORES", Constants.SCREEN_WIDTH, Constants.SCREEN_HEIGHT, g, 0, -220);
+        RenderUtil.drawCenteredString(languageProps.getProperty("highScore.title", "HIGH SCORE"),
+                Constants.SCREEN_WIDTH, Constants.SCREEN_HEIGHT, g, 0, -220);
 
         // 3. Vẽ Tiêu đề cột
         g.setFont(FONT_HEADER);
         g.setColor(Color.YELLOW);
         int yStart = 150;
-        int colRankStart = 80;    // Cột STT bắt đầu ở X=80
-        int colRankWidth = 80;    // Cột STT rộng 80px
+        int colRankStart = 60;    // Cột STT bắt đầu ở X=80
+        int colRankWidth = 60;    // Cột STT rộng 80px
 
-        int colScoreStart = 160;  // Cột SCORE bắt đầu ở X=160
+        int colScoreStart = 120;  // Cột SCORE bắt đầu ở X=160
         int colScoreWidth = 200;  // Cột SCORE rộng 200px
         
-        int colLevelStart = 360;  // Cột LEVEL bắt đầu ở X=360
-        int colLevelWidth = 150;  // Cột LEVEL rộng 150px
+        int colLevelStart = 320;  // Cột LEVEL bắt đầu ở X=360
+        int colLevelWidth = 210;  // Cột LEVEL rộng 150px
 
-        int colTimeStart = 510;   // Cột TIME bắt đầu ở X=510
+        int colTimeStart = 530;   // Cột TIME bắt đầu ở X=510
         int colTimeWidth = 200;   // Cột TIME rộng 200px
 
-        RenderUtil.drawCenteredStringInColumn(g, "STT", colRankStart, colRankWidth, yStart);
-        RenderUtil.drawCenteredStringInColumn(g, "SCORE", colScoreStart, colScoreWidth, yStart);
-        RenderUtil.drawCenteredStringInColumn(g, "MAX LEVEL", colLevelStart, colLevelWidth, yStart);
-        RenderUtil.drawCenteredStringInColumn(g, "TOTAL TIME", colTimeStart, colTimeWidth, yStart);
+        RenderUtil.drawCenteredStringInColumn(g, "#", colRankStart, colRankWidth, yStart);
+        RenderUtil.drawCenteredStringInColumn(g, languageProps.getProperty("highScore.score", "SCORE"),
+                colScoreStart, colScoreWidth, yStart);
+        RenderUtil.drawCenteredStringInColumn(g, languageProps.getProperty("highScore.maxLevel","MAX LEVEL"),
+                colLevelStart, colLevelWidth, yStart);
+        RenderUtil.drawCenteredStringInColumn(g, languageProps.getProperty("highScore.totalTime",
+                        "TOTAL TIME"), colTimeStart, colTimeWidth, yStart);
 
         g.drawLine(colRankStart - 10, yStart + 10, colTimeStart + colTimeWidth - 10, yStart + 10);
 
@@ -109,7 +133,7 @@ public class HighScoreState extends GameState {
 
             yPos += 40; // Xuong dong
         }
-
+        backButton.setText(languageProps.getProperty("highScore.back", "RETURN MENU"));
         backButton.draw(g);
     }
     

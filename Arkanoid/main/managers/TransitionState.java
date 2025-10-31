@@ -4,6 +4,7 @@ import util.Constants;
 
 import java.awt.*;
 import java.awt.event.KeyEvent;
+import java.util.Properties;
 
 import static util.RenderUtil.drawCenteredString; // DÒNG MỚI (ĐÚNG)
 
@@ -37,6 +38,7 @@ public class TransitionState extends GameState {
 
     @Override
     public void render(Graphics2D g) {
+        Properties lang = manager.getLanguageProps();
         int level = manager.getCurrentLevel();
 
         g.setColor(Color.decode("#FAB12F"));
@@ -46,17 +48,18 @@ public class TransitionState extends GameState {
         g.setFont(new Font("Arial", Font.BOLD, 30));
 
         if (level == 1) {
-            drawCenteredString("ENTER LEVEL 1", Constants.SCREEN_WIDTH, Constants.SCREEN_HEIGHT,
-                    g, 0, 0);
+            drawCenteredString(lang.getProperty("transition.level1_message", "ENTER LEVEL 1"),
+                    Constants.SCREEN_WIDTH, Constants.SCREEN_HEIGHT, g, 0, 0);
         } else {
-            drawCenteredString(String.format("LEVEL %d PASSED", level - 1),
-                    Constants.SCREEN_WIDTH, Constants.SCREEN_HEIGHT,
-                    g, 0, 0);
+            String msg = lang.getProperty("transition.message1", "LEVEL {0} PASSED");
+            msg = msg.replace("{0}", String.valueOf(level - 1)); // handle {0} placeholder
+            drawCenteredString(msg, Constants.SCREEN_WIDTH, Constants.SCREEN_HEIGHT, g, 0, 0);
         }
 
         g.setColor(Color.decode("#DD0303"));
         g.setFont(new Font("Arial", Font.BOLD, 24));
-        drawCenteredString("PRESS SPACE TO CONTINUE", Constants.SCREEN_WIDTH, Constants.SCREEN_HEIGHT,
-                g, 0, 40);
+        drawCenteredString(lang.getProperty("transition.message2", "PRESS SPACE TO CONTINUE"),
+                Constants.SCREEN_WIDTH, Constants.SCREEN_HEIGHT, g, 0, 40);
+
     }
 }

@@ -5,6 +5,11 @@ import util.Constants;
 
 import java.awt.*;
 import java.awt.event.KeyEvent;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.nio.charset.StandardCharsets;
+import java.util.Properties;
 
 import static util.RenderUtil.drawCenteredString; // DÒNG MỚI (ĐÚNG)
 
@@ -39,16 +44,20 @@ public class VictoryState extends GameState {
 
     @Override
     public void render(Graphics2D g) {
+        Properties languageProps = manager.getLanguageProps();
+
         g.setColor(Color.decode("#FAB12F"));
         g.fillRect(0, 0, 800, 600);
 
         g.setColor(Color.decode("#DD0303"));
         g.setFont(new Font("Arial", Font.BOLD, 36));
-        // Sửa lỗi chính tả "CONSTRAGLUTION" -> "CONGRATULATIONS!"
-        drawCenteredString("CONGRATULATIONS!", Constants.SCREEN_WIDTH, Constants.SCREEN_HEIGHT,
+
+        drawCenteredString(languageProps.getProperty("victory.message1", "CONGRATULATIONS!"),
+                Constants.SCREEN_WIDTH, Constants.SCREEN_HEIGHT,
                 g, 0, 0);
 
-        drawCenteredString("PRESS R TO RETURN HOME", Constants.SCREEN_WIDTH, Constants.SCREEN_HEIGHT,
+        drawCenteredString(languageProps.getProperty("victory.message2", "PRESS R TO RETURN HOME"),
+                Constants.SCREEN_WIDTH, Constants.SCREEN_HEIGHT,
                 g, 0, 40);
     }
 }

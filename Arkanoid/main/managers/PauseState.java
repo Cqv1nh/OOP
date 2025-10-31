@@ -13,6 +13,7 @@ import java.io.ObjectOutputStream; // Import để ghi đối tượng
 import java.util.ArrayList; // Import ArrayList
 import java.util.List;     // Import List
 import java.util.HashSet;
+import java.util.Properties;
 
 import entities.Brick;
 
@@ -43,26 +44,39 @@ public class PauseState extends GameState {
         int spacing = 60; // Khoảng cách giữa các nút
 
         // Resume Button 
-        buttons.add(new Button(startButtonX, currentButtonY, buttonWidth, buttonHeight, "Resume"));
+        buttons.add(new Button(startButtonX, currentButtonY, buttonWidth, buttonHeight,
+                "Resume", "Resume", null ,null));
         // Nút Save and Quit (lưu và về menu)
         // Them cac nut slot 1 2 3 va nut chuyen ve menu 
         currentButtonY += spacing;
-        buttons.add(new Button(startButtonX, currentButtonY, buttonWidth, buttonHeight, "Save Slot 1"));
+        buttons.add(new Button(startButtonX, currentButtonY, buttonWidth, buttonHeight,
+                "Save Slot 1", "Save Slot 1", null, null));
 
         currentButtonY += spacing;
-        buttons.add(new Button(startButtonX, currentButtonY, buttonWidth, buttonHeight, "Save Slot 2"));
+        buttons.add(new Button(startButtonX, currentButtonY, buttonWidth, buttonHeight,
+                "Save Slot 2", "Save Slot 2", null, null));
 
         currentButtonY += spacing;
-        buttons.add(new Button(startButtonX, currentButtonY, buttonWidth, buttonHeight, "Save Slot 3"));
+        buttons.add(new Button(startButtonX, currentButtonY, buttonWidth, buttonHeight,
+                "Save Slot 3", "Save Slot 3", null, null));
         
         currentButtonY += spacing; 
-        buttons.add(new Button(startButtonX, currentButtonY, buttonWidth, buttonHeight, "Back to Menu"));
+        buttons.add(new Button(startButtonX, currentButtonY, buttonWidth, buttonHeight,
+                "Back to Menu", "Back to Menu", null, null));
 
     }
 
     @Override
     public void enter() {
+        Properties languageProps = manager.getLanguageProps();
+        for (int i = 1; i <= 3; i++) {
+            String msg = languageProps.getProperty("pause.slot", "Save Slot {0}");
+            msg = msg.replace("{0}", String.valueOf(i)); // handle {0} placeholder
+            buttons.get(i).setText(msg);
+        }
 
+        buttons.get(0).setText(languageProps.getProperty("pause.resume", "Resume"));
+        buttons.getLast().setText(languageProps.getProperty("pause.back", "Return Menu"));
     }
     
     @Override
@@ -82,7 +96,7 @@ public class PauseState extends GameState {
         for (Button button : buttons) {
             if (button.isHovering(mm.getMouseX(), mm.getMouseY())) {
                 if (mm.isLeftJustPressed()) {
-                    handleButtonClick(button.getText()); 
+                    handleButtonClick(button.getFunction());
                     return; // Thoát sớm sau khi xử lý click
                 }
             }
@@ -92,6 +106,8 @@ public class PauseState extends GameState {
 
     @Override
     public void render(Graphics2D g) {
+        Properties languageProps = manager.getLanguageProps();
+
         // --- Vẽ nền mờ (Tùy chọn) ---
         // Lấy state level hiện tại để vẽ nó phía sau (nếu muốn hiệu ứng mờ)
         LevelState2 levelState = manager.getCurrentLevelState();
@@ -116,7 +132,8 @@ public class PauseState extends GameState {
         g.setColor(Color.decode("#DD0303"));
         g.setFont(new Font("Arial", Font.BOLD, 36));
         // điều chỉnh Y offset cho phù hợp với khung mới
-        drawCenteredString("GAME PAUSED", FRAME_WIDTH, FRAME_HEIGHT, g, FRAME_X, FRAME_Y - 185); // Offset trong khung
+        drawCenteredString(languageProps.getProperty("pause.message", "GAME PAUSED"),
+                FRAME_WIDTH, FRAME_HEIGHT, g, FRAME_X, FRAME_Y - 185); // Offset trong khung
 
         // === VẼ CÁC BUTTON ===
         for (Button button : buttons) {
@@ -127,7 +144,8 @@ public class PauseState extends GameState {
         // Vẽ hướng dẫn nhỏ ở dưới (tùy chọn)
         g.setColor(Color.WHITE);
         g.setFont(new Font("Arial", Font.PLAIN, 14));
-        drawCenteredString("Press ESC or R to Resume", Constants.SCREEN_WIDTH, Constants.SCREEN_HEIGHT, g, 0, 200);
+        drawCenteredString(languageProps.getProperty("pause.instruction" , "Press ESC or R to Resume"),
+                Constants.SCREEN_WIDTH, Constants.SCREEN_HEIGHT, g, 0, 200);
     }
 
     // Ham xu ly click
