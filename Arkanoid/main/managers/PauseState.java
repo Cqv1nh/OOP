@@ -1,5 +1,6 @@
 package managers;
 
+import util.AssetManager;
 import util.Constants;
 import util.GameStateData;
 import entities.Button; // Import Button
@@ -80,6 +81,7 @@ public class PauseState extends GameState {
 
         // Them xu ly click Button
         for (Button button : buttons) {
+            button.setHoveringState(button.isHovering(mm.getMouseX(), mm.getMouseY()));
             if (button.isHovering(mm.getMouseX(), mm.getMouseY())) {
                 if (mm.isLeftJustPressed()) {
                     handleButtonClick(button.getText()); 
@@ -92,28 +94,17 @@ public class PauseState extends GameState {
 
     @Override
     public void render(Graphics2D g) {
-        // --- Vẽ nền mờ (Tùy chọn) ---
+        
         // Lấy state level hiện tại để vẽ nó phía sau (nếu muốn hiệu ứng mờ)
         LevelState2 levelState = manager.getCurrentLevelState();
         if (levelState != null) {
             levelState.render(g); // Vẽ lại màn hình game
         }
-
-        
-        // Vẽ một lớp màu đen bán trong suốt lên trên
-        g.setColor(new Color(0, 0, 0, 150)); // Màu đen với độ trong suốt alpha=150
-        g.fillRect(0, 0, Constants.SCREEN_WIDTH, Constants.SCREEN_HEIGHT);
-        // --- Kết thúc vẽ nền mờ ---
-
-
-        // Vẽ khung Pause
-        g.setColor(Color.decode("#FAB12F"));
-        g.fillRect(FRAME_X, FRAME_Y, FRAME_WIDTH, FRAME_HEIGHT); // Tọa độ và kích thước khung Pause
-        g.setColor(Color.BLACK);
-        g.drawRect(FRAME_X, FRAME_Y, FRAME_WIDTH, FRAME_HEIGHT); // Viền khung
+    
+        g.drawImage(AssetManager.transitionBackground, 0, 0, Constants.SCREEN_WIDTH, Constants.SCREEN_HEIGHT, null);
 
         // Vẽ chữ "GAME PAUSED"
-        g.setColor(Color.decode("#DD0303"));
+        g.setColor(Color.YELLOW);
         g.setFont(new Font("Arial", Font.BOLD, 36));
         // điều chỉnh Y offset cho phù hợp với khung mới
         drawCenteredString("GAME PAUSED", FRAME_WIDTH, FRAME_HEIGHT, g, FRAME_X, FRAME_Y - 185); // Offset trong khung
@@ -124,7 +115,7 @@ public class PauseState extends GameState {
         }
         // === KẾT THÚC VẼ ===
 
-        // Vẽ hướng dẫn nhỏ ở dưới (tùy chọn)
+        // Vẽ hướng dẫn nhỏ ở dưới 
         g.setColor(Color.WHITE);
         g.setFont(new Font("Arial", Font.PLAIN, 14));
         drawCenteredString("Press ESC or R to Resume", Constants.SCREEN_WIDTH, Constants.SCREEN_HEIGHT, g, 0, 200);

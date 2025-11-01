@@ -35,6 +35,9 @@ public class AssetManager {
     public static BufferedImage gameLogo;
     public static BufferedImage buttonNormal;
     public static BufferedImage buttonHover;
+
+    // TRANSITION
+    public static BufferedImage transitionBackground;
     // Them cac powerUp khac neu can
 
     public static BufferedImage UkFlag;
@@ -71,9 +74,7 @@ public class AssetManager {
         multiBall = loadImage("/resources/images/PowerUp/multiball.png");
         increaseSpeed = loadImage("/resources/images/PowerUp/increasespeed.png");
 
-        // Tải ảnh nền cho level 1 (giả sử tên file là BackGround.jpg)
         // Tải 5 ảnh nền cho 5 level
-        // Đảm bảo bạn có các file BackGround1.jpg, BackGround2.jpg,... trong thư mục resources/images
         levelBackgrounds.put(1, loadImage("/resources/images/Level1/BackGround1.jpg"));
         levelBackgrounds.put(2, loadImage("/resources/images/Level2/BackGround2.jpg"));
         levelBackgrounds.put(3, loadImage("/resources/images/Level3/BackGround3.jpg"));
@@ -140,6 +141,8 @@ public class AssetManager {
         buttonNormal = loadImage("/resources/images/menu/buttonNormal.png");
         buttonHover = loadImage("/resources/images/menu/buttonHover.png");
 
+        // load hinh anh phan transition
+        transitionBackground = loadImage("/resources/images/transition/transitionBackground.png");
     }
 
     /**

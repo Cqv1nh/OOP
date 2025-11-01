@@ -7,7 +7,7 @@ import entities.Button;
 import entities.Slider;
 import util.AssetManager;
 import util.AudioManager;
-import util.RenderUtil;
+import util.Constants;
 
 import java.awt.*;
 import java.awt.image.BufferedImage;
@@ -159,12 +159,14 @@ public class SettingsState extends GameState {
         AudioManager.setSoundFxVolume(soundFx.getValue() / 100);
         AudioManager.setBackgroundMusicVolume(backGroundMusic.getValue() / 100);
 
+        returnButton.setHoveringState(returnButton.isHovering(mm.getMouseX(), mm.getMouseY()));
         if(returnButton.isHovering(mm.getMouseX(), mm.getMouseY())) {
             if (mm.isLeftJustPressed()) {
                 manager.setState("menu");
             }
         }
 
+        saveButton.setHoveringState(saveButton.isHovering(mm.getMouseX(), mm.getMouseY()));
         if(saveButton.isHovering(mm.getMouseX(), mm.getMouseY())) {
             if (mm.isLeftJustPressed()) {
                 saveSettingsToFile();
@@ -172,6 +174,7 @@ public class SettingsState extends GameState {
             }
         }
 
+        returnDefault.setHoveringState(returnDefault.isHovering(mm.getMouseX(), mm.getMouseY()));
         if(returnDefault.isHovering(mm.getMouseX(), mm.getMouseY())) {
             if (mm.isLeftJustPressed()) {
                 settings.setDefault();
@@ -186,8 +189,8 @@ public class SettingsState extends GameState {
             if (flagButton.isHovering(mm.getMouseX(), mm.getMouseY())) {
                 if (mm.isLeftJustPressed()) {
                     selectedFlagButton.setText(flagButton.getText());
-                    selectedFlagButton.setButtonImage(flagButton.getButtonImage());
-                    selectedFlagButton.setButtonWhenHover(flagButton.getButtonWhenHover());
+                    selectedFlagButton.setButtonNormal(flagButton.getButtonNormal());
+                    selectedFlagButton.setButtonHover(flagButton.getButtonHover());
 
                     String selectedLang = flagButton.getText();
                     settings.setLanguage(selectedLang);
@@ -202,8 +205,8 @@ public class SettingsState extends GameState {
 
     @Override
     public void render(Graphics2D g) {
-        g.setColor(Color.decode("#C9C5B1"));
-        g.fillRect(0, 0, 800, 600); // Adjust to your screen size
+        // Ve nen
+        g.drawImage(AssetManager.menuBackground, 0, 0, Constants.SCREEN_WIDTH, Constants.SCREEN_HEIGHT, null);
 
         g.setColor(Color.decode("#3D3D3D"));
         g.drawRect(25, 85, 510 ,140);
@@ -211,7 +214,7 @@ public class SettingsState extends GameState {
         g.setColor(Color.decode("#3D3D3D"));
         g.drawRect(25, 400, 570 ,140);
 
-        g.setFont(new Font("Arial", Font.PLAIN, 10));
+        g.setFont(new Font("Arial", Font.BOLD, 10));
 
         g.setColor(Color.decode("#4A4A4A"));
         g.drawString(volumeSettings, 25, 75);
@@ -227,16 +230,15 @@ public class SettingsState extends GameState {
         soundFx.render(g);
         backGroundMusic.render(g);
 
-        returnButton.draw(g, mm.getMouseX(), mm.getMouseY());
-        saveButton.draw(g, mm.getMouseX(), mm.getMouseY());
-        returnDefault.draw(g, mm.getMouseX(), mm.getMouseY());
+        returnButton.draw(g);
+        saveButton.draw(g);
+        returnDefault.draw(g);
 
         for (Button flagButton : flagButtons) {
             flagButton.drawFlag(g, mm.getMouseX(), mm.getMouseY());
         }
 
         selectedFlagButton.drawFlag(g, mm.getMouseX(), mm.getMouseY());
-
     }
 
     private void loadLanguage(String langCode) {

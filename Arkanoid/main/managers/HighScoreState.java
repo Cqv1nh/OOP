@@ -5,6 +5,7 @@ import util.Constants;
 import util.HighScoreManager;
 import util.ScoreEntry;
 import util.RenderUtil;
+import util.AssetManager;
 
 import java.awt.*;
 import java.awt.event.KeyEvent;
@@ -15,7 +16,7 @@ public class HighScoreState extends GameState {
     private ArrayList<ScoreEntry> scores;
     private Button backButton; // Nut tro ve menu
 
-    private final Font FONT_TITLE = new Font("Arial",Font.BOLD,48);
+    private final Font FONT_TITLE = new Font("Arial",Font.BOLD,50);
     private final Font FONT_HEADER = new Font("Arial", Font.BOLD, 22);
     private final Font FONT_ENTRY = new Font("Arial", Font.BOLD, 20);
     public HighScoreState(GameStateManager manager) {
@@ -23,7 +24,7 @@ public class HighScoreState extends GameState {
         km = manager.getKm();
         mm = manager.getMm();
 
-        backButton = new Button(300, 500, 200, 50, "Back to Menu");
+        backButton = new Button(Constants.SCREEN_WIDTH / 2 - 100, 400, 200, 50, "Back to Menu");
     }
 
     @Override
@@ -41,6 +42,7 @@ public class HighScoreState extends GameState {
     @Override
     public void update() {
         // Kiểm tra click nút "Back"
+        backButton.setHoveringState(backButton.isHovering(mm.getMouseX(), mm.getMouseY()));
         if (backButton.isHovering(mm.getMouseX(), mm.getMouseY())) {
             if (mm.isLeftJustPressed()) {
                 manager.setState("menu");
@@ -56,13 +58,11 @@ public class HighScoreState extends GameState {
 
     @Override
     public void render(Graphics2D g) {
-        // Ve nen
-        g.setColor(Color.decode("#2C3E50"));
-        g.fillRect(0, 0, Constants.SCREEN_WIDTH, Constants.SCREEN_HEIGHT);
-
+        // 1. Vẽ nền
+        g.drawImage(AssetManager.menuBackground, 0, 0, Constants.SCREEN_WIDTH, Constants.SCREEN_HEIGHT, null);
 
         // Ve tieu de
-        g.setColor(Color.WHITE);
+        g.setColor(Color.YELLOW);
         g.setFont(FONT_TITLE);
         RenderUtil.drawCenteredString("HIGH SCORES", Constants.SCREEN_WIDTH, Constants.SCREEN_HEIGHT, g, 0, -220);
 
@@ -90,8 +90,10 @@ public class HighScoreState extends GameState {
         g.drawLine(colRankStart - 10, yStart + 10, colTimeStart + colTimeWidth - 10, yStart + 10);
 
         // 4. Vẽ danh sách điểm
+        
+
         g.setFont(FONT_ENTRY);
-        g.setColor(Color.WHITE);
+        g.setColor(Color.WHITE); 
         int yPos = yStart + 50;
 
         // Xác định độ rộng cho từng cột

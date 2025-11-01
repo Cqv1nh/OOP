@@ -20,8 +20,8 @@ public class Button {
     private Font font;
     private boolean isHoveringState = false;
 
-    private BufferedImage buttonImage;
-    private BufferedImage buttonWhenHover;
+    private BufferedImage buttonHover;
+    private BufferedImage buttonNormal;
 
     public Button(int x, int y, int width, int height, String text,
                   Color color, Color textColor, Font font) {
@@ -48,8 +48,8 @@ public class Button {
     }
 
     public Button(int x, int y, int width, int height, String text, String function,
-                  BufferedImage buttonImage,
-                  BufferedImage buttonWhenHover) {
+                  BufferedImage buttonNormal,
+                  BufferedImage buttonHover) {
         this.x = x;
         this.y = y;
         this.width = width;
@@ -57,15 +57,15 @@ public class Button {
         this.text = text;
         this.textColor = Color.decode("#FFFAFA");
         this.color = Color.decode("#FAFAFF");
-        this.font = new Font("Arial", Font.PLAIN, 13);
+        this.font = new Font("Arial", Font.BOLD, 16);
         this.function = function;
-        this.buttonImage = buttonImage;
-        this.buttonWhenHover = buttonWhenHover;
+        this.buttonNormal = buttonNormal;
+        this.buttonHover = buttonHover;
     }
 
     public void drawFlag(Graphics2D g, int mouseX, int mouseY) {
         if (!isHovering(mouseX, mouseY)) {
-            g.drawImage(buttonWhenHover, x, y, width, height, null);
+            g.drawImage(buttonNormal, x, y, width, height, null);
         }
         else {
 
@@ -76,28 +76,12 @@ public class Button {
             g.fillRoundRect(x + shadowOffset, y + shadowOffset, width, height, 8, 8);
 
             int lift = 2;
-            g.drawImage(buttonWhenHover, x, y - lift, width, height, null);
+            g.drawImage(buttonNormal, x, y - lift, width, height, null);
 
         }
     }
 
-    public void draw(Graphics2D g2d, int mouseX, int mouseY) {
-        if (!isHovering(mouseX, mouseY)) {
-            g2d.drawImage(buttonImage, x, y, width,
-                    height, null);
-        } else {
-            g2d.drawImage(buttonWhenHover, x, y, width,
-                    height, null);
-        }
-        g2d.setFont(this.font);
-
-        FontMetrics metrics = g2d.getFontMetrics(this.font);
-        int textX = this.x + (this.width - metrics.stringWidth(this.text)) / 2;
-        int textY = this.y + ((this.height - metrics.getHeight()) / 2) + metrics.getAscent();
-
-        g2d.drawString(this.text, textX, textY);
-    }
-
+    
     public void draw(Graphics2D g2d) {
         BufferedImage currentButtonImage = null;
         // Kiem tra nhan va khong nhan
@@ -165,20 +149,20 @@ public class Button {
         return height;
     }
 
-    public BufferedImage getButtonImage() {
-        return buttonImage;
+    public BufferedImage getButtonNormal() {
+        return buttonNormal;
     }
 
-    public void setButtonImage(BufferedImage buttonImage) {
-        this.buttonImage = buttonImage;
+    public void setButtonNormal(BufferedImage buttonNormal) {
+        this.buttonNormal = buttonNormal;
     }
 
-    public BufferedImage getButtonWhenHover() {
-        return buttonWhenHover;
+    public BufferedImage getButtonHover() {
+        return buttonHover;
     }
 
-    public void setButtonWhenHover(BufferedImage buttonWhenHover) {
-        this.buttonWhenHover = buttonWhenHover;
+    public void setButtonHover(BufferedImage buttonHover) {
+        this.buttonHover = buttonHover;
     }
 
     public String getFunction() {

@@ -1,8 +1,5 @@
 package managers;
 
-
-import engine.KeyboardManager;
-import engine.MouseManager;
 import entities.Button;
 import util.AssetManager;
 import util.Constants;
@@ -20,9 +17,7 @@ import java.util.Properties;
 
 public class MenuState extends GameState {
     private List<Button> buttons;
-    private KeyboardManager km;
-    private MouseManager mm;
-
+    
     public MenuState(GameStateManager manager) {
         super(manager);
         km = manager.getKm();
@@ -58,11 +53,11 @@ public class MenuState extends GameState {
 
     @Override
     public void update() {
-        // mm.update(); // Cập nhật chuột để check click
-
         // Check each button for mouse interaction
         for (Button button : buttons) {
             // Check if the mouse is hovering over this button
+            button.setHoveringState(button.isHovering(mm.getMouseX(), mm.getMouseY()));
+            // nut cap nhat trang thai chuot cho nut bam
             if (button.isHovering(mm.getMouseX(), mm.getMouseY())) {
                 // Thoa man ca 2 dieu kien la chuot nam trong nut va dc nhan
                 // Check if left mouse button was clicked
@@ -154,7 +149,7 @@ public class MenuState extends GameState {
             buttons.get(0).setText(Props.getProperty("menu.new_game", "New Game"));
             buttons.get(1).setText(Props.getProperty("menu.load_game", "Load Game"));
             buttons.get(2).setText(Props.getProperty("menu.settings", "Settings"));
-            buttons.get(3).setText(Props.getProperty("menu.highScore", "Settings"));
+            buttons.get(3).setText(Props.getProperty("menu.highScore", "High Scores"));
             buttons.get(4).setText(Props.getProperty("menu.quit", "Quit"));
 
 

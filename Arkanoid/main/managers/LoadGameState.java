@@ -16,14 +16,14 @@ public class LoadGameState extends GameState {
     private GameStateData[] slotData = new GameStateData[3]; // Lưu dữ liệu xem trước
     private Button backButton;
 
-    private final Font FONT_TITLE = new Font("Arial", Font.BOLD, 48);
+    private final Font FONT_TITLE = new Font("Arial", Font.BOLD, 50);
     private final Font FONT_SLOT_NAME = new Font("Arial", Font.BOLD, 20); // Font cho "Save Game X"
     private final Font FONT_SLOT_INFO = new Font("Arial", Font.PLAIN, 16); // Font cho Level, Score, Lives
     private final Font FONT_EMPTY_SLOT = new Font("Arial", Font.ITALIC, 20); // Font cho slot trống
 
     private final int SLOT_WIDTH = 200;  // Chiều rộng của mỗi slot
     private final int SLOT_HEIGHT = 150; // 800 / 600 = 200 / 150
-private final int SPACING = 40; // Khoảng cách giữa các slot
+    private final int SPACING = 40; // Khoảng cách giữa các slot
 
     // Tính toán tổng chiều rộng của 3 slot + 2 khoảng cách
     private final int TOTAL_SLOTS_WIDTH = 3 * SLOT_WIDTH + 2 * SPACING;
@@ -41,7 +41,7 @@ private final int SPACING = 40; // Khoảng cách giữa các slot
             // Chiều cao tăng thêm 30 để có chỗ cho chữ "Save Game X" bên dưới ảnh
         }
 
-        backButton = new Button(Constants.SCREEN_WIDTH / 2 - 100, START_Y + SLOT_HEIGHT + 100, 200, 50, "Back to Menu");
+        backButton = new Button(Constants.SCREEN_WIDTH / 2 - 100, START_Y + SLOT_HEIGHT + 85, 200, 50, "Back to Menu");
     }
 
     public void enter() {
@@ -71,6 +71,7 @@ private final int SPACING = 40; // Khoảng cách giữa các slot
         }
 
         // Kiểm tra click nút Back
+        backButton.setHoveringState(backButton.isHovering(mm.getMouseX(), mm.getMouseY()));
         if (backButton.isHovering(mm.getMouseX(), mm.getMouseY())) {
             if (mm.isLeftJustPressed()) {
                 manager.setState("menu");
@@ -85,11 +86,10 @@ private final int SPACING = 40; // Khoảng cách giữa các slot
 
     public void render(Graphics2D g) {
         // Ve nen 
-        g.setColor(Color.decode("#2C3E50"));
-        g.fillRect(0, 0, Constants.SCREEN_WIDTH, Constants.SCREEN_HEIGHT);
+        g.drawImage(AssetManager.menuBackground, 0, 0, Constants.SCREEN_WIDTH, Constants.SCREEN_HEIGHT, null);
 
         // Ve tieu de
-        g.setColor(Color.WHITE);
+        g.setColor(Color.YELLOW);
         g.setFont(FONT_TITLE);
         RenderUtil.drawCenteredString("LOAD GAME", Constants.SCREEN_WIDTH, Constants.SCREEN_HEIGHT, g, 0, -220);
 

@@ -1,27 +1,26 @@
 package managers;
 
-import engine.KeyboardManager;
-import engine.MouseManager;
 import entities.Button;
+import util.AssetManager;
+import util.Constants;
 
 import java.awt.*;
 import java.awt.event.KeyEvent;
-import java.util.ArrayList;
-import java.util.List;
+
+
+import static util.RenderUtil.drawCenteredString; // DÒNG MỚI (ĐÚNG)
 
 public class GameOverState extends GameState {
-    private List<Button> buttons;
-    private KeyboardManager km;
-    private MouseManager mm;
+    private Button backButtons;
+    private final Font FONT_TITLE = new Font("Arial", Font.BOLD, 36);
+    private final Font FONT_SUBTITLE = new Font("Arial", Font.BOLD, 24);
 
     public GameOverState(GameStateManager manager) {
         super(manager);
-
         km = manager.getKm();
         mm = manager.getMm();
 
-        buttons = new ArrayList<>();
-        buttons.add(new Button(275, 240, 250, 50, "Return Menu"));
+        backButtons = new Button(275, 450, 250, 50, "Return Menu");
     }
 
     @Override
@@ -37,50 +36,40 @@ public class GameOverState extends GameState {
     @Override
     public void update() {
 
-        km.update();
-
         // Check for 'R' key press to return to menu
-        if (km.getKey(KeyEvent.VK_R)) {
-            km.clearAllKeys();
+        if (km.isKeyJustPressed(KeyEvent.VK_R)) {
             manager.setState("menu");
+            return;
         }
 
         // Update buttons and check for mouse clicks
-        for (Button button : buttons) {
-            if (button.isHovering(mm.getMouseX(), mm.getMouseY())) {
-                if (mm.isLeftPressed()) {
-                    handleButtonClick(button.getText());
-                    return; // Exit early after state change
-                }
+        backButtons.setHoveringState(backButtons.isHovering(mm.getMouseX(), mm.getMouseY()));
+        if (backButtons.isHovering(mm.getMouseX(), mm.getMouseY())) {
+            if (mm.isLeftJustPressed()) {
+                handleButtonClick(backButtons.getText());
+                return; // Exit early after state change
             }
         }
+        
     }
 
     @Override
     public void render(Graphics2D g) {
         // Clear background with red color
-        g.setColor(Color.decode("#B22222"));
-        g.fillRect(0, 0, 800, 600); // Adjust to your screen size
+        g.drawImage(AssetManager.transitionBackground, 0, 0, Constants.SCREEN_WIDTH, Constants.SCREEN_HEIGHT, null);
 
         // Draw "Game Over" text
-        g.setColor(Color.WHITE);
-        g.setFont(new Font("Arial", Font.BOLD, 48));
-        FontMetrics fm = g.getFontMetrics();
-        String gameOverText = "GAME OVER";
-        int textX = (800 - fm.stringWidth(gameOverText)) / 2;
-        g.drawString(gameOverText, textX, 150);
+        g.setColor(Color.RED);
+        g.setFont(FONT_TITLE);
+        drawCenteredString("GAME OVER", Constants.SCREEN_WIDTH, Constants.SCREEN_HEIGHT, g, 0, -20);
 
+        g.setColor(Color.CYAN);
+        g.setFont(FONT_SUBTITLE);
+        drawCenteredString("PRESS R TO RETURN HOME", Constants.SCREEN_WIDTH, Constants.SCREEN_HEIGHT, g, 0, 30);
         // Draw instruction text
-        g.setFont(new Font("Arial", Font.PLAIN, 20));
-        fm = g.getFontMetrics();
-        String instructionText = "Press R to return to menu";
-        int instructionX = (800 - fm.stringWidth(instructionText)) / 2;
-        g.drawString(instructionText, instructionX, 200);
 
         // Draw buttons
-        for (Button button : buttons) {
-            button.draw(g);
-        }
+        backButtons.draw(g);
     }
 
     /**
