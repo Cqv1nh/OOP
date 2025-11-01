@@ -46,6 +46,8 @@ public class TransitionState extends GameState {
 
         g.drawImage(AssetManager.transitionBackground, 0, 0, Constants.SCREEN_WIDTH, Constants.SCREEN_HEIGHT, null);
 
+        g.setColor(Color.CYAN);
+        g.setFont(new Font("Arial", Font.BOLD, 36));
         if (level == 1) {
 
             drawCenteredString(lang.getProperty("transition.level1_message", "ENTER LEVEL 1"),

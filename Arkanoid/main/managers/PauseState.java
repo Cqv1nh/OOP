@@ -119,14 +119,14 @@ public class PauseState extends GameState {
             levelState.render(g); // Vẽ lại màn hình game
         }
     
-        g.drawImage(AssetManager.transitionBackground, 0, 0, Constants.SCREEN_WIDTH, Constants.SCREEN_HEIGHT, null);
+        g.drawImage(AssetManager.menuBackground, 0, 0, Constants.SCREEN_WIDTH, Constants.SCREEN_HEIGHT, null);
 
         // Vẽ chữ "GAME PAUSED"
         g.setColor(Color.YELLOW);
-        g.setFont(new Font("Arial", Font.BOLD, 36));
+        g.setFont(new Font("Arial", Font.BOLD, 50));
         // điều chỉnh Y offset cho phù hợp với khung mới
         drawCenteredString(languageProps.getProperty("pause.message", "GAME PAUSED"),
-                FRAME_WIDTH, FRAME_HEIGHT, g, FRAME_X, FRAME_Y - 185); // Offset trong khung
+                Constants.SCREEN_WIDTH, Constants.SCREEN_HEIGHT, g, 0, -220); // Offset trong khung
 
         // === VẼ CÁC BUTTON ===
         for (Button button : buttons) {

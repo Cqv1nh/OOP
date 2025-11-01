@@ -2,5 +2,5 @@
     "java.project.referencedLibraries": [
         "lib/**/*.jar",
         "Arkanoid/main/lib/gson-2.10.1.jar"
-    ]
+
 }

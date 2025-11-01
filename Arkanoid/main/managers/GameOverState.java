@@ -10,12 +10,13 @@ import java.awt.event.KeyEvent;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Properties;
+import static util.RenderUtil.drawCenteredString; // DÒNG MỚI (ĐÚNG)
 
 public class GameOverState extends GameState {
     private List<Button> buttons;
 
     private final Font TITLE_FONT = new Font("Arial", Font.BOLD, 48);
-    private final Font SUB_FONT = new Font("Arial", Font.PLAIN, 20);
+    private final Font SUB_FONT = new Font("Arial", Font.PLAIN, 24);
 
     public GameOverState(GameStateManager manager) {
         super(manager);
@@ -27,7 +28,7 @@ public class GameOverState extends GameState {
 
         buttons = new ArrayList<>();
         // Keep function identifier "Return Menu" for handler compatibility
-        buttons.add(new Button(275, 240, 250, 50, "Return Menu", "Return Menu",
+        buttons.add(new Button(275, 450, 250, 50, "RETURN", "Return Menu",
                 buttonIdle, buttonHover));
     }
 
@@ -43,8 +44,6 @@ public class GameOverState extends GameState {
 
     @Override
     public void update() {
-        // Update keyboard/mouse managers per-frame
-        km.update();
 
         // Check for 'R' key press to return to menu
         if (km.isKeyJustPressed(KeyEvent.VK_R)) {
@@ -73,19 +72,19 @@ public class GameOverState extends GameState {
         g.drawImage(AssetManager.transitionBackground, 0, 0, Constants.SCREEN_WIDTH, Constants.SCREEN_HEIGHT, null);
 
         // Title
-        g.setColor(Color.WHITE);
+        g.setColor(Color.RED);
         g.setFont(TITLE_FONT);
-        FontMetrics fm = g.getFontMetrics();
-        String gameOverText = languageProps.getProperty("gameover.message1", "GAME OVER");
-        int textX = (Constants.SCREEN_WIDTH - fm.stringWidth(gameOverText)) / 2;
-        g.drawString(gameOverText, textX, 150);
+        drawCenteredString(languageProps.getProperty("gameover.message1", "GAME OVER"),
+                Constants.SCREEN_WIDTH, Constants.SCREEN_HEIGHT,
+                g, 0, 0);
 
         // Instruction
+        g.setColor(Color.CYAN);
         g.setFont(SUB_FONT);
-        fm = g.getFontMetrics();
-        String instructionText = languageProps.getProperty("gameover.message2", "Press R to return to menu");
-        int instructionX = (Constants.SCREEN_WIDTH - fm.stringWidth(instructionText)) / 2;
-        g.drawString(instructionText, instructionX, 200);
+        drawCenteredString(languageProps.getProperty("gameover.message2", "Press R to return to menu"),
+                Constants.SCREEN_WIDTH, Constants.SCREEN_HEIGHT,
+                g, 0, 40);
+
 
         // Localize button text if language properties available
         if (!buttons.isEmpty()) {

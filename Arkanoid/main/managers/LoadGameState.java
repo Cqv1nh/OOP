@@ -150,16 +150,16 @@ public class LoadGameState extends GameState {
                 g.setFont(FONT_SLOT_INFO);
                 // Vị trí cho thông tin chi tiết (bên dưới ảnh)
                 int infoY = imgY + imgH + 10; // Khoảng cách từ đáy ảnh
-                g.drawString(languageProps.getProperty("load.level") + ": " + data.currentLevel,
+                g.drawString(languageProps.getProperty("load.level", "Level") + ": " + data.currentLevel,
                         x + 10, infoY);
-                g.drawString(languageProps.getProperty("load.score") + ": " + data.score,
+                g.drawString(languageProps.getProperty("load.score", "Score") + ": " + data.score,
                         x + 80, infoY);
-                g.drawString(languageProps.getProperty("load.lives") + ": " + data.lives,
+                g.drawString(languageProps.getProperty("load.lives", "Lives") + ": " + data.lives,
                         x + 10, infoY + 20); // Lives bên dưới Level
                 // === VẼ TÊN SLOT "Save Game X" ===
                 g.setColor(Color.decode("#F1C40F")); // Màu vàng cam cho tên slot
                 g.setFont(FONT_SLOT_NAME);
-                RenderUtil.drawCenteredStringInColumn(g, languageProps.getProperty("load.saveGame") + (i + 1),
+                RenderUtil.drawCenteredStringInColumn(g, languageProps.getProperty("load.saveGame", "SAVE GAME ") + (i + 1),
                         x, w, y + h - 10); // Căn giữa dưới cùng
 
             } else {
