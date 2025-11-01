@@ -5,14 +5,14 @@ import util.Constants;
 
 import java.awt.*;
 import java.awt.event.KeyEvent;
+import java.util.Properties;
 
 import static util.RenderUtil.drawCenteredString; // DÒNG MỚI (ĐÚNG)
 
 public class TransitionState extends GameState {
     // thuoc tinh km mm la cac thuoc tinh cua lop GameState
     // Lop con su dung ma khong can khai bao
-    private final Font FONT_TITLE = new Font("Arial", Font.BOLD, 36);
-    private final Font FONT_SUBTITLE = new Font("Arial", Font.BOLD, 24);
+    
 
     public TransitionState(GameStateManager manager) {
         super(manager);
@@ -41,22 +41,25 @@ public class TransitionState extends GameState {
 
     @Override
     public void render(Graphics2D g) {
+        Properties lang = manager.getLanguageProps();
         int level = manager.getCurrentLevel();
 
         g.drawImage(AssetManager.transitionBackground, 0, 0, Constants.SCREEN_WIDTH, Constants.SCREEN_HEIGHT, null);
-        String stringText; // Lay chuoi de in
+
         if (level == 1) {
-            stringText = "ENTER LEVEL 1";
+
+            drawCenteredString(lang.getProperty("transition.level1_message", "ENTER LEVEL 1"),
+                    Constants.SCREEN_WIDTH, Constants.SCREEN_HEIGHT, g, 0, 0);
         } else {
-            stringText = String.format("LEVEL %d PASSED", level - 1);
+            String msg = lang.getProperty("transition.message1", "LEVEL {0} PASSED");
+            msg = msg.replace("{0}", String.valueOf(level - 1)); // handle {0} placeholder
+            drawCenteredString(msg, Constants.SCREEN_WIDTH, Constants.SCREEN_HEIGHT, g, 0, 0);
         }
 
-        g.setColor(Color.CYAN);
-        g.setFont(FONT_TITLE);
-        drawCenteredString(stringText, Constants.SCREEN_WIDTH, Constants.SCREEN_HEIGHT, g, 0, -20);
+        g.setColor(Color.decode("#DD0303"));
+        g.setFont(new Font("Arial", Font.BOLD, 24));
+        drawCenteredString(lang.getProperty("transition.message2", "PRESS SPACE TO CONTINUE"),
+                Constants.SCREEN_WIDTH, Constants.SCREEN_HEIGHT, g, 0, 40);
 
-        g.setColor(Color.RED);
-        g.setFont(FONT_SUBTITLE);
-        drawCenteredString("PRESS SPACE TO CONTINUE", Constants.SCREEN_WIDTH, Constants.SCREEN_HEIGHT, g, 0, 30);
     }
 }

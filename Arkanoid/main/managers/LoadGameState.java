@@ -8,7 +8,8 @@ import util.AssetManager; // Cần để lấy ảnh nền mini
 import java.awt.*;
 import java.awt.event.KeyEvent;
 import java.awt.image.BufferedImage;
-import java.io.*;   
+import java.io.*;
+import java.util.Properties;
 
 public class LoadGameState extends GameState {
 
@@ -37,11 +38,14 @@ public class LoadGameState extends GameState {
 
         // Khởi tạo 3 nút lớn (là 3 hình chữ nhật)
         for (int i = 0; i < 3; i++) {
-            slotButtons[i] = new Button(START_X + i * (SLOT_WIDTH + SPACING), START_Y, SLOT_WIDTH, SLOT_HEIGHT + 30, "Slot " + (i + 1));
+            slotButtons[i] = new Button(START_X + i * (SLOT_WIDTH + SPACING), START_Y, SLOT_WIDTH,
+                    SLOT_HEIGHT + 30, "Slot " + (i + 1), "Slot" + (i + 1),
+                    null, null);
             // Chiều cao tăng thêm 30 để có chỗ cho chữ "Save Game X" bên dưới ảnh
         }
 
         backButton = new Button(Constants.SCREEN_WIDTH / 2 - 100, START_Y + SLOT_HEIGHT + 85, 200, 50, "Back to Menu");
+
     }
 
     public void enter() {
@@ -50,6 +54,10 @@ public class LoadGameState extends GameState {
         slotData[0] = previewSaveFile(1);
         slotData[1] = previewSaveFile(2);
         slotData[2] = previewSaveFile(3);
+
+        Properties languageProps = manager.getLanguageProps();
+
+        backButton.setText(languageProps.getProperty("load.back", "RETURN MENU"));
     }
 
     public void exit() {
@@ -85,13 +93,16 @@ public class LoadGameState extends GameState {
     }
 
     public void render(Graphics2D g) {
+
         // Ve nen 
         g.drawImage(AssetManager.menuBackground, 0, 0, Constants.SCREEN_WIDTH, Constants.SCREEN_HEIGHT, null);
 
+        Properties languageProps = manager.getLanguageProps();
         // Ve tieu de
         g.setColor(Color.YELLOW);
         g.setFont(FONT_TITLE);
-        RenderUtil.drawCenteredString("LOAD GAME", Constants.SCREEN_WIDTH, Constants.SCREEN_HEIGHT, g, 0, -220);
+        RenderUtil.drawCenteredString(languageProps.getProperty("load.title", "LOAD GAME"),
+                Constants.SCREEN_WIDTH, Constants.SCREEN_HEIGHT, g, 0, -220);
 
         // Vẽ 3 slot
         for (int i = 0; i< slotButtons.length; i++) {
@@ -132,32 +143,39 @@ public class LoadGameState extends GameState {
                 if (bgMini != null) {
                     // Vẽ ảnh nền thu nhỏ vào khung ảnh mini trong slot
                     g.drawImage(bgMini, x + 5, imgY, SLOT_WIDTH - 10, imgH, null);
-                } 
+                }
 
                 // Ve thong tin save
                 g.setColor(Color.WHITE);
                 g.setFont(FONT_SLOT_INFO);
                 // Vị trí cho thông tin chi tiết (bên dưới ảnh)
                 int infoY = imgY + imgH + 10; // Khoảng cách từ đáy ảnh
-                g.drawString("Level: " + data.currentLevel, x + 10, infoY);
-                g.drawString("Score: " + data.score, x + 80, infoY);
-                g.drawString("Lives: " + data.lives, x + 10, infoY + 20); // Lives bên dưới Level
+                g.drawString(languageProps.getProperty("load.level") + ": " + data.currentLevel,
+                        x + 10, infoY);
+                g.drawString(languageProps.getProperty("load.score") + ": " + data.score,
+                        x + 80, infoY);
+                g.drawString(languageProps.getProperty("load.lives") + ": " + data.lives,
+                        x + 10, infoY + 20); // Lives bên dưới Level
                 // === VẼ TÊN SLOT "Save Game X" ===
                 g.setColor(Color.decode("#F1C40F")); // Màu vàng cam cho tên slot
                 g.setFont(FONT_SLOT_NAME);
-                RenderUtil.drawCenteredStringInColumn(g, "Save Game " + (i + 1), x, w, y + h - 10); // Căn giữa dưới cùng
+                RenderUtil.drawCenteredStringInColumn(g, languageProps.getProperty("load.saveGame") + (i + 1),
+                        x, w, y + h - 10); // Căn giữa dưới cùng
 
             } else {
                 // Nếu slot trống
                 g.setColor(Color.LIGHT_GRAY);
                 g.setFont(FONT_EMPTY_SLOT);
                 // Vẽ chữ "Empty Slot" lên phần ảnh
-                RenderUtil.drawCenteredStringInColumn(g, "[EMPTY SLOT]", x + 5, SLOT_WIDTH - 10, imgY + imgH / 2 + 5);
+                RenderUtil.drawCenteredStringInColumn(g,
+                        languageProps.getProperty("load.empty" , "[EMPTY SLOT]"),
+                        x + 5, SLOT_WIDTH - 10, imgY + imgH / 2 + 5);
 
                 // Vẽ tên slot bên dưới
                 g.setColor(Color.WHITE);
                 g.setFont(FONT_SLOT_NAME);
-                RenderUtil.drawCenteredStringInColumn(g, "Save Game " + (i + 1), x, w, y + h - 10);
+                RenderUtil.drawCenteredStringInColumn(g, languageProps.getProperty("load.saveGame") + (i + 1),
+                        x, w, y + h - 10);
             }
         }
         // Chỉ có nút backButton mới sử dụng phương thức vẽ đc cài đặt từ trước

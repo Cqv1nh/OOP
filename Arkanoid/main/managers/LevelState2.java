@@ -13,9 +13,14 @@ import util.*;
 import java.awt.*;
 import java.awt.event.KeyEvent;
 import java.awt.image.BufferedImage;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.HashSet; // Cần HashSet
+import java.util.Properties;
 
 public class LevelState2 extends GameState{
     private Paddle paddle; // Thanh truot
@@ -327,15 +332,25 @@ public class LevelState2 extends GameState{
     }
 
     private void drawHUD(Graphics2D g) {
+        Properties languageProps = manager.getLanguageProps();
+
+
         g.setColor(Color.WHITE);
-        g.setFont(new Font("Arial", Font.BOLD, 20));
-        g.drawString("Lives: " + lives, 10, 25);
-        g.drawString("Level: " + levelNum, 120, 25);
-        // Căn lề phải cho điểm số
-        String scoreText = "Score: " + score;
+        g.setFont(new Font("Arial", Font.BOLD, 14));
+
+        String msg1 = languageProps.getProperty("level.lives", "Lives {0}");
+        msg1 = msg1.replace("{0}", String.valueOf(lives));
+        g.drawString(msg1, 10, 25);
+
+        String msg2 = languageProps.getProperty("level.score", "Level {0}");
+        msg2 = msg2.replace("{0}", String.valueOf(manager.getCurrentLevel()));
+        g.drawString(msg2, 120, 25);
+
+        String msg3 = languageProps.getProperty("level.currentLevel", "Score {0}");
+        msg3 = msg3.replace("{0}", String.valueOf(manager.getCurrentLevel()));
         FontMetrics fm = g.getFontMetrics();
-        int scoreWidth = fm.stringWidth(scoreText);
-        g.drawString(scoreText, Constants.SCREEN_WIDTH - scoreWidth - 10, 25);
+        int scoreWidth = fm.stringWidth(msg3);
+        g.drawString(msg3, Constants.SCREEN_WIDTH - scoreWidth - 10, 25);
     }
 
     private BufferedImage getBrickImage(Brick b) {
