@@ -5,19 +5,24 @@ import util.BrickType;
 public abstract class Brick extends GameObject {
     private int hitPoints; //Số lần va chạm để gạch bị phá hủy.
     private String type; //Loại gạch.
-
-    /*Trọng thêm code để xuất hiện powerup trong code.*/
     private boolean hasPowerUp; //Gạch có sinh power up không.
     private String powerUpType; //Loại powerup nếu có.
-
     private int score; //Điểm từng loại gạch.
-
     private boolean isFading = false; //Trang thai dang mo dan
     private float alpha = 1.0f; //do trong suot
-
     private static final float FADE_SPEED = 0.05f; // Toc do lam mo khoang 1/3 giay
 
-    //Phần này sửa constructor này thêm 2 thuộc tính vừa thêm.
+    /**
+     * Constructor 7 tham số.
+     *
+     * @param x x.
+     * @param y y.
+     * @param width dài.
+     * @param height rộng.
+     * @param hitPoints số lần va chạm để phá hủy brick.
+     * @param type loại gạch.
+     * @param score điểm.
+     */
     public Brick(double x, double y, double width, double height, int hitPoints, String type, int score) {
         super(x, y, width, height);
         this.hitPoints = hitPoints;
@@ -34,16 +39,29 @@ public abstract class Brick extends GameObject {
         }
     }
 
-    //Getter cho 2 attribute mới.
+    /**
+     * Getter cho có powerup không?
+     *
+     * @return có powerup không.
+     */
     public boolean hasPowerUp() {
         return hasPowerUp;
     }
 
+    /**
+     * Getter cho loại powerup.
+     *
+     * @return loại powerup.
+     */
     public String getPowerUpType() {
         return powerUpType;
     }
 
-    //Sinh từng loại PowerUp theo tỷ lệ 3:3:3:1.
+    /**
+     * Method sinh powerup tỷ lệ 3:3:3:1.
+     *
+     * @return tên powerup được sinh ra.
+     */
     public String getRandomPowerUpType() {
         double rand = Math.random();
         if (rand <= 0.3) {
@@ -57,41 +75,74 @@ public abstract class Brick extends GameObject {
         }
     }
 
-    //getter và setter cho điểm.
+    /**
+     * Getter cho điểm.
+     *
+     * @return điểm.
+     */
     public int getScore() {
         return score;
     }
 
+    /**
+     * Setter cho điểm.
+     *
+     * @param score điểm.
+     */
     public void setScore(int score) {
         this.score = score;
     }
 
-    /*Hết thêm code.*/
-
-    //Getter và setter.
+    /**
+     * Getter cho số hit để phá hủy gạch.
+     *
+     * @return số hit.
+     */
     public int getHitPoints() {
         return hitPoints;
     }
 
+    /**
+     * Getter cho loại gạch.
+     *
+     * @return loại gạch.
+     */
     public String getType() {
         return type;
     }
 
+    /**
+     * Setter cho số hit phá hủy gạch.
+     *
+     * @param hitPoints số hit.
+     */
     public void setHitPoints(int hitPoints) {
         this.hitPoints = hitPoints;
     }
 
+    /**
+     * Setter cho loại gạch.
+     *
+     * @param type loại gạch.
+     */
     public void setType(String type) {
         this.type = type;
     }
-    
+
+    /**
+     * Method trừ 1 hit vào các brick cụ thể (sẽ được override).
+     */
     public abstract void takeHit();
+
+    /**
+     * Method check brick phá hủy chưa.
+     *
+     * @return T or F.
+     */
     public abstract boolean isDestroyed();
 
-
-    //Them code:
     /**
-     * Bắt đầu quá trình mờ dần
+     * Method bắt đầu quá trình mờ dần.
      */
     public void startFading() {
         if (!isFading) {
@@ -100,30 +151,32 @@ public abstract class Brick extends GameObject {
     }
 
     /**
-     * Trả về trạng thái có đang mờ hay không
+     * Method xem có đang mờ hay không.
+     *
+     * @return T/F.
      */
     public boolean isFading() {
         return isFading;
     }
 
     /**
-     * Lấy độ trong suốt hiện tại
+     * Method lấy độ trong suốt.
+     *
+     * @return độ trong suốt.
      */
     public float getAlpha() {
         return alpha;
     }
 
-    // 28-10-25
-    // Trong entities/Brick.java
-    // Xóa @Override vì GameObject không còn update()
-    // @Override
+    /**
+     * Method update được ghi đè.
+     */
     public void update() {
-        // super.update(); 
-        updateFade();   // Gọi hàm làm mờ mà bạn đã định nghĩa
+        updateFade();   // Gọi method làm mờ ngay trên.
     }
 
     /**
-     * Cập nhật logic mờ (sẽ được gọi mỗi frame từ LevelState2)
+     * Cập nhật logic mờ (sẽ được gọi mỗi frame từ LevelState2).
      */
     public void updateFade() {
         if (isFading) {
@@ -135,22 +188,21 @@ public abstract class Brick extends GameObject {
     }
 
     /**
-     * Kiểm tra xem gạch đã sẵn sàng để bị xóa khỏi game chưa
+     * Kiểm tra xem gạch đã sẵn sàng để bị xóa khỏi game chưa?
+     *
+     * @return T or F.
      */
-    // Xem xet lai doan nay 
     public boolean isReadyForRemoval() {
-        // Gạch thường (NORMAL) và gạch mạnh (STRONG) chỉ bị xóa KHI MỜ HẾT
+        // Gạch thường và gạch mạnh chỉ bị xóa KHI MỜ HẾT
         if (getType().equals(BrickType.NORMAL) || getType().equals(BrickType.STRONG)) {
             return isFading && alpha <= 0.0f;
         }
         
-        // Gạch nổ (EXPLOSIVE) hoặc các loại gạch vỡ khác (không mờ)
-        // sẽ bị xóa ngay khi hitPoints <= 0
+        // Gạch nổ (EXPLOSIVE) sẽ bị xóa ngay khi hitPoints <= 0
         if (isDestroyed() && !getType().equals(BrickType.UNBREAKABLE)) {
             return true;
         }
         
         return false;
-       
     }
 }
