@@ -33,6 +33,8 @@ public class Slider {
     private String name;
     private Color valueTextColor;
 
+    Font defaultFont = new Font("Arial", Font.PLAIN, 13);
+
     public Slider(int x, int y, int width, int height, float minValue, float maxValue, float initialValue,
                   BufferedImage trackImage, BufferedImage handleImage, BufferedImage trackFillImage, String silderName) {
         this.x = x;
@@ -62,6 +64,8 @@ public class Slider {
 
 
     public void render(Graphics2D g) {
+        Font font = defaultFont;
+
         g.setRenderingHint(RenderingHints.KEY_ANTIALIASING,
                 RenderingHints.VALUE_ANTIALIAS_ON);
 
@@ -92,10 +96,18 @@ public class Slider {
         g.setColor(valueTextColor);
         String valueText = String.format("%.1f", value);
 
-
+        g.setFont(font);
         int textBaseline = y + (height / 2) + (g.getFontMetrics().getAscent() / 2) - 2;
         g.drawString(valueText, x + width + 20, textBaseline);
 
+
+        FontMetrics metrics = g.getFontMetrics(font);
+
+        while (metrics.stringWidth(this.name) > 95) {
+            font = new Font("Arial", Font.PLAIN, font.getSize() - 1);
+            metrics = g.getFontMetrics(font);
+        }
+        g.setFont(font);
 
         g.drawString(name, x - 100 , textBaseline);
     }

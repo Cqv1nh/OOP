@@ -12,19 +12,27 @@ public class KeyboardManager implements KeyListener {
     private final boolean[] justReleased = new boolean[256];
     private final boolean[] wasPressed = new boolean[256];
 
+    private int lastKeyPressed = -1;
+
+    private int moveLeftPrimary;
+    private int moveLeftSecondary;
+    private int moveRightPrimary;
+    private int moveRightSecondary;
     /**
      * Updates the keyboard state.
      * MUST be called once per frame at the start of your game loop or state update.
      */
     public void update() {
+        lastKeyPressed = -1;
         for (int i = 0; i < keys.length; i++) {
-            // Key was just pressed this frame if it's down now but wasn't down last frame
             justPressed[i] = keys[i] && !wasPressed[i];
 
-            // Key was just released this frame if it's up now but was down last frame
+            if(justPressed[i]) {
+                lastKeyPressed = i;
+            }
+
             justReleased[i] = !keys[i] && wasPressed[i];
 
-            // Update the previous state for next frame
             wasPressed[i] = keys[i];
         }
     }
@@ -70,9 +78,9 @@ public class KeyboardManager implements KeyListener {
      * @param paddle The paddle to control
      */
     public void updatePaddle(Paddle paddle) {
-        if (isKeyDown(KeyEvent.VK_A) || isKeyDown(KeyEvent.VK_LEFT)) {
+        if (isKeyDown(moveLeftPrimary) || isKeyDown(moveLeftSecondary)) {
             paddle.setDx(-paddle.getSpeed());
-        } else if (isKeyDown(KeyEvent.VK_D) || isKeyDown(KeyEvent.VK_RIGHT)) {
+        } else if (isKeyDown(moveRightPrimary) || isKeyDown(moveLeftSecondary)) {
             paddle.setDx(paddle.getSpeed());
         } else {
             paddle.setDx(0);
@@ -132,5 +140,45 @@ public class KeyboardManager implements KeyListener {
         if (e.getKeyCode() >= 0 && e.getKeyCode() < keys.length) {
             keys[e.getKeyCode()] = false;
         }
+    }
+
+    public boolean isAnyKeyPressed() {
+        return lastKeyPressed > 0;
+    }
+
+    public int getLastKeyPressed() {
+        return lastKeyPressed;
+    }
+
+    public int getMoveLeftPrimary() {
+        return moveLeftPrimary;
+    }
+
+    public void setMoveLeftPrimary(int moveLeftPrimary) {
+        this.moveLeftPrimary = moveLeftPrimary;
+    }
+
+    public int getMoveLeftSecondary() {
+        return moveLeftSecondary;
+    }
+
+    public void setMoveLeftSecondary(int moveLeftSecondary) {
+        this.moveLeftSecondary = moveLeftSecondary;
+    }
+
+    public int getMoveRightPrimary() {
+        return moveRightPrimary;
+    }
+
+    public void setMoveRightPrimary(int moveRightPrimary) {
+        this.moveRightPrimary = moveRightPrimary;
+    }
+
+    public int getMoveRightSecondary() {
+        return moveRightSecondary;
+    }
+
+    public void setMoveRightSecondary(int moveRightSecondary) {
+        this.moveRightSecondary = moveRightSecondary;
     }
 }

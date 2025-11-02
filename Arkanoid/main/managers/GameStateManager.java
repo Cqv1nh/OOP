@@ -219,6 +219,11 @@ public class GameStateManager {
                 AudioManager.setBackgroundMusicVolume((float) settings.getBackGroundMusic() / 100);
                 langCode = settings.getLanguage();
 
+                km.setMoveLeftPrimary(settings.getMoveLeftPrimary());
+                km.setMoveLeftSecondary(settings.getMoveLeftSecondary());
+                km.setMoveRightPrimary(settings.getMoveRightPrimary());
+                km.setMoveRightSecondary(settings.getMoveRightSecondary());
+
                 System.out.println("Settings loaded from " + SETTINGS_FILE);
             } catch (IOException e) {
                 System.err.println("Error reading settings: " + e.getMessage());

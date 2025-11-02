@@ -18,6 +18,7 @@ public class Button {
     private Color color;
     private Color textColor;
     private Font font;
+    Font defaultFont = new Font("Arial", Font.PLAIN, 16);
     private boolean isHoveringState = false;
 
     private BufferedImage buttonHover;
@@ -55,21 +56,48 @@ public class Button {
         this.width = width;
         this.height = height;
         this.text = text;
-        this.textColor = Color.decode("#FFFAFA");
+        this.textColor = Color.decode("#FAFFFF");
         this.color = Color.decode("#FAFAFF");
-        this.font = new Font("Arial", Font.BOLD, 16);
+        this.font = new Font("Arial", Font.PLAIN, 16);
         this.function = function;
         this.buttonNormal = buttonNormal;
         this.buttonHover = buttonHover;
     }
 
+    public void draw(Graphics2D g2d, int mouseX, int mouseY) {
+        if (g2d.getFontMetrics(defaultFont).stringWidth(this.text) < this.width - 40) {
+            this.font = defaultFont;
+        }
+
+        if (!isHovering(mouseX, mouseY) && !isHoveringState) {
+            g2d.drawImage(buttonNormal, x, y, width,
+                    height, null);
+        } else {
+            g2d.drawImage(buttonHover, x, y, width,
+                    height, null);
+        }
+        g2d.setFont(this.font);
+
+        FontMetrics metrics = g2d.getFontMetrics(this.font);
+
+
+        while (metrics.stringWidth(this.text) > this.width - 40) {
+            font = new Font("Arial", Font.PLAIN, font.getSize() - 1);
+            metrics = g2d.getFontMetrics(this.font);
+        }
+
+        int textX = this.x + (this.width - metrics.stringWidth(this.text)) / 2;
+        int textY = this.y + ((this.height - metrics.getHeight()) / 2) + metrics.getAscent();
+
+        g2d.drawString(this.text, textX, textY);
+    }
+
     public void drawFlag(Graphics2D g, int mouseX, int mouseY) {
-        if (!isHovering(mouseX, mouseY)) {
+        if (!isHovering(mouseX, mouseY) && !isHoveringState) {
             g.drawImage(buttonNormal, x, y, width, height, null);
         }
         else {
-
-            Color shadowColor = new Color(0, 0, 0, 100);
+            Color shadowColor = Color.decode("#3D3D3D");
             g.setColor(shadowColor);
 
             int shadowOffset = 4;
@@ -167,5 +195,17 @@ public class Button {
 
     public String getFunction() {
         return function;
+    }
+
+    public boolean isHoveringState() {
+        return isHoveringState;
+    }
+
+    public void setWidth(int width) {
+        this.width = width;
+    }
+
+    public void setHeight(int height) {
+        this.height = height;
     }
 }
