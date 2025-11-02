@@ -73,8 +73,9 @@ public class MenuState extends GameState {
     public void render(Graphics2D g) {
         
         // background
-        g.drawImage(AssetManager.menuBackground, 0, 0, Constants.SCREEN_WIDTH, Constants.SCREEN_HEIGHT, null);
-        
+        g.drawImage(AssetManager.transitionBackground, 0, 0, Constants.SCREEN_WIDTH,
+                Constants.SCREEN_HEIGHT, null);
+
         // Draw game title
         int logoWidth = 400; // Chiều rộng mong muốn
         int logoHeight = 100; // Chiều cao mong muốn

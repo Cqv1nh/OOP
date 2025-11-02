@@ -44,19 +44,19 @@ public class VictoryState extends GameState {
 
         g.drawImage(AssetManager.transitionBackground, 0, 0, Constants.SCREEN_WIDTH, Constants.SCREEN_HEIGHT, null);
 
-        g.setColor(Color.decode("#DD0303"));
-        g.setFont(new Font("Arial", Font.BOLD, 35));
+        g.setColor(Color.decode("#F8DE7E"));
+        g.setFont(new Font("Arial", Font.BOLD, 36));
 
         drawCenteredString(languageProps.getProperty("victory.message1", "CONGRATULATIONS!"),
                 Constants.SCREEN_WIDTH, Constants.SCREEN_HEIGHT,
-                g, 0, 0);
+                g, 0, -80);
 
-        g.setColor(Color.CYAN);
+        g.setColor(Color.decode("#66CCFF"));
         g.setFont(new Font("Arial", Font.BOLD, 24));
 
         drawCenteredString(languageProps.getProperty("victory.message2", "PRESS R TO RETURN HOME"),
                 Constants.SCREEN_WIDTH, Constants.SCREEN_HEIGHT,
-                g, 0, 40);
+                g, 0, 50);
 
     }
 }
