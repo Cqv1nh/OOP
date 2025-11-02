@@ -10,4 +10,5 @@ Thịnh:
     - Xây dựng hệ thống xếp hạng HighScore xếp hạng theo điểm số và thời gian.
     - Chuyển đổi cơ chế save 1 game thành save 3 game, người chơi có thể tùy ý chọn màn chơi đã chơi mong muốn.
     - Cải tiến giao diện các trạng thái game cho đẹp hơn.
+    - Sửa lỗi điểm số HUD kkhông cập nhật tức thời.
     

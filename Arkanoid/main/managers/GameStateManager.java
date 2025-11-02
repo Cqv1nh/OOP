@@ -237,6 +237,10 @@ public class GameStateManager {
     }
 
     public int getScore() {
+        // If current state is a LevelState2, prefer its live score (keeps HUD and other callers in sync)
+        if (currentState instanceof LevelState2) {
+            return ((LevelState2) currentState).getScore();
+        }
         return score;
     }
 

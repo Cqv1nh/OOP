@@ -338,12 +338,13 @@ public class LevelState2 extends GameState{
         msg1 = msg1.replace("{0}", String.valueOf(lives));
         g.drawString(msg1, 10, 25);
 
-        String msg2 = languageProps.getProperty("level.score", "Level {0}");
+        String msg2 = languageProps.getProperty("level.currentLevel", "Level {0}");
         msg2 = msg2.replace("{0}", String.valueOf(manager.getCurrentLevel()));
         g.drawString(msg2, 120, 25);
 
-        String msg3 = languageProps.getProperty("level.currentLevel", "Score {0}");
-        msg3 = msg3.replace("{0}", String.valueOf(manager.getCurrentLevel()));
+    String msg3 = languageProps.getProperty("level.score", "Score {0}");
+    // Use the LevelState's local score so HUD updates immediately when bricks are destroyed
+    msg3 = msg3.replace("{0}", String.valueOf(this.score));
         FontMetrics fm = g.getFontMetrics();
         int scoreWidth = fm.stringWidth(msg3);
         g.drawString(msg3, Constants.SCREEN_WIDTH - scoreWidth - 10, 25);
