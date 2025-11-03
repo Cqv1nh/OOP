@@ -3,17 +3,22 @@ package ui;
 import entities.*;
 import util.Constants;
 import util.LevelData;
-import java.awt.Point; // Cần Point
+import java.awt.Point;
 import java.util.ArrayList;
-import java.util.HashSet; // Cần HashSet
+import java.util.HashSet;
 
-// Nang cap BrickManager voi LevelData nhan dau vao la so nguyen chi so level
-// Tao class tao cac brick va quan ly chung, dc goi trong GameWindow
 public class BrickManager {
-
-    //Thuoc tinh dinh nghia cau truc gach bang 1 mang 2D 
+    // Thuoc tinh dinh nghia cau truc gach bang 1 mang 2D
     // 0: NULL, 1: NormalBrick 2. StrongBrick, 3. ExplosiveBrick, 4.UnbreakableBrick
-    
+
+    /**
+     * Tạo ra list quản lý bricks + quản lý chung.
+     *
+     * @param levelNumber chỉ số màn.
+     * @param panelWidth độ rộng màn hình.
+     * @param remainingBrickIndices
+     * @return list gạch.
+     */
     public ArrayList<Brick> createBricks(int levelNumber, int panelWidth, HashSet<Point> remainingBrickIndices) {
         ArrayList<Brick> brickList = new ArrayList<>();
         int[][] layout = LevelData.getLayoutForLevel(levelNumber);
@@ -41,7 +46,7 @@ public class BrickManager {
                     continue;
                 }
 
-                // === LOGIC KIỂM TRA KHI LOAD GAME ===
+                // LOGIC KIỂM TRA KHI LOAD GAME
                 boolean shouldCreate = true; // Mặc định là tạo gạch
                 if (remainingBrickIndices != null) { // Nếu đang load game (danh sách không null)
                     // Kiểm tra xem vị trí (i, j) này có trong danh sách gạch còn lại không
@@ -49,7 +54,7 @@ public class BrickManager {
                         shouldCreate = false; // Không tạo gạch này nếu nó không còn lại
                     }
                 }
-                // === KẾT THÚC KIỂM TRA ===
+                // KẾT THÚC KIỂM TRA
                 if (shouldCreate) {
                     double x = startX + j * (Constants.BRICK_WIDTH + 5);
                     double y = startY + i * (Constants.BRICK_HEIGHT + 5);
@@ -74,9 +79,10 @@ public class BrickManager {
         }
         return brickList;
     }
-    
-    // Thêm constructor mặc định nếu cần (ví dụ, nếu LevelState2 vẫn gọi new BrickManager())
+
+    /**
+     * Constructor mặc định nếu cần (ví dụ, nếu LevelState2 vẫn gọi new BrickManager()).
+     */
     public BrickManager() {
-        // Constructor rỗng
-     }
+    }
 }
