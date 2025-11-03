@@ -3,6 +3,36 @@ Lap trinh huong doi tuong
 Một cách để tìm xem phương thức đc khai báo có đc sử dụng ở nơi khác không: 
 Nhấn bôi đen phương thức đó xong rồi ấn chuột phải chọn Go to Reference
 
+Công việc tuần 5 (6/10 - 12/10)
+Thịnh: 
+    - 
+Trọng:
+    - Viết code sơ khai cho class Ball, PowerUp tổng quát và 4 PowerUp: + 1 bóng, tăng tốc độ, + 1 mạng, + độ dài thanh
+    - Fix lỗi class Ball.
+    - Áp dụng cơ chế thêm điểm khi phá hủy Brick.
+    - Tìm hình ảnh về các PowerUp.
+    - Fix 1 số lỗi tồn đọng trong các code sẵn có.
+
+Công việc tuần 6 (13/10 - 19/10)
+Thịnh: 
+    - 
+Trọng:
+    - Tìm thêm các hình ảnh về các vật thể: Paddle, Brick, Ball, PowerUp.
+    - Tìm nhạc nền ở sảnh chờ và âm thanh va chạm ban đầu chung chung giữa bóng và vật thể khác.
+    - Code thêm duration và paddle size cho các PowerUp.
+    - Fix code 6 class liên quan gamewindow, entitymanager, multiballpowerup, collisionhandler, gamepanel, fastball để tác động lên nhiều bóng.
+    - Fix lỗi tốc độ bóng không ổn định.
+    - Fix 1 số lỗi tồn đọng trong các code sẵn có.
+
+Công việc tuần 7 (20/10 - 26/10)
+Thịnh: 
+    - 
+Trọng:
+    - Thêm hiệu ứng làm mờ khi phá hủy PowerUp.
+    - Thay đổi hành vi va chạm để phù hợp hơn với animation làm mờ.
+    - Thay đổi vòng lặp game với cập nhật phương thức render().
+    - Fix 1 số lỗi tồn đọng trong các code sẵn có.
+
 Công việc tuần 8 (27/10 - 2/11)
 Thịnh: 
     - Sửa lỗi logic liên quan đến 2 PowerUp có thời gian hiệu lực.
@@ -11,4 +41,13 @@ Thịnh:
     - Chuyển đổi cơ chế save 1 game thành save 3 game, người chơi có thể tùy ý chọn màn chơi đã chơi mong muốn.
     - Cải tiến giao diện các trạng thái game cho đẹp hơn.
     - Sửa lỗi điểm số HUD kkhông cập nhật tức thời.
+Trọng:
+    - Làm thêm animation liên quan đến gạch nổ Explosive.
+    - Đa dạng thêm âm thanh va chạm giữa bóng - paddle, bóng - brick, và hiệu ứng khi ăn powerup.
+    - Fix 1 số lỗi tồn đọng trong các code sẵn có.
+
+Công việc tuần 9 (3/11 - 5/11)
+Trọng:
+    - Cập nhật toàn bộ chú thích (Javadoc) cho tất cả các class của code game Arkanoid.
+    - Fix 1 số lỗi tồn đọng trong các code sẵn có.
     
