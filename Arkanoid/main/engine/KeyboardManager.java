@@ -80,7 +80,7 @@ public class KeyboardManager implements KeyListener {
     public void updatePaddle(Paddle paddle) {
         if (isKeyDown(moveLeftPrimary) || isKeyDown(moveLeftSecondary)) {
             paddle.setDx(-paddle.getSpeed());
-        } else if (isKeyDown(moveRightPrimary) || isKeyDown(moveLeftSecondary)) {
+        } else if (isKeyDown(moveRightPrimary) || isKeyDown(moveRightSecondary)) {
             paddle.setDx(paddle.getSpeed());
         } else {
             paddle.setDx(0);
