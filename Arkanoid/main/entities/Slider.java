@@ -7,29 +7,24 @@ import java.awt.image.BufferedImage;
 public class Slider {
     private int x;
     private int y;
-
     private int width;
     private int height;
-
     private int handleWidth;
     private int handleHeight;
-
     private float minValue;
     private float maxValue;
     private float value;
     private float valueStep;
-
     private boolean isDragging;
     private boolean isHovered;
-
     private Rectangle handleBounds;
-
     private BufferedImage trackImage;
     private BufferedImage handleImage;
     private BufferedImage trackFillImage;
-
     private String name;
     private Color valueTextColor;
+
+    Font defaultFont = new Font("Arial", Font.PLAIN, 13);
 
     /**
      * Constructor 11 tham số.
@@ -77,6 +72,8 @@ public class Slider {
      * @param g đối tượng đồ họa dùng để vẽ.
      */
     public void render(Graphics2D g) {
+        Font font = defaultFont;
+
         g.setRenderingHint(RenderingHints.KEY_ANTIALIASING,
                 RenderingHints.VALUE_ANTIALIAS_ON);
 
@@ -103,8 +100,17 @@ public class Slider {
         g.setColor(valueTextColor);
         String valueText = String.format("%.1f", value);
 
+        g.setFont(font);
         int textBaseline = y + (height / 2) + (g.getFontMetrics().getAscent() / 2) - 2;
         g.drawString(valueText, x + width + 20, textBaseline);
+
+        FontMetrics metrics = g.getFontMetrics(font);
+
+        while (metrics.stringWidth(this.name) > 95) {
+            font = new Font("Arial", Font.PLAIN, font.getSize() - 1);
+            metrics = g.getFontMetrics(font);
+        }
+        g.setFont(font);
         g.drawString(name, x - 100 , textBaseline);
     }
 

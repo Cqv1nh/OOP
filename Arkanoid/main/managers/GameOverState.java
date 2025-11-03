@@ -15,7 +15,7 @@ import static util.RenderUtil.drawCenteredString; // DÒNG MỚI (ĐÚNG)
 public class GameOverState extends GameState {
     private List<Button> buttons;
 
-    private final Font TITLE_FONT = new Font("Arial", Font.BOLD, 48);
+    private final Font TITLE_FONT = new Font("Arial", Font.BOLD, 36);
     private final Font SUB_FONT = new Font("Arial", Font.PLAIN, 24);
 
     public GameOverState(GameStateManager manager) {
@@ -72,18 +72,18 @@ public class GameOverState extends GameState {
         g.drawImage(AssetManager.transitionBackground, 0, 0, Constants.SCREEN_WIDTH, Constants.SCREEN_HEIGHT, null);
 
         // Title
-        g.setColor(Color.RED);
+        g.setColor(Color.decode("#E30B5D"));
         g.setFont(TITLE_FONT);
         drawCenteredString(languageProps.getProperty("gameover.message1", "GAME OVER"),
                 Constants.SCREEN_WIDTH, Constants.SCREEN_HEIGHT,
-                g, 0, 0);
+                g, 0, -80);
 
-        // Instruction
-        g.setColor(Color.CYAN);
+
+        g.setColor(Color.decode("#66CCFF"));
         g.setFont(SUB_FONT);
         drawCenteredString(languageProps.getProperty("gameover.message2", "Press R to return to menu"),
                 Constants.SCREEN_WIDTH, Constants.SCREEN_HEIGHT,
-                g, 0, 40);
+                g, 0, 50);
 
 
         // Localize button text if language properties available

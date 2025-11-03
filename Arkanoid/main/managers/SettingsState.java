@@ -8,8 +8,10 @@ import entities.Slider;
 import util.AssetManager;
 import util.AudioManager;
 import util.Constants;
+import util.RenderUtil;
 
 import java.awt.*;
+import java.awt.event.KeyEvent;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.io.InputStream;
@@ -44,6 +46,19 @@ public class SettingsState extends GameState {
     private String keybindSettings = "";
     private String languageSettings = "";
     private String currentSelectedLang = "";
+    private String moveLeft = "";
+    private String moveRight = "";
+
+    private Button changeLeftPrimary;
+    private Button changeLeftSecondary;
+    private Button changeRightPrimary;
+    private Button changeRightSecondary;
+    private boolean waitingForKey = false;
+    private String waitingForAction = "";
+
+    String[] flagNames;
+
+    Font defaultFont = new Font("Arial", Font.PLAIN, 13);
 
     public SettingsState(GameStateManager manager) {
         super(manager);
@@ -54,7 +69,7 @@ public class SettingsState extends GameState {
         BufferedImage handle = AssetManager.handleImg;
         BufferedImage fill = AssetManager.fillImg;
 
-        BufferedImage usUkFlag = AssetManager.UkFlag;
+        BufferedImage ukFlag = AssetManager.UkFlag;
         BufferedImage vietnamFlag = AssetManager.vietnamFlag;
         BufferedImage germanyFlag = AssetManager.germanyFlag;
         BufferedImage franceFlag = AssetManager.franceFlag;
@@ -68,13 +83,13 @@ public class SettingsState extends GameState {
         BufferedImage buttonIdle = AssetManager.buttonNormal;
         BufferedImage buttonHover = AssetManager.buttonHover;
 
-        masterVolume = new Slider(140, 100, 343, 4, 0, 100,
+        masterVolume = new Slider(140, 50, 343, 4, 0, 100,
                 50, track, handle, fill, "Master Volume");
 
-        soundFx = new Slider(140, 150, 343, 4, 0, 100,
+        soundFx = new Slider(140, 100, 343, 4, 0, 100,
                 50, track, handle, fill, "Sound Effect");
 
-        backGroundMusic = new Slider(140, 200, 343, 4, 0, 100,
+        backGroundMusic = new Slider(140, 150, 343, 4, 0, 100,
                 50, track, handle, fill, "Background Music");
 
         returnButton = new Button(580, 20, 220, 50 , "Return", "Return",
@@ -84,6 +99,16 @@ public class SettingsState extends GameState {
         returnDefault = new Button(580, 160, 220, 50 , "Set Default", "Set Default",
                 buttonIdle, buttonHover);
 
+        int keyBindY = 240;
+        changeLeftPrimary = new Button(140, keyBindY, 150, 40, "Left P1",
+                "LeftPrimary", buttonIdle, buttonHover);
+        changeLeftSecondary = new Button(300, keyBindY, 150, 40, "Left P2",
+                "LeftSecondary", buttonIdle, buttonHover);
+        changeRightPrimary = new Button(140, keyBindY + 60, 150, 40, "Right P1",
+                "RightPrimary", buttonIdle, buttonHover);
+        changeRightSecondary = new Button(300, keyBindY + 60, 150, 40, "Right P2",
+                "RightSecondary", buttonIdle, buttonHover);
+
         int startX = 60;
         int startY = 420;
         int flagWidth = 64;
@@ -91,12 +116,12 @@ public class SettingsState extends GameState {
         int spacing = 20;
 
         BufferedImage[] flags = {
-                usUkFlag, vietnamFlag, germanyFlag, franceFlag,
+                ukFlag, vietnamFlag, germanyFlag, franceFlag,
                 spainFlag, portugalFlag, netherlandsFlag,
                 russiaFlag, romaniaFlag, italyFlag
         };
 
-        String[] flagNames= {
+        flagNames = new String[]{
                 "en", "vn", "de", "fr",
                 "es", "pt", "nl", "ru",
                 "ro", "it"
@@ -142,6 +167,14 @@ public class SettingsState extends GameState {
     @Override
     public void enter() {
         loadSettingsFromFile();
+
+        Button flagButton = flagButtons.getFirst();
+        for (int i = 0; i < flagNames.length; i++) {
+            if (flagNames[i].equals(manager.getLangCode()));
+            flagButton = flagButtons.get(i);
+        }
+        selectedFlagButton.setWidth(flagButton.getWidth());
+        selectedFlagButton.setHeight(flagButton.getHeight());
     }
 
     @Override
@@ -159,14 +192,70 @@ public class SettingsState extends GameState {
         AudioManager.setSoundFxVolume(soundFx.getValue() / 100);
         AudioManager.setBackgroundMusicVolume(backGroundMusic.getValue() / 100);
 
-        returnButton.setHoveringState(returnButton.isHovering(mm.getMouseX(), mm.getMouseY()));
+        if (waitingForKey && km.isAnyKeyPressed()) {
+            int keyCode = km.getLastKeyPressed();
+            switch (waitingForAction) {
+                case "LeftPrimary":
+                    settings.setMoveLeftPrimary(keyCode);
+                    km.setMoveLeftPrimary(keyCode);
+                    changeLeftPrimary.setText(KeyEvent.getKeyText(km.getMoveLeftPrimary()));
+                    changeLeftPrimary.setHoveringState(false);
+                    break;
+                case "LeftSecondary":
+                    settings.setMoveLeftSecondary(keyCode);
+                    km.setMoveLeftSecondary(keyCode);
+                    changeLeftSecondary.setText(KeyEvent.getKeyText(km.getMoveLeftSecondary()));
+                    changeLeftSecondary.setHoveringState(false);
+                    break;
+                case "RightPrimary":
+                    settings.setMoveRightPrimary(keyCode);
+                    km.setMoveRightPrimary(keyCode);
+                    changeRightPrimary.setText(KeyEvent.getKeyText(km.getMoveRightPrimary()));
+                    changeRightPrimary.setHoveringState(false);
+                    break;
+                case "RightSecondary":
+                    settings.setMoveRightSecondary(keyCode);
+                    km.setMoveRightSecondary(keyCode);
+                    changeRightSecondary.setText(KeyEvent.getKeyText(km.getMoveRightSecondary()));
+                    changeRightSecondary.setHoveringState(false);
+                    break;
+            }
+            waitingForKey = false;
+            waitingForAction = "";
+        }
+
+        // Key binding button clicks
+        if (changeLeftPrimary.isHovering(mm.getMouseX(), mm.getMouseY()) && mm.isLeftJustPressed()) {
+            waitingForKey = true;
+            waitingForAction = "LeftPrimary";
+            resetHover();
+            changeLeftPrimary.setHoveringState(true);
+        }
+        if (changeLeftSecondary.isHovering(mm.getMouseX(), mm.getMouseY()) && mm.isLeftJustPressed()) {
+            waitingForKey = true;
+            waitingForAction = "LeftSecondary";
+            resetHover();
+            changeLeftSecondary.setHoveringState(true);
+        }
+        if (changeRightPrimary.isHovering(mm.getMouseX(), mm.getMouseY()) && mm.isLeftJustPressed()) {
+            waitingForKey = true;
+            waitingForAction = "RightPrimary";
+            resetHover();
+            changeRightPrimary.setHoveringState(true);
+        }
+        if (changeRightSecondary.isHovering(mm.getMouseX(), mm.getMouseY()) && mm.isLeftJustPressed()) {
+            waitingForKey = true;
+            waitingForAction = "RightSecondary";
+            resetHover();
+            changeRightSecondary.setHoveringState(true);
+        }
+
         if(returnButton.isHovering(mm.getMouseX(), mm.getMouseY())) {
             if (mm.isLeftJustPressed()) {
                 manager.setState("menu");
             }
         }
 
-        saveButton.setHoveringState(saveButton.isHovering(mm.getMouseX(), mm.getMouseY()));
         if(saveButton.isHovering(mm.getMouseX(), mm.getMouseY())) {
             if (mm.isLeftJustPressed()) {
                 saveSettingsToFile();
@@ -174,13 +263,23 @@ public class SettingsState extends GameState {
             }
         }
 
-        returnDefault.setHoveringState(returnDefault.isHovering(mm.getMouseX(), mm.getMouseY()));
         if(returnDefault.isHovering(mm.getMouseX(), mm.getMouseY())) {
             if (mm.isLeftJustPressed()) {
                 settings.setDefault();
                 masterVolume.setValue(settings.getMasterVolume());
                 soundFx.setValue(settings.getSoundEffectsVolume());
                 backGroundMusic.setValue(settings.getBackGroundMusic());
+                loadLanguage(settings.getLanguage());
+
+                km.setMoveLeftPrimary(settings.getMoveLeftPrimary());
+                km.setMoveLeftSecondary(settings.getMoveLeftSecondary());
+                km.setMoveRightPrimary(settings.getMoveRightPrimary());
+                km.setMoveRightSecondary(settings.getMoveRightSecondary());
+
+                changeLeftPrimary.setText(KeyEvent.getKeyText(km.getMoveLeftPrimary()));
+                changeLeftSecondary.setText(KeyEvent.getKeyText(km.getMoveLeftSecondary()));
+                changeRightPrimary.setText(KeyEvent.getKeyText(km.getMoveRightPrimary()));
+                changeRightSecondary.setText(KeyEvent.getKeyText(km.getMoveRightSecondary()));
                 System.out.println("Set Default Settings");
             }
         }
@@ -191,6 +290,8 @@ public class SettingsState extends GameState {
                     selectedFlagButton.setText(flagButton.getText());
                     selectedFlagButton.setButtonNormal(flagButton.getButtonNormal());
                     selectedFlagButton.setButtonHover(flagButton.getButtonHover());
+                    selectedFlagButton.setWidth(flagButton.getWidth());
+                    selectedFlagButton.setHeight(flagButton.getHeight());
 
                     String selectedLang = flagButton.getText();
                     settings.setLanguage(selectedLang);
@@ -205,40 +306,63 @@ public class SettingsState extends GameState {
 
     @Override
     public void render(Graphics2D g) {
-        // Ve nen
-        g.drawImage(AssetManager.menuBackground, 0, 0, Constants.SCREEN_WIDTH, Constants.SCREEN_HEIGHT, null);
+        Font font = defaultFont;
 
-        g.setColor(Color.decode("#3D3D3D"));
-        g.drawRect(25, 85, 510 ,140);
+        g.drawImage(AssetManager.menuBackground, 0, 0,
+                Constants.SCREEN_WIDTH, Constants.SCREEN_HEIGHT, null);
 
-        g.setColor(Color.decode("#3D3D3D"));
+        g.setColor(Color.decode("#FAFFFF"));
+        g.drawRect(25, 35, 510 ,140);
+        g.drawRect(25, 220, 510, 140);
         g.drawRect(25, 400, 570 ,140);
 
-        g.setFont(new Font("Arial", Font.BOLD, 10));
-
-        g.setColor(Color.decode("#4A4A4A"));
-        g.drawString(volumeSettings, 25, 75);
+        g.setFont(new Font("Arial", Font.PLAIN, 10));
+        g.setColor(Color.decode("#FAFFFF"));
+        g.drawString(volumeSettings, 25, 25);
         g.drawString(languageSettings, 25, 395);
+        g.drawString(keybindSettings, 25, 215);
+
+        FontMetrics metrics = g.getFontMetrics(font);
+
+        while (metrics.stringWidth(moveLeft) > 110 || metrics.stringWidth(moveRight) > 110) {
+            font = new Font("Arial", Font.PLAIN, font.getSize() - 1);
+            metrics = g.getFontMetrics(font);
+        }
+        g.setFont(font);
+        g.drawString(moveLeft, 35, 265);
+        g.drawString(moveRight, 35, 325);
+
 
         String[] temp = currentSelectedLang.split(" ");
 
         for (int i = 0; i < temp.length; i++) {
-            g.drawString(temp[temp.length - i - 1], selectedFlagButton.getX(), selectedFlagButton.getY() - (5 + i * 10));
+            g.drawString(temp[temp.length - i - 1], selectedFlagButton.getX(), selectedFlagButton.getY() - (5 + i * 12));
         }
 
         masterVolume.render(g);
         soundFx.render(g);
         backGroundMusic.render(g);
 
-        returnButton.draw(g);
-        saveButton.draw(g);
-        returnDefault.draw(g);
+        drawKeyButton(g, changeLeftPrimary, settings.getMoveLeftPrimary());
+        drawKeyButton(g, changeLeftSecondary, settings.getMoveLeftSecondary());
+        drawKeyButton(g, changeRightPrimary, settings.getMoveRightPrimary());
+        drawKeyButton(g, changeRightSecondary, settings.getMoveRightSecondary());
+
+        returnButton.draw(g, mm.getMouseX(), mm.getMouseY());
+        saveButton.draw(g, mm.getMouseX(), mm.getMouseY());
+        returnDefault.draw(g, mm.getMouseX(), mm.getMouseY());
 
         for (Button flagButton : flagButtons) {
             flagButton.drawFlag(g, mm.getMouseX(), mm.getMouseY());
         }
 
         selectedFlagButton.drawFlag(g, mm.getMouseX(), mm.getMouseY());
+
+    }
+
+    private void drawKeyButton(Graphics2D g, Button button, int keyCode) {
+        button.draw(g, mm.getMouseX(), mm.getMouseY());
+        //g.drawString(KeyEvent.getKeyText(keyCode), button.getX() + 10, button.getY() + 25);
     }
 
     private void loadLanguage(String langCode) {
@@ -268,6 +392,8 @@ public class SettingsState extends GameState {
             keybindSettings = languageProps.getProperty("settings.keyBind", "KEY BINDING");
             languageSettings = languageProps.getProperty("settings.lang", "");
             currentSelectedLang = languageProps.getProperty("settings.currentLang", "SELECTED LANGUAGE");
+            moveLeft = languageProps.getProperty("settings.moveLeft", "MOVE LEFT");
+            moveRight = languageProps.getProperty("settings.moveRight", "MOVE RIGHT");
 
             System.out.println("Language loaded: " + langCode);
         } catch (IOException e) {
@@ -280,6 +406,12 @@ public class SettingsState extends GameState {
         settings.setSoundEffectsVolume((int) soundFx.getValue());
         settings.setBackGroundMusic((int) backGroundMusic.getValue());
         settings.setLanguage(currentLanguage);
+
+        settings.setMoveLeftPrimary(km.getMoveLeftPrimary());
+        settings.setMoveLeftSecondary(km.getMoveLeftSecondary());
+        settings.setMoveRightPrimary(km.getMoveRightPrimary());
+        settings.setMoveRightSecondary(km.getMoveRightSecondary());
+
         try {
             String json = settingsToJson(settings);
             Files.write(Paths.get(SETTINGS_FILE), json.getBytes());
@@ -305,7 +437,16 @@ public class SettingsState extends GameState {
                 Gson gson = new Gson();
                 settings = gson.fromJson(json, Settings.class);
 
-                // Update sliders with loaded values
+                km.setMoveLeftPrimary(settings.getMoveLeftPrimary());
+                km.setMoveLeftSecondary(settings.getMoveLeftSecondary());
+                km.setMoveRightPrimary(settings.getMoveRightPrimary());
+                km.setMoveRightSecondary(settings.getMoveRightSecondary());
+
+                changeLeftPrimary.setText(KeyEvent.getKeyText(km.getMoveLeftPrimary()));
+                changeLeftSecondary.setText(KeyEvent.getKeyText(km.getMoveLeftSecondary()));
+                changeRightPrimary.setText(KeyEvent.getKeyText(km.getMoveRightPrimary()));
+                changeRightSecondary.setText(KeyEvent.getKeyText(km.getMoveRightSecondary()));
+
                 masterVolume.setValue(settings.getMasterVolume());
                 soundFx.setValue(settings.getSoundEffectsVolume());
                 backGroundMusic.setValue(settings.getBackGroundMusic());
@@ -321,5 +462,12 @@ public class SettingsState extends GameState {
         } else {
             System.out.println("Settings file not found, using default values.");
         }
+    }
+
+    private void resetHover() {
+        changeLeftPrimary.setHoveringState(false);
+        changeLeftSecondary.setHoveringState(false);
+        changeRightPrimary.setHoveringState(false);
+        changeRightSecondary.setHoveringState(false);
     }
 }

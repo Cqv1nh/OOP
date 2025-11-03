@@ -46,22 +46,22 @@ public class TransitionState extends GameState {
 
         g.drawImage(AssetManager.transitionBackground, 0, 0, Constants.SCREEN_WIDTH, Constants.SCREEN_HEIGHT, null);
 
-        g.setColor(Color.CYAN);
-        g.setFont(new Font("Arial", Font.BOLD, 36));
+        g.setColor(Color.decode("#FFFFE3"));
+        g.setFont(new Font("Arial", Font.BOLD, 28));
         if (level == 1) {
 
             drawCenteredString(lang.getProperty("transition.level1_message", "ENTER LEVEL 1"),
-                    Constants.SCREEN_WIDTH, Constants.SCREEN_HEIGHT, g, 0, 0);
+                    Constants.SCREEN_WIDTH, Constants.SCREEN_HEIGHT, g, 0, -80);
         } else {
             String msg = lang.getProperty("transition.message1", "LEVEL {0} PASSED");
             msg = msg.replace("{0}", String.valueOf(level - 1)); // handle {0} placeholder
-            drawCenteredString(msg, Constants.SCREEN_WIDTH, Constants.SCREEN_HEIGHT, g, 0, 0);
+            drawCenteredString(msg, Constants.SCREEN_WIDTH, Constants.SCREEN_HEIGHT, g, 0, -80);
         }
 
-        g.setColor(Color.decode("#DD0303"));
-        g.setFont(new Font("Arial", Font.BOLD, 24));
+        g.setColor(Color.decode("#66CCFF"));
+        g.setFont(new Font("Arial", Font.BOLD, 20));
         drawCenteredString(lang.getProperty("transition.message2", "PRESS SPACE TO CONTINUE"),
-                Constants.SCREEN_WIDTH, Constants.SCREEN_HEIGHT, g, 0, 40);
+                Constants.SCREEN_WIDTH, Constants.SCREEN_HEIGHT, g, 0, 50);
 
     }
 }
