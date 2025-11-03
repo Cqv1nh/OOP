@@ -1,14 +1,12 @@
-
 import engine.KeyboardManager;
 import engine.MouseManager;
+import javax.swing.*;
+import java.awt.*;
 import managers.GameStateManager;
 import util.AssetManager;
 import util.AudioManager;
-
-import javax.swing.*;
-import java.awt.*;
-
 import static java.lang.Thread.sleep;
+
 // Game.java implements Runnable.
 public class Game extends JPanel implements Runnable {
     private GameStateManager gameStateManager;
@@ -17,12 +15,13 @@ public class Game extends JPanel implements Runnable {
     private boolean isRunning;
     private KeyboardManager km = new KeyboardManager();
     private MouseManager mm = new MouseManager();
-
-
     // Game loop timing
     private final int FPS = 60;
     private final double UPDATE_INTERVAL = 1000000000.0 / FPS;
 
+    /**
+     * Constructor không có tham số để setup.
+     */
     public Game() {
         setPreferredSize(new Dimension(800, 600));
         setBackground(Color.BLACK);
@@ -36,13 +35,15 @@ public class Game extends JPanel implements Runnable {
         // Initialize the game state manager
         gameStateManager = new GameStateManager(km, mm);
 
-
         // Start at menu state
         gameStateManager.setState("menu");
 
         System.out.println("Game initialized successfully");
     }
-    // Thread Game (Luồng 1 - Logic):
+
+    /**
+     * Thread Game (Luồng 1 - Logic).
+     */
     @Override
     public void run() {
         double delta = 0;
@@ -75,11 +76,16 @@ public class Game extends JPanel implements Runnable {
 
         }
     }
-    // Event Dispatch Thread (EDT) (Luồng 2 - Giao diện):
-    // Đây là luồng mặc định của Java Swing, chịu trách nhiệm xử lý tất cả các tương tác giao diện.
-    // Khi luồng game (Luồng 1) gọi repaint(), nó không vẽ ngay lập tức. Nó chỉ yêu cầu EDT rằng lúc nào rảnh thì vẽ lại.
-    // EDT, khi đến lượt, sẽ gọi phương thức paintComponent(Graphics g) của Game.java
-    // Luồng này sau đó thực thi gameStateManager.render(g2d) để vẽ mọi thứ lên màn hình.
+
+    /**
+     * Event Dispatch Thread (EDT) (Luồng 2 - Giao diện).
+     * Đây là luồng mặc định của Java Swing, chịu trách nhiệm xử lý tất cả các tương tác giao diện.
+     * Khi luồng game (Luồng 1) gọi repaint(), nó không vẽ ngay lập tức. Nó chỉ yêu cầu EDT rằng lúc nào rảnh thì vẽ lại.
+     * EDT, khi đến lượt, sẽ gọi phương thức paintComponent(Graphics g) của Game.java
+     * Luồng này sau đó thực thi gameStateManager.render(g2d) để vẽ mọi thứ lên màn hình.
+     *
+     * @param g the <code>Graphics</code> object to protect
+     */
     @Override
     protected void paintComponent(Graphics g) {
         super.paintComponent(g); // Xóa nền cũ
@@ -101,6 +107,9 @@ public class Game extends JPanel implements Runnable {
         }
     }
 
+    /**
+     * Method bắt đầu game.
+     */
     public void startGame() {
         if (thread == null) {
             // Tao 1 luong moi
@@ -114,6 +123,9 @@ public class Game extends JPanel implements Runnable {
         }
     }
 
+    /**
+     * Method dừng game.
+     */
     public void stopGame() {
         isRunning = false;
         try {
@@ -132,12 +144,20 @@ public class Game extends JPanel implements Runnable {
         }
     }
 
-    // Getters for accessing game state manager
+    /**
+     * Getter truy cập gamestatemanager.
+     *
+     * @return gameStateManager.
+     */
     public GameStateManager getGameStateManager() {
         return gameStateManager;
     }
 
-    // Game.main(), một JFrame (cửa sổ) được tạo ra.
+    /**
+     * Method main để tạo ra 1 JFrame (cửa sổ).
+     *
+     * @param args
+     */
     public static void main(String[] args) {
         SwingUtilities.invokeLater(() -> {
             AssetManager.loadImages(); // được gọi chỉ một lần duy nhất khi game khởi động
@@ -154,12 +174,11 @@ public class Game extends JPanel implements Runnable {
             game.requestFocusInWindow(); // Ensure the panel has focus for key input
             game.startGame();
 
-            // Optional: Add window closing listener to properly stop the game
             frame.addWindowListener(new java.awt.event.WindowAdapter() {
                 @Override
                 public void windowClosing(java.awt.event.WindowEvent e) {
                     game.stopGame();
-                    AudioManager.closeAllSounds(); // <-- THÊM DÒNG NÀY VÀO ĐÂY
+                    AudioManager.closeAllSounds(); 
                 }
             });
         });
