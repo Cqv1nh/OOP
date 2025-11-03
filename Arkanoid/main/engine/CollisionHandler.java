@@ -1,28 +1,51 @@
 package engine;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import entities.Ball;
 import entities.Brick;
 import entities.ExplosiveBrick;
 import entities.Paddle;
+import java.util.ArrayList;
+import java.util.List;
 import managers.LevelState2;
 import util.BrickType;
 import util.Constants;
 import util.AudioManager;
 
-// Thinh
-// Lớp này tập trung toàn bộ logic xử lý va chạm phức tạp.
 public class CollisionHandler {
-
+    private final PowerUpManager powerUpManager = new PowerUpManager();
+    /**
+     * Constructor không có tham số.
+     */
     public CollisionHandler() {
     }
 
-    // Quan ly cac powerUp
-    private final PowerUpManager powerUpManager = new PowerUpManager();
+    /**
+     * Method điều phồi tổng cho va chạm.
+     *
+     * @param game
+     * @param panelWidth độ rộng màn hình.
+     * @param panelHeight độ cao màn hình.
+     */
+    public void handleCollisions(LevelState2 game, int panelWidth, int panelHeight) {
+        // Neu bong van con tren paddle, khong thuc hien tinh toan va cham
+        if (!game.isBallLaunched()) {
+            return;
+        }
 
-    // Va cham bong voi tuong
+        for (Ball ball : game.getBalls()) {
+            if (handleBallWallCollision(ball)) { // Nếu va chạm cạnh dưới (true)
+            }
+            handleBallPaddleCollision(ball, game.getPaddle());
+            handleBallBrickCollision(game, ball); // Truyền quả bóng hiện tại vào
+        }
+    }
+
+    /**
+     * Method xử lý va chạm bóng với tường.
+     *
+     * @param ball bóng
+     * @param panelWidth độ rộng màn hình.
+     */
     public void handleBallWallCollision(Ball ball, int panelWidth) {
         // va cham voi tuong
         if (ball.getX() <= 0) {
@@ -39,7 +62,13 @@ public class CollisionHandler {
         }
 
     }
-    // Xu ly bong voi paddle
+
+    /**
+     * Method xử lý bóng va chạm với thanh.
+     *
+     * @param ball bóng
+     * @param paddle thanh.
+     */
     private void handleBallPaddleCollision(Ball ball, Paddle paddle) {
         // Va cham voi paddle
         if (ball.getY() + ball.getRadius() * 2 >= paddle.getY() 
@@ -67,39 +96,17 @@ public class CollisionHandler {
             // Cập nhật hướng di chuyển mớ
             ball.setDirectionX(Math.cos(bounceAngle));
             ball.setDirectionY(-Math.abs(Math.sin(bounceAngle)));
-            // Áp lại tốc độ (nếu Ball.java dùng dx, dy = speed * direction)
+            // Áp lại tốc độ
             ball.setY(paddle.getY() - ball.getRadius() * 2);
-        }
-    }   
-    
-    // Va cham voi Gach
-    // V2
-    public void handleCollisions(LevelState2 game, int panelWidth, int panelHeight) {
-        // Neu bong van con tren paddle, khong thuc hien tinh toan va cham
-        if (!game.isBallLaunched()) {
-            return;
-        }
-
-        // if (balls.size() == 1) {
-        //     if (handleBallWallCollision(balls.getFirst())) {
-        //         game.setBallLaunched(false);
-        //         game.loseLives(); // <-- LỖI TRỪ MẠNG Ở ĐÂY
-        //     }
-        // }
-        for (Ball ball : game.getBalls()) {
-            // SỬA LẠI KHỐI NÀY:
-            if (handleBallWallCollision(ball)) { // Nếu va chạm cạnh dưới (true)
-                 // Đánh dấu bóng này cần xóa (KHÔNG xóa ngay lập tức)
-                 // Bạn có thể thêm một cờ boolean vào lớp Ball, ví dụ: ball.markForRemoval = true;
-                 // Hoặc tạo một danh sách riêng để lưu các bóng cần xóa
-                 // Tạm thời để trống, EntityManager sẽ xử lý việc xóa
-            }
-            handleBallPaddleCollision(ball, game.getPaddle());
-            handleBallBrickCollision(game, ball); // Truyền quả bóng hiện tại vào
         }
     }
 
-    // V2 Sửa lỗi: Xử lý va chạm cả 4 cạnh và trả về boolean đúng
+    /**
+     * Method va chạm bóng với tường, trả về T, F.
+     *
+     * @param ball bóng
+     * @return T or F.
+     */
     public boolean handleBallWallCollision(Ball ball) {
         boolean hitWall = false; // Biến để kiểm tra có va chạm tường (trên, trái, phải) không
 
@@ -110,6 +117,7 @@ public class CollisionHandler {
             ball.setDx(ball.getSpeed() * ball.getDirectionX()); // Cập nhật Dx
             hitWall = true;
         }
+
         // Va chạm tường PHẢI
         else if (ball.getX() + Constants.BALL_DIAMETER >= Constants.SCREEN_WIDTH) { // Dùng >= thay vì >
             ball.setX(Constants.SCREEN_WIDTH - Constants.BALL_DIAMETER); // Đặt lại vị trí sát mép
@@ -125,6 +133,7 @@ public class CollisionHandler {
             ball.setDy(ball.getSpeed() * ball.getDirectionY()); // Cập nhật Dy
             hitWall = true;
         }
+
         // Va chạm cạnh DƯỚI (Rơi ra ngoài)
         else if (ball.getY() + Constants.BALL_DIAMETER >= Constants.SCREEN_HEIGHT) { // Dùng >= thay vì >
             // Không đổi hướng, chỉ báo hiệu là bóng đã rơi
@@ -140,8 +149,12 @@ public class CollisionHandler {
         return false;
     }
 
-
-    //V2
+    /**
+     * Method xử lý va chạm bóng với gạch.
+     *
+     * @param game
+     * @param ball bóng.
+     */
     private void handleBallBrickCollision(LevelState2 game, Ball ball) {
         ArrayList<Brick> brickList = game.getBricks();
         for (Brick b : brickList) {
@@ -156,20 +169,8 @@ public class CollisionHandler {
                     + (centerBallY - closetY) * (centerBallY - closetY));
             // Dk va cham: khoang cach nho hon ban kinh
             if (distance < ball.getRadius()) {
-                
                 // Xử lý vật lý va chạm
                 processCollisionPhysics(ball, closetX, closetY, distance);
-                
-                /* 
-                // Xử lý logic gạch
-                if (b.getType() != BrickType.UNBREAKABLE) {
-                    b.takeHit();
-                }
-                // Xu ly gach no
-                if (b.isDestroyed() && b instanceof ExplosiveBrick) {
-                    ExplosiveBrick e = (ExplosiveBrick) b;
-                    e.explode(brickList);
-                } */
 
                 // Chỉ xử lý va chạm nếu gạch CÒN SỐNG (hitPoints > 0)
                 if (b.getHitPoints() > 0) {
@@ -196,39 +197,19 @@ public class CollisionHandler {
                         if (b instanceof ExplosiveBrick) {
                             ExplosiveBrick e = (ExplosiveBrick) b;
                             totalDestroyed.addAll(e.startExplosion(brickList));
-                            //e.startExplosion(brickList);
                             // Cộng điểm và tạo powerup cho gạch nổ NGAY LẬP TỨC
                             game.addScore(b.getScore()); 
                             if (b.hasPowerUp()) {
                                 powerUpManager.spawnPowerUp(game, b);
                             }
-                        } 
-
-                        totalDestroyed.add(b);
-
-                        /*  Xử lý GẠCH THƯỜNG / GẠCH MẠNH
-                        else if (b.getType().equals(BrickType.NORMAL) || b.getType().equals(BrickType.STRONG)) {
-                            b.startFading(); // <-- BẮT ĐẦU MỜ
-                            game.addScore(b.getScore()); // Cộng điểm ngay
-                            if (b.hasPowerUp()) { // Tạo power-up ngay
-                                powerUpManager.spawnPowerUp(game, b);
-                            }
                         }
-                        // Xử lý các loại gạch vỡ được khác (nếu có)
-                        else if (!b.getType().equals(BrickType.UNBREAKABLE)) {
-                             game.addScore(b.getScore());
-                             if (b.hasPowerUp()) {
-                                powerUpManager.spawnPowerUp(game, b);
-                            }
-                        } */
+                        totalDestroyed.add(b);
 
                         // 3. XỬ LÝ ĐIỂM VÀ POWER-UP CHO TẤT CẢ GẠCH BỊ HỦY TRONG CHUỖI PHẢN ỨNG
                         for (Brick destroyedBrick : totalDestroyed) {
                             // Kiểm tra để tránh cộng điểm cho Unbreakable
                             if (!destroyedBrick.getType().equals(BrickType.UNBREAKABLE)) {
                                 // Chỉ cộng điểm/tạo powerup MỘT LẦN khi gạch VỪA BỊ PHÁ HỦY
-                                // (Cần đảm bảo logic Fading của gạch thường không bị trùng lặp)
-
                                 // Cộng điểm ngay lập tức
                                 game.addScore(destroyedBrick.getScore()); 
                                 if (destroyedBrick.hasPowerUp()) {
@@ -243,29 +224,27 @@ public class CollisionHandler {
                         }
                     }
                 }
-                // Het sua
-
                 // Chỉ xử lý một va chạm gạch mỗi khung hình để tránh lỗi
                 break;
             }
         }
-
         // Dọn dẹp gạch đã bị phá hủy
         brickList.removeIf(brick -> {
-            // cu : if (brick != null && brick.isDestroyed()) {
             if (brick != null && brick.isReadyForRemoval()) {
-                /*  Cong diem truoc khi xoa
-                game.addScore(brick.getScore());
-                // Tao powerup khi gach vo
-                if (brick.hasPowerUp()) {
-                    powerUpManager.spawnPowerUp(game, brick);
-                } */
                 return true;
             }
             return false;
         });
     }
 
+    /**
+     * Method tính toán hướng bật lại + xử lý chống kẹt.
+     *
+     * @param ball bóng
+     * @param closetX
+     * @param closetY
+     * @param distance khoảng cách
+     */
     private void processCollisionPhysics(Ball ball, double closetX, double closetY, double distance) {
         // Tinh tam cua ball
         double centerBallX = ball.getX() + ball.getRadius();

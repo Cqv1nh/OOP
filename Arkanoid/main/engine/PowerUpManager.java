@@ -1,28 +1,32 @@
 package engine;
 
-import java.util.Iterator;
-
 import entities.*;
+import java.util.Iterator;
 import managers.LevelState2;
 import util.AudioManager;
 import util.Constants;
 
 public class PowerUpManager {
-
     private long lastUpdateTime = System.currentTimeMillis();
-    
 
-    // Được gọi bởi CollisionHandler khi một viên gạch bị phá
-
-    //CODE MỚI: Xử lý thời gian hiệu lực và xóa bỏ các PowerUp có thời gian.
-
-    //V2,
+    /**
+     * Method cập nhật trạng thái powerup.
+     *
+     * @param game
+     * @param panelHeight độ cao của màn hình.
+     */
     public void update(LevelState2 game, int panelHeight) {
         // Truyen panelHeight xuong tiep
         updateFallingPowerUps(game, panelHeight);
         processActivePowerUps(game);
     }
 
+    /**
+     * Method xóa powerup khi nó tự rơi xuống vực.
+     *
+     * @param game
+     * @param panelHeight độ cao của màn hình.
+     */
     private void updateFallingPowerUps(LevelState2 game, int panelHeight) {
         // Dung itertator de xoa an toan
         Paddle paddle = game.getPaddle();
@@ -45,6 +49,11 @@ public class PowerUpManager {
         }
     }
 
+    /**
+     * Xử lý trong lúc đang áp dụng powerup.
+     *
+     * @param game
+     */
     private void processActivePowerUps(LevelState2 game) {
         long currentTime = System.currentTimeMillis();
         // Lượng thời gian đã trôi qua kể từ lần update cuối cùng (tính bằng ms)
@@ -68,7 +77,12 @@ public class PowerUpManager {
         lastUpdateTime = currentTime;
     }
 
-    //V2.
+    /**
+     * Sinh powerup ngẫu nhiên khi phá hủy brick.
+     *
+     * @param game
+     * @param brick gạch.
+     */
     public void spawnPowerUp(LevelState2 game, Brick brick) {
         String type = brick.getPowerUpType();
         // Chi sinh 1 powerUp tại 1 thời điểm

@@ -2,7 +2,6 @@ package engine;
 
 import entities.Ball;
 import entities.Paddle;
-
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 
@@ -18,29 +17,27 @@ public class KeyboardManager implements KeyListener {
     private int moveLeftSecondary;
     private int moveRightPrimary;
     private int moveRightSecondary;
+
     /**
-     * Updates the keyboard state.
-     * MUST be called once per frame at the start of your game loop or state update.
+     * Cập nhật trạng thái "vừa nhấn", "vừa thả" cho tất cả các phím (phải gọi 1 lần/khung hình).
      */
     public void update() {
         lastKeyPressed = -1;
         for (int i = 0; i < keys.length; i++) {
             justPressed[i] = keys[i] && !wasPressed[i];
-
             if(justPressed[i]) {
                 lastKeyPressed = i;
             }
-
             justReleased[i] = !keys[i] && wasPressed[i];
-
             wasPressed[i] = keys[i];
         }
     }
 
     /**
-     * Check if a key is currently held down.
+     * Kiểm tra xem một phím có đang được giữ nhấn hay không.
+     *
      * @param keyCode The KeyEvent constant (e.g., KeyEvent.VK_SPACE)
-     * @return true if the key is currently pressed
+     * @return đúng nếu đang được giữ nhấn
      */
     public boolean isKeyDown(int keyCode) {
         if (keyCode >= 0 && keyCode < keys.length) {
@@ -50,9 +47,10 @@ public class KeyboardManager implements KeyListener {
     }
 
     /**
-     * Check if a key was just pressed this frame (single press detection).
-     * @param keyCode The KeyEvent constant (e.g., KeyEvent.VK_R)
-     * @return true only on the frame the key was pressed
+     * Kiểm tra xem một phím có vừa mới được nhấn trong khung hình này không (chỉ đúng 1 lần).
+     *
+     * @param keyCode
+     * @return
      */
     public boolean isKeyJustPressed(int keyCode) {
         if (keyCode >= 0 && keyCode < keys.length) {
@@ -62,9 +60,10 @@ public class KeyboardManager implements KeyListener {
     }
 
     /**
-     * Check if a key was just released this frame.
-     * @param keyCode The KeyEvent constant (e.g., KeyEvent.VK_SPACE)
-     * @return true only on the frame the key was released
+     * Kiểm tra xem một phím có vừa mới được thả ra trong khung hình này không (chỉ đúng 1 lần).
+     *
+     * @param keyCode
+     * @return
      */
     public boolean isKeyJustReleased(int keyCode) {
         if (keyCode >= 0 && keyCode < keys.length) {
@@ -74,8 +73,9 @@ public class KeyboardManager implements KeyListener {
     }
 
     /**
-     * Updates paddle movement based on keyboard input.
-     * @param paddle The paddle to control
+     * Cập nhật vận tốc (Dx) của thanh trượt dựa trên phím di chuyển trái/phải đang được giữ.
+     *
+     * @param paddle đang được xét.
      */
     public void updatePaddle(Paddle paddle) {
         if (isKeyDown(moveLeftPrimary) || isKeyDown(moveLeftSecondary)) {
@@ -88,9 +88,10 @@ public class KeyboardManager implements KeyListener {
     }
 
     /**
-     * Checks if spacebar was pressed to launch the ball.
-     * @param ball The ball to launch
-     * @return true if the ball should stop following the paddle
+     * Kiểm tra phím Space (vừa nhấn), nếu đúng thì phóng quả bóng bay lên (setDy).
+     *
+     * @param ball
+     * @return T or F.
      */
     public boolean outFollow(Ball ball) {
         if (isKeyJustPressed(KeyEvent.VK_SPACE)) {
@@ -101,18 +102,26 @@ public class KeyboardManager implements KeyListener {
     }
 
     /**
-     * Checks if 'R' key was pressed (for returning to menu, restarting, etc.)
-     * @return true if R was just pressed this frame
+     * Kiểm tra xem phím 'R' có vừa được nhấn không (dùng để quay lại menu hoặc chơi lại).
+     *
+     * @return T or F.
      */
     public boolean back() {
         return isKeyJustPressed(KeyEvent.VK_R);
     }
 
+    /**
+     * Kiểm tra xem một phím có đang được giữ nhấn hay không.
+     *
+     * @param keycode
+     * @return T or F.
+     */
     public boolean getKey(int keycode) {
         return keys[keycode];
     }
+
     /**
-     * Manually clear all key states. Useful when switching game states.
+     * Method đặt lại trạng thái tất cả các phím thành chưa nhấn.
      */
     public void clearAllKeys() {
         for (int i = 0; i < keys.length; i++) {
@@ -123,11 +132,21 @@ public class KeyboardManager implements KeyListener {
         }
     }
 
+    /**
+     * Method ghi đè, được gọi khi gõ phím (ký tự).
+     *
+     * @param e the event to be processed
+     */
     @Override
     public void keyTyped(KeyEvent e) {
         // Not used for game input
     }
 
+    /**
+     * Method ghi đè, được hệ điều hành gọi khi một phím được nhấn xuống, đánh dấu phím đó là true.
+     *
+     * @param e the event to be processed
+     */
     @Override
     public void keyPressed(KeyEvent e) {
         if (e.getKeyCode() >= 0 && e.getKeyCode() < keys.length) {
@@ -135,6 +154,11 @@ public class KeyboardManager implements KeyListener {
         }
     }
 
+    /**
+     * Method ghi đè, được hệ điều hành gọi khi một phím được thả ra, đánh dấu phím đó là false.
+     *
+     * @param e the event to be processed
+     */
     @Override
     public void keyReleased(KeyEvent e) {
         if (e.getKeyCode() >= 0 && e.getKeyCode() < keys.length) {
@@ -142,42 +166,92 @@ public class KeyboardManager implements KeyListener {
         }
     }
 
+    /**
+     * Kiểm tra xem có bất kỳ phím nào vừa được nhấn trong khung hình này không.
+     *
+     * @return
+     */
     public boolean isAnyKeyPressed() {
         return lastKeyPressed > 0;
     }
 
+    /**
+     * Trả về mã (keyCode) của phím cuối cùng vừa được nhấn.
+     *
+     * @return mã keyCode.
+     */
     public int getLastKeyPressed() {
         return lastKeyPressed;
     }
 
+    /**
+     * Getter cho mã phím sang trái chính.
+     *
+     * @return
+     */
     public int getMoveLeftPrimary() {
         return moveLeftPrimary;
     }
 
+    /**
+     * Setter cho mã phím sang trái chính.
+     *
+     * @param moveLeftPrimary
+     */
     public void setMoveLeftPrimary(int moveLeftPrimary) {
         this.moveLeftPrimary = moveLeftPrimary;
     }
 
+    /**
+     * Getter cho mã phím sang trái phụ.
+     *
+     * @return
+     */
     public int getMoveLeftSecondary() {
         return moveLeftSecondary;
     }
 
+    /**
+     * Setter cho mã phím sang trái phụ.
+     *
+     * @param moveLeftSecondary
+     */
     public void setMoveLeftSecondary(int moveLeftSecondary) {
         this.moveLeftSecondary = moveLeftSecondary;
     }
 
+    /**
+     * Getter cho mã phím sang phải chính.
+     *
+     * @return
+     */
     public int getMoveRightPrimary() {
         return moveRightPrimary;
     }
 
+    /**
+     * Setter cho mã phím sang phải chính.
+     *
+     * @param moveRightPrimary
+     */
     public void setMoveRightPrimary(int moveRightPrimary) {
         this.moveRightPrimary = moveRightPrimary;
     }
 
+    /**
+     * Getter cho mã phím sang phải phụ.
+     *
+     * @return
+     */
     public int getMoveRightSecondary() {
         return moveRightSecondary;
     }
 
+    /**
+     * Setter cho mã phím sang phải phụ.
+     *
+     * @param moveRightSecondary
+     */
     public void setMoveRightSecondary(int moveRightSecondary) {
         this.moveRightSecondary = moveRightSecondary;
     }

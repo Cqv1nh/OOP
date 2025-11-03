@@ -1,23 +1,25 @@
 package engine;
 
-import managers.LevelState2;
-import java.util.ArrayList;
 import entities.Ball;
 import entities.Paddle;
+import java.util.ArrayList;
+import managers.LevelState2;
 import util.Constants;
 
-// Thinh
-// Lớp này chịu trách nhiệm cập nhật trạng thái 
-//(chủ yếu là vị trí) của các thực thể di chuyển được Ball va paddle
 public class EntityManager {
-
+    /**
+     * Constructor không có tham số.
+     */
     public EntityManager() {
     }
 
-
+    /**
+     * Cập nhật thanh.
+     *
+     * @param paddle
+     * @param panelWidth
+     */
     public void updatePaddle(Paddle paddle, int panelWidth) {
-        // Xu ly logic Paddle dau tien
-        // Giu paddle trong man hinh
         paddle.move();
         if (paddle.getX() < 0) {
             paddle.setX(0);
@@ -27,27 +29,30 @@ public class EntityManager {
         }
     }
 
-
-    //V2.
+    /**
+     * Cập nhật vật thể.
+     *
+     * @param levelState2
+     * @param panelWidth
+     */
     public void updateEntities(LevelState2 levelState2, int panelWidth) {
         updatePaddle(levelState2.getPaddle(), panelWidth);
         updateBall(levelState2);
     }
 
-    //V2.
+    /**
+     * Cập nhật các quả bóng.
+     *
+     * @param game
+     */
     public void updateBall(LevelState2 game) {
         ArrayList<Ball> balls = game.getBalls();
         Paddle paddle = game.getPaddle();
-
-
-        // Neu o trang thai phong
         balls.removeIf(ball -> ball.getY() > Constants.SCREEN_HEIGHT);
-
 
         if (balls.isEmpty()) {
             game.loseLives();
         }
-
 
         if (game.isBallLaunched()) {
             for (Ball ball : balls) {

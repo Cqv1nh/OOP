@@ -4,18 +4,21 @@ import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionListener;
 
-
 public class MouseManager implements MouseListener, MouseMotionListener {
-
     private boolean leftPressed, rightPressed;
     private boolean leftJustPressed, rightJustPressed;
     private boolean leftWasPressed, rightWasPressed; // Trạng thái của frame trước
     private int mouseX, mouseY;
 
-
+    /**
+     * Constructor không có tham số.
+     */
     public MouseManager() {
     }
 
+    /**
+     * Cập nhật trạng thái "vừa nhấn" (ví dụ: leftJustPressed) cho các nút chuột (phải gọi 1 lần/khung hình).
+     */
     // leftJustPressed = leftPressed && !leftWasPressed;:
     // Điều kiện này chỉ đúng (true) khi:
     // leftPressed là true (nút đang được nhấn trong frame này).
@@ -25,30 +28,52 @@ public class MouseManager implements MouseListener, MouseMotionListener {
         // Cập nhật trạng thái "vừa nhấn" dựa trên trạng thái hiện tại và trạng thái cũ
         leftJustPressed = leftPressed && !leftWasPressed;
         rightJustPressed = rightPressed && !rightWasPressed;
-        
         // Lưu trạng thái hiện tại để sử dụng trong frame tiếp theo
         leftWasPressed = leftPressed;
         rightWasPressed = rightPressed;
     }
 
+    /**
+     * Kiểm tra xem nút chuột trái có đang được giữ nhấn hay không.
+     * 
+     * @return T hoặc F.
+     */
     public boolean isLeftPressed() {
         return leftPressed;
     }
 
+    /**
+     * Kiểm tra xem nút chuột trái có vừa mới được nhấn trong khung hình này không.
+     * 
+     * @return T hoặc F.
+     */
     public boolean isLeftJustPressed() {
         return leftJustPressed;
     }
 
-
+    /**
+     * Lấy tọa độ X hiện tại của con trỏ chuột.
+     *
+     * @return tọa độ x chuột.
+     */
     public int getMouseX() {
         return mouseX;
     }
 
+    /**
+     * Lấy tọa độ Y hiện tại của con trỏ chuột.
+     *
+     * @return tọa độ y chuột.
+     */
     public int getMouseY() {
         return mouseY;
     }
 
-
+    /**
+     * Method được gọi khi nhấn chuột xuống.
+     *
+     * @param e the event to be processed
+     */
     @Override
     public void mousePressed(MouseEvent e) {
         if (e.getButton() == MouseEvent.BUTTON1) {
@@ -58,6 +83,11 @@ public class MouseManager implements MouseListener, MouseMotionListener {
         }
     }
 
+    /**
+     * Method được gọi khi thả nút chuột ra.
+     *
+     * @param e the event to be processed
+     */
     @Override
     public void mouseReleased(MouseEvent e) {
         if (e.getButton() == MouseEvent.BUTTON1) {
@@ -67,43 +97,69 @@ public class MouseManager implements MouseListener, MouseMotionListener {
         }
     }
 
-
+    /**
+     * Method được gọi khi click chuột.
+     *
+     * @param e the event to be processed
+     */
     @Override
     public void mouseClicked(MouseEvent e) {
-
     }
 
-
+    /**
+     * Method được gọi khi chuột đi vào cửa số game.
+     *
+     * @param e the event to be processed
+     */
     @Override
     public void mouseEntered(MouseEvent e) {
-
     }
 
-
+    /**
+     * Method được gọi khi chuột đi ra cửa sổ game.
+     *
+     * @param e the event to be processed
+     */
     @Override
     public void mouseExited(MouseEvent e) {
-
     }
 
-
+    /**
+     * Method được gọi khi di chuyển chuột (trong lúc đang nhấn giữ).
+     *
+     * @param e the event to be processed
+     */
     @Override
     public void mouseDragged(MouseEvent e) {
         mouseX = e.getX();
         mouseY = e.getY();
     }
 
-
+    /**
+     * Method được gọi khi di chuyển chuột (mà không nhấn giữ).
+     *
+     * @param e the event to be processed
+     */
     @Override
     public void mouseMoved(MouseEvent e) {
         mouseX = e.getX();
         mouseY = e.getY();
     }
 
-
+    /**
+     * Kiểm tra xem nút chuột phải có đang được giữ nhấn hay không.
+     *
+     * @return T hoặc F.
+     */
     public boolean isRightPressed() {
         return rightPressed;
     }
 
+    /**
+     * Kiểm tra xem nút chuột phải có vừa mới được nhấn trong khung hình này không.
+     *
+     * @return T hoặc F.
+     */
     public boolean isRightJustPressed() {
         return rightJustPressed;
     }
