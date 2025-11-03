@@ -1,44 +1,54 @@
 package managers;
 
-import util.AssetManager;
-import util.Constants;
-
 import java.awt.*;
 import java.awt.event.KeyEvent;
 import java.util.Properties;
-
-import static util.RenderUtil.drawCenteredString; // DÒNG MỚI (ĐÚNG)
+import util.AssetManager;
+import util.Constants;
+import static util.RenderUtil.drawCenteredString;
 
 public class TransitionState extends GameState {
-    // thuoc tinh km mm la cac thuoc tinh cua lop GameState
-    // Lop con su dung ma khong can khai bao
-    
-
+    /**
+     * Constructor chuyển trạng thái giữa 2 màn game.
+     *
+     * @param manager
+     */
     public TransitionState(GameStateManager manager) {
         super(manager);
         km = manager.getKm();
         mm = manager.getMm();
     }
 
+    /**
+     * Method enter.
+     */
     @Override
     public void enter() {
-
     }
 
+    /**
+     * Method exit.
+     */
     @Override
     public void exit() {
-
     }
 
+    /**
+     * Method cập nhật đối tượng.
+     */
     @Override
     public void update() {
-
         if (km.isKeyJustPressed(KeyEvent.VK_SPACE)) {
             km.clearAllKeys();
             manager.setState("level");
         }
     }
 
+    /**
+     * Method vẽ ra màn hình.
+     *
+     * @param g
+     */
     @Override
     public void render(Graphics2D g) {
         Properties lang = manager.getLanguageProps();
@@ -49,7 +59,6 @@ public class TransitionState extends GameState {
         g.setColor(Color.decode("#FFFFE3"));
         g.setFont(new Font("Arial", Font.BOLD, 28));
         if (level == 1) {
-
             drawCenteredString(lang.getProperty("transition.level1_message", "ENTER LEVEL 1"),
                     Constants.SCREEN_WIDTH, Constants.SCREEN_HEIGHT, g, 0, -80);
         } else {
@@ -62,6 +71,5 @@ public class TransitionState extends GameState {
         g.setFont(new Font("Arial", Font.BOLD, 20));
         drawCenteredString(lang.getProperty("transition.message2", "PRESS SPACE TO CONTINUE"),
                 Constants.SCREEN_WIDTH, Constants.SCREEN_HEIGHT, g, 0, 50);
-
     }
 }

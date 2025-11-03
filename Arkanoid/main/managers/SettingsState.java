@@ -2,14 +2,8 @@ package managers;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
-
 import entities.Button;
 import entities.Slider;
-import util.AssetManager;
-import util.AudioManager;
-import util.Constants;
-import util.RenderUtil;
-
 import java.awt.*;
 import java.awt.event.KeyEvent;
 import java.awt.image.BufferedImage;
@@ -22,6 +16,10 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.Properties;
+import util.AssetManager;
+import util.AudioManager;
+import util.Constants;
+import util.RenderUtil;
 
 public class SettingsState extends GameState {
     private ArrayList<Slider> sliders =  new ArrayList<>();
@@ -60,6 +58,11 @@ public class SettingsState extends GameState {
 
     Font defaultFont = new Font("Arial", Font.PLAIN, 13);
 
+    /**
+     * Thiết lập các cài đặt mặc định.
+     *
+     * @param manager
+     */
     public SettingsState(GameStateManager manager) {
         super(manager);
         km = manager.getKm();
@@ -160,10 +163,12 @@ public class SettingsState extends GameState {
         selectedFlagButton = new Button(selectedX , selectedY, flags[0].getWidth() / 24,
                 flags[0].getHeight() / 24, "en","language", initSelected, initSelected);
 
-
         settings = new Settings();
     }
 
+    /**
+     * Load các cài đặt.
+     */
     @Override
     public void enter() {
         loadSettingsFromFile();
@@ -177,11 +182,16 @@ public class SettingsState extends GameState {
         selectedFlagButton.setHeight(flagButton.getHeight());
     }
 
+    /**
+     * Thoát.
+     */
     @Override
     public void exit() {
-
     }
 
+    /**
+     * Cập nhật cài đặt.
+     */
     @Override
     public void update() {
         masterVolume.handleMouseEvent(mm);
@@ -304,6 +314,11 @@ public class SettingsState extends GameState {
         }
     }
 
+    /**
+     * Vẽ các đối tượng ra màn hình.
+     *
+     * @param g
+     */
     @Override
     public void render(Graphics2D g) {
         Font font = defaultFont;
@@ -357,14 +372,25 @@ public class SettingsState extends GameState {
         }
 
         selectedFlagButton.drawFlag(g, mm.getMouseX(), mm.getMouseY());
-
     }
 
+    /**
+     * Vẽ nút bấm.
+     *
+     * @param g
+     * @param button nút bấm.
+     * @param keyCode
+     */
     private void drawKeyButton(Graphics2D g, Button button, int keyCode) {
         button.draw(g, mm.getMouseX(), mm.getMouseY());
         //g.drawString(KeyEvent.getKeyText(keyCode), button.getX() + 10, button.getY() + 25);
     }
 
+    /**
+     * Tải ngôn ngữ lên.
+     *
+     * @param langCode mã ngôn ngữ.
+     */
     private void loadLanguage(String langCode) {
         currentLanguage = langCode;
         languageProps.clear();
@@ -401,6 +427,9 @@ public class SettingsState extends GameState {
         }
     }
 
+    /**
+     * Lưu lại cài đặt.
+     */
     private void saveSettingsToFile() {
         settings.setMasterVolume((int) masterVolume.getValue());
         settings.setSoundEffectsVolume((int) soundFx.getValue());
@@ -421,6 +450,12 @@ public class SettingsState extends GameState {
         }
     }
 
+    /**
+     * Lưu vào file json.
+     *
+     * @param settings
+     * @return
+     */
     private String settingsToJson(Settings settings) {
         Gson gson = new GsonBuilder()
                 .setPrettyPrinting() // Makes the JSON nicely formatted
@@ -428,6 +463,9 @@ public class SettingsState extends GameState {
         return gson.toJson(settings);
     }
 
+    /**
+     * Tải các cài đặt đã lưu.
+     */
     private void loadSettingsFromFile() {
         Path path = Paths.get(SETTINGS_FILE);
 
@@ -464,6 +502,9 @@ public class SettingsState extends GameState {
         }
     }
 
+    /**
+     * Tắt việc di chuột vào của tất cả nút liên quan.
+     */
     private void resetHover() {
         changeLeftPrimary.setHoveringState(false);
         changeLeftSecondary.setHoveringState(false);

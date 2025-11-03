@@ -1,10 +1,6 @@
 package managers;
 
 import entities.Button;
-import util.AssetManager;
-import util.Constants;
-
-// Cần Point
 import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
@@ -14,10 +10,17 @@ import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Properties;
+import util.AssetManager;
+import util.Constants;
 
 public class MenuState extends GameState {
     private List<Button> buttons;
-    
+
+    /**
+     * Khởi tạo màn hình menu, lấy trình quản lý phím/chuột, và tạo 5 nút bấm (New Game, Load Game, Settings, High Scores, Quit).
+     *
+     * @param manager
+     */
     public MenuState(GameStateManager manager) {
         super(manager);
         km = manager.getKm();
@@ -37,20 +40,26 @@ public class MenuState extends GameState {
                 buttonIdle, buttonHover));
         buttons.add(new Button(275, 450, 250, 50, "Quit", "Quit",
                 buttonIdle, buttonHover));
-
-
     }
 
+    /**
+     * Method gọi loadLanguage() để tải và áp dụng file ngôn ngữ (dịch văn bản các nút).
+     */
     @Override
     public void enter() {
         loadLanguage(manager.getLangCode());
     }
 
+    /**
+     * Method exit.
+     */
     @Override
     public void exit() {
-
     }
 
+    /**
+     * Method cập nhật logic mỗi khung hình, kiểm tra chuột có liên quan gì 5 nút không.
+     */
     @Override
     public void update() {
         // Check each button for mouse interaction
@@ -69,9 +78,13 @@ public class MenuState extends GameState {
         }
     }
 
+    /**
+     * Vẽ ra màn hình.
+     *
+     * @param g
+     */
     @Override
     public void render(Graphics2D g) {
-        
         // background
         g.drawImage(AssetManager.transitionBackground, 0, 0, Constants.SCREEN_WIDTH,
                 Constants.SCREEN_HEIGHT, null);
@@ -87,11 +100,11 @@ public class MenuState extends GameState {
         for (Button button : buttons) {
             button.draw(g);
         }
-
     }
 
     /**
-     * Handles button click actions
+     * Xử lý logic khi một nút được click: dùng switch case để quyết định hành động.
+     *
      * @param buttonText The text of the clicked button
      */
     private void handleButtonClick(String buttonText) {
@@ -131,6 +144,11 @@ public class MenuState extends GameState {
         }
     }
 
+    /**
+     * Đọc file ngôn ngữ .properties (dựa trên mã langCode), lấy văn bản đã dịch, cập nhật lại ngôn ngữ.
+     *
+     * @param langCode
+     */
     private void loadLanguage(String langCode) {
         Properties Props = manager.getLanguageProps();
         Props.clear();

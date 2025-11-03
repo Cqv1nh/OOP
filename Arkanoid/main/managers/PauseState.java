@@ -1,11 +1,7 @@
 package managers;
 
-import util.AssetManager;
-import util.Constants;
-import util.GameStateData;
+import entities.Brick;
 import entities.Button; // Import Button
-
-// Cần Point
 import java.awt.*;
 import java.awt.event.KeyEvent;
 import java.io.FileOutputStream; // Import để ghi file
@@ -15,13 +11,12 @@ import java.util.ArrayList; // Import ArrayList
 import java.util.List;     // Import List
 import java.util.HashSet;
 import java.util.Properties;
-
-import entities.Brick;
-
-import static util.RenderUtil.drawCenteredString; // DÒNG MỚI (ĐÚNG)
+import util.AssetManager;
+import util.Constants;
+import util.GameStateData;
+import static util.RenderUtil.drawCenteredString;
 
 public class PauseState extends GameState {
-
     private List<Button> buttons; // Them danh sach button
     // Kích thước và vị trí của khung Pause
     private final int FRAME_X = 200;
@@ -29,6 +24,11 @@ public class PauseState extends GameState {
     private final int FRAME_WIDTH = 400;
     private final int FRAME_HEIGHT = 450; // Tăng chiều cao khung để chứa nhiều nút hơn
 
+    /**
+     * Khởi tạo màn hình tạm dừng, tạo ra 5 nút bấm (Resume, 3 ô Save, và Quay lại Menu).
+     *
+     * @param manager
+     */
     public PauseState(GameStateManager manager) {
         super(manager);
         km = manager.getKm();
@@ -64,9 +64,11 @@ public class PauseState extends GameState {
         currentButtonY += spacing; 
         buttons.add(new Button(startButtonX, currentButtonY, buttonWidth, buttonHeight,
                 "Back to Menu", "Back to Menu", null, null));
-
     }
 
+    /**
+     * Tải file ngôn ngữ và cập nhật lại văn bản (dịch) cho 5 nút bấm mỗi khi vào màn hình.
+     */
     @Override
     public void enter() {
         Properties languageProps = manager.getLanguageProps();
@@ -79,12 +81,18 @@ public class PauseState extends GameState {
         buttons.get(0).setText(languageProps.getProperty("pause.resume", "Resume"));
         buttons.getLast().setText(languageProps.getProperty("pause.back", "Return Menu"));
     }
-    
+
+    /**
+     * Xóa (reset) trạng thái các phím bấm khi thoát khỏi màn hình tạm dừng.
+     */
     @Override
     public void exit() {
         km.clearAllKeys();
     }
 
+    /**
+     * Kiểm tra phím (ESC hoặc R) để tiếp tục game, hoặc kiểm tra xem chuột có click vào 5 nút bấm hay không.
+     */
     @Override
     public void update() {
         // Nhấn ESC hoặc R để Resume (quay lại game)
@@ -103,15 +111,16 @@ public class PauseState extends GameState {
                 }
             }
         }
-
     }
 
+    /**
+     * Vẽ màn hình game hiện tại ở phía sau (nền mờ), sau đó vẽ menu tạm dừng (tiêu đề, các nút, hướng dẫn) đè lên trên.
+     *
+     * @param g
+     */
     @Override
     public void render(Graphics2D g) {
-
         Properties languageProps = manager.getLanguageProps();
-
-        // --- Vẽ nền mờ (Tùy chọn) ---
 
         // Lấy state level hiện tại để vẽ nó phía sau (nếu muốn hiệu ứng mờ)
         LevelState2 levelState = manager.getCurrentLevelState();
@@ -141,7 +150,11 @@ public class PauseState extends GameState {
                 Constants.SCREEN_WIDTH, Constants.SCREEN_HEIGHT, g, 0, 200);
     }
 
-    // Ham xu ly click
+    /**
+     * Method xử lý logic khi nhấn vào một nút.
+     *
+     * @param buttonText tên nút.
+     */
     private void handleButtonClick(String buttonText) {
         switch (buttonText) {
             case "Resume":
@@ -168,10 +181,12 @@ public class PauseState extends GameState {
         }
     }
 
-
-    // === THÊM HÀM LƯU GAME ===
-    // Co them chi so luu danh cho 3 file luu
-    // loadGame nam trong LoadGameState
+    /**
+     * Thu thập toàn bộ dữ liệu game hiện tại (màn, điểm, mạng, và chỉ số của các viên gạch còn lại)
+     * và ghi (lưu) tất cả thông tin này vào một file
+     *
+     * @param slotNumber
+     */
     private void saveGame(int slotNumber) {
         LevelState2 lastActiveLevelState = manager.getLastLevelStateInstance(); // Lấy state level hiện tại
         if (lastActiveLevelState != null) {
@@ -222,18 +237,15 @@ public class PauseState extends GameState {
             String filename = "savegame" + slotNumber + ".dat";
             try (FileOutputStream fos = new FileOutputStream(filename);
                 ObjectOutputStream oos = new ObjectOutputStream(fos)) {
-
                 oos.writeObject(data);
                 System.out.println("Game saved successfully! Level: " + level + ", Score: " + score + ", Lives: " + lives);
             } catch (IOException e) {
                 System.err.println("Error saving game:" + e.getMessage());
                 e.printStackTrace();
             }
-
         } else {
             System.err.println("Cannot save game: Not in a level state!");
             return; // Thoát nếu không ở trong level state
         }
- 
     }
 }

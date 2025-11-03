@@ -6,51 +6,53 @@ import entities.Brick;
 import entities.Paddle;
 import entities.PowerUp;
 import entities.ExplosiveBrick;
-import ui.BrickManager; // Đảm bảo import đúng
-import util.*;
-
-// Cần Point
 import java.awt.*;
 import java.awt.event.KeyEvent;
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 import java.util.Iterator;
-import java.util.HashSet; // Cần HashSet
+import java.util.HashSet;
 import java.util.Properties;
+import ui.BrickManager;
+import util.*;
 
 public class LevelState2 extends GameState{
     private Paddle paddle; // Thanh truot
-
     private ArrayList<Brick> brickList; // Danh sach gach
     private ArrayList<PowerUp> powerUps; // Danh sach luu cac powerUp dang roi
     private ArrayList<PowerUp> activePowerUpsEffects; // Danh sach hieu ung dang co hieu luc
-    
-
     private int lives = 3; // Khoi tao so mang la 3;
     private int score = 0;
     private int levelNum;
     private boolean ballLaunched = false; // Bong con dinh tren paddle hay da di chuyen
-    // private String gameState = util.GameState.GAMESTART; // Trang thai game
     private BrickManager brickManager; // Chỉ khai báo, không khởi tạo ở đây
-    
     private final EntityManager entityManager = new EntityManager();
     private final CollisionHandler collisionHandler = new CollisionHandler();
     private final PowerUpManager powerUpManager = new PowerUpManager();
-
     private boolean isLastLevel = false;
-    // private boolean levelWon = false;
-    // private String levelFileName;
-
     private ArrayList<Ball> balls;
     private int countdownTimer = -1; // -1: không hoạt động, >0: đang đếm (tính theo frame)
     private static final int COUNTDOWN_FPS = 60; // FPS giả định cho đếm ngược
 
+    /**
+     * Constructor không có tham số.
+     *
+     * @param manager
+     */
     public LevelState2(GameStateManager manager) {
         super(manager);
         km = manager.getKm();
         mm = manager.getMm();
     }
 
+    /**
+     * Level khởi đầu.
+     *
+     * @param levelNum
+     * @param score
+     * @param lives
+     * @param remainingBrickIndices
+     */
     public void initLevel(int levelNum, int score, int lives, HashSet<Point> remainingBrickIndices) {
         this.levelNum = levelNum;
         this.score = score;
@@ -59,7 +61,7 @@ public class LevelState2 extends GameState{
                 Constants.PADDLE_WIDTH,Constants.PADDLE_HEIGHT,0,0,null);
         paddle.setSpeed(Constants.PADDLE_SPEED);
 
-        Ball initialBall = new Ball(); // da co Speed roi
+        Ball initialBall = new Ball();
         balls = new ArrayList<>();
         balls.add(initialBall);
         powerUps = new ArrayList<>();
@@ -78,13 +80,18 @@ public class LevelState2 extends GameState{
         countdownTimer = -1; // Đảm bảo countdown không kích hoạt khi init level bình thường
     }
 
-    // === THÊM HÀM KÍCH HOẠT ĐẾM NGƯỢC ===
+    /**
+     * Method kích hoạt đếm ngược.
+     */
     public void startLoadCountdown() {
         this.countdownTimer = 3 * COUNTDOWN_FPS;
         this.ballLaunched = false;
         System.out.println("Starting countdown after load...");
     }
 
+    /**
+     * Method enter.
+     */
     @Override
     public void enter() {
         System.out.println("Entering Level " + levelNum);
@@ -104,6 +111,9 @@ public class LevelState2 extends GameState{
 
     }
 
+    /**
+     * Method dừng level.
+     */
     @Override
     public void exit() {
         System.out.println("Exiting Level " + levelNum);
@@ -111,10 +121,11 @@ public class LevelState2 extends GameState{
         // Nên dừng cả âm thanh nếu có âm thanh riêng cho level
     }
 
+    /**
+     * Method cập nhật trạng thái.
+     */
     @Override
     public void update() {
-        // km.update(); // đã được gọi trong Game.run(), không cần gọi lại ở đây
-
         if (countdownTimer > 0) {
             countdownTimer --;
             if (countdownTimer == 0) {
@@ -145,21 +156,20 @@ public class LevelState2 extends GameState{
         int panelWidth = Constants.SCREEN_WIDTH;
         int panelHeight = Constants.SCREEN_HEIGHT;
 
-
         km.updatePaddle(paddle);
 
-        // 1. Cập nhật vị trí các thực thể (Bóng, Thanh trượt)
+        // Cập nhật vị trí các thực thể (Bóng, Thanh trượt)
         entityManager.updateEntities(this, panelWidth);
 
-        // === THÊM BƯỚC 1.5: CẬP NHẬT TRẠNG THÁI MỜ CỦA GẠCH ===
+        // CẬP NHẬT TRẠNG THÁI MỜ CỦA GẠCH
         for (Brick b : brickList) {
-            b.update(); // Gọi hàm updateFade() chúng ta đã tạo
+            b.update();
         }
     
-        // 2. Xử lý tất cả các va chạm
+        // Xử lý tất cả các va chạm
         collisionHandler.handleCollisions(this, panelWidth, panelHeight);
 
-        // 3. Cập nhật và quản lý Power-up
+        // Cập nhật và quản lý Power-up
         powerUpManager.update(this, panelHeight);
 
         if (!isBallLaunched() && countdownTimer < 0 ) {
@@ -185,6 +195,11 @@ public class LevelState2 extends GameState{
         }
     }
 
+    /**
+     * Vẽ mọi thứ ra màn hình.
+     *
+     * @param g
+     */
     @Override
     public void render(Graphics2D g) {
         int currentLevel = levelNum;
@@ -193,13 +208,12 @@ public class LevelState2 extends GameState{
         BufferedImage ballImage = AssetManager.ball.get(currentLevel);
         BufferedImage paddleImage = AssetManager.paddle.get(currentLevel);
 
-
         if (bgImage != null) {
             g.drawImage(bgImage, 0, 0, Constants.SCREEN_WIDTH,
                     Constants.SCREEN_HEIGHT, null);
         }
 
-        // === VẼ ĐẾM NGƯỢC HOẶC GAME ===
+        // VẼ ĐẾM NGƯỢC HOẶC GAME
         if (countdownTimer > 0) {
             // Tính số giây còn lại (1-3)
             int seconds = (countdownTimer / COUNTDOWN_FPS) + 1;
@@ -272,7 +286,6 @@ public class LevelState2 extends GameState{
                                 newWidth,                     // Chiều rộng mới
                                 newHeight,                    // Chiều cao mới
                             null
-
                                 /*frameImg, 
                                 (int)b.getX() - PADDING/2,    // X: Dịch về bên trái để căn giữa
                                 (int)b.getY() - PADDING/2,    // Y: Dịch lên trên để căn giữa
@@ -289,22 +302,20 @@ public class LevelState2 extends GameState{
                 BufferedImage brickImage = getBrickImage(b);
 
                 if (brickImage != null) {
-                    // cu : g.drawImage(brickImage, (int) b.getX(), (int) b.getY(), (int) b.getWidth(), (int) b.getHeight(), null);
-
                     // LOGIC VẼ MỜ 
                     if (b.isFading()) {
-                        // 1. Lấy độ mờ (alpha) từ viên gạch
+                        // Lấy độ mờ (alpha) từ viên gạch
                         float alpha = b.getAlpha(); 
-                        // 2. Lưu lại thiết lập vẽ cũ
+                        // Lưu lại thiết lập vẽ cũ
                         Composite oldComposite = g.getComposite(); 
                         
-                        // 3. Thiết lập chế độ vẽ mờ
+                        // Thiết lập chế độ vẽ mờ
                         g.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, alpha));
                         
-                        // 4. Vẽ viên gạch với độ mờ
+                        // Vẽ viên gạch với độ mờ
                         g.drawImage(brickImage, (int) b.getX(), (int) b.getY(), (int) b.getWidth(), (int) b.getHeight(), null);
                         
-                        // 5. Khôi phục thiết lập vẽ cũ (RẤT QUAN TRỌNG)
+                        // Khôi phục thiết lập vẽ cũ (RẤT QUAN TRỌNG)
                         g.setComposite(oldComposite); 
                     } else {
                         // Vẽ bình thường (nếu không mờ)
@@ -327,9 +338,12 @@ public class LevelState2 extends GameState{
         }        
     }
 
+    /**
+     * Vẽ HUD.
+     * @param g
+     */
     private void drawHUD(Graphics2D g) {
         Properties languageProps = manager.getLanguageProps();
-
 
         g.setColor(Color.WHITE);
         g.setFont(new Font("Arial", Font.BOLD, 14));
@@ -343,13 +357,19 @@ public class LevelState2 extends GameState{
         g.drawString(msg2, 120, 25);
 
     String msg3 = languageProps.getProperty("level.score", "Score {0}");
-    // Use the LevelState's local score so HUD updates immediately when bricks are destroyed
+
     msg3 = msg3.replace("{0}", String.valueOf(this.score));
         FontMetrics fm = g.getFontMetrics();
         int scoreWidth = fm.stringWidth(msg3);
         g.drawString(msg3, Constants.SCREEN_WIDTH - scoreWidth - 10, 25);
     }
 
+    /**
+     * Vẽ hình ảnh gạch.
+     *
+     * @param b
+     * @return
+     */
     private BufferedImage getBrickImage(Brick b) {
         int currentLevel = levelNum;
 
@@ -370,6 +390,12 @@ public class LevelState2 extends GameState{
         return null;
     }
 
+    /**
+     * Vẽ hình ảnh PowerUp.
+     *
+     * @param p
+     * @return
+     */
     private BufferedImage getPowerUpImage(PowerUp p) {
         switch (p.getType()) {
             case "EXTRA_LIFE":
@@ -386,6 +412,11 @@ public class LevelState2 extends GameState{
         }
     }
 
+    /**
+     * Vẽ đếm ngược PowerUp.
+     *
+     * @param g
+     */
     private void drawPowerUpTimers(Graphics2D g) {
         ArrayList<PowerUp> activeEffects = activePowerUpsEffects;
 
@@ -406,7 +437,7 @@ public class LevelState2 extends GameState{
                     continue;
                 }
 
-                // 1. Tính toán
+                // Tính toán
                 double timePercentage = p.getDuration() / p.getInitialDuration();
                 // Ti le la 1
                 // Đảm bảo không bị số âm
@@ -416,9 +447,9 @@ public class LevelState2 extends GameState{
                 // Vị trí X, căn lề phải cho đẹp
                 int xPos = Constants.SCREEN_WIDTH - BAR_WIDTH - ICON_SIZE - PADDING * 2;
 
-                // 2. Vẽ Icon
+                // Vẽ Icon
                 g.drawImage(icon, xPos, yPos, ICON_SIZE, ICON_SIZE, null);
-                // 3. Vẽ thanh thời gian
+                // Vẽ thanh thời gian
                 int barX = xPos + ICON_SIZE + PADDING;
                 int barY = yPos + (ICON_SIZE - BAR_HEIGHT) / 2; // Căn giữa thanh với icon
 
@@ -444,13 +475,20 @@ public class LevelState2 extends GameState{
         }
     }
 
+    /**
+     * Thêm 1 bóng mới để quản lý (cho PowerUp +1 ball).
+     *
+     * @param newBall bóng mới.
+     */
     public void addBall(Ball newBall) {
         if (newBall != null) {
             this.balls.add(newBall);
         }
     }
 
-    // Thêm phương thức reset vị trí bóng và paddle
+    /**
+     * Method reset vị trí bóng và paddle.
+     */
     private void resetBallAndPaddle() {
         // 1. GỌI HÀM DỌN DẸP LÊN TRÊN ĐẦU
         // Thao tác này sẽ gọi removeEffect() CỦA các power-up
@@ -474,6 +512,9 @@ public class LevelState2 extends GameState{
         ballLaunched = false; // Bóng dính vào paddle
     }
 
+    /**
+     * Method xóa hiệu ứng + powerup.
+     */
     private void clearEffectsAndPowerups() {
         if (activePowerUpsEffects != null) {
             Iterator<PowerUp> iterator = activePowerUpsEffects.iterator();
@@ -489,50 +530,101 @@ public class LevelState2 extends GameState{
         }
     }
 
+    /**
+     * Getter còn sống hay không?
+     *
+     * @return T or F.
+     */
     public boolean isAlive() {
         return lives > 0;
     }
 
+    /**
+     * Kiểm tra chiến thắng.
+     *
+     * @return T or F.
+     */
     public boolean checkWin() {
         return this.getBricks().stream().allMatch(b -> b.getType() == BrickType.UNBREAKABLE);
     }
 
+    /**
+     * Method mở rộng thanh.
+     *
+     * @param amount phần mở rộng.
+     */
     public void expandPaddle(int amount) {
         this.paddle.setWidth(this.paddle.getWidth() + amount);
     }
 
-    // Thu nhỏ thanh đỡ
+    /**
+     * Thu nhỏ thanh đỡ.
+     *
+     * @param amount phần thu hẹp.
+     */
     public void shrinkPaddle(int amount) {
         // Đảm bảo paddle không bị thu nhỏ quá mức
          double newWidth = this.paddle.getWidth() - amount;
          this.paddle.setWidth(Math.max(newWidth, Constants.PADDLE_WIDTH / 2.0)); // Giới hạn kích thước tối thiểu
     }
 
+    /**
+     * Getter cho thanh.
+     *
+     * @return thanh.
+     */
     public Paddle getPaddle() {
         return paddle;
     }
 
-
+    /**
+     * Getter cho lấy PowerUp.
+     *
+     * @return list powerup.
+     */
     public ArrayList<PowerUp> getPowerUps() {
         return powerUps;
     }
 
+    /**
+     * Getter cho gạch.
+     *
+     * @return list gạch.
+     */
     public ArrayList<Brick> getBricks() {
         return brickList;
     }
 
+    /**
+     * Getter cho lấy bóng.
+     *
+     * @return
+     */
     public boolean isBallLaunched() {
         return ballLaunched;
     }
 
+    /**
+     * Setter cho lấy bóng.
+     *
+     * @param ballLaunched
+     */
     public void setBallLaunched(boolean ballLaunched) {
         this.ballLaunched = ballLaunched;
     }
 
+    /**
+     * Getter cho số mạng.
+     *
+     * @return số mạng.
+     */
     public int getLives() {
         return lives;
     }
-    // Thay ham setLives bang loseLives de goi tu dong tru mang
+
+    /**
+     * Method tự động trừ mạng.
+     */
     public void loseLives() {
         if (lives > 0) { // Chỉ trừ mạng nếu còn > 0
                this.lives--;
@@ -540,31 +632,58 @@ public class LevelState2 extends GameState{
                     // Nếu còn mạng, reset vị trí
                     resetBallAndPaddle();
                }
-          }
-         System.out.println("Lost a life! Lives remaining: " + this.lives);
+        }
+        System.out.println("Lost a life! Lives remaining: " + this.lives);
     }
 
+    /**
+     * Getter cho list powerup đang áp dụng.
+     *
+     * @return
+     */
     public ArrayList<PowerUp> getActivePowerUpEffects() {
         return activePowerUpsEffects;
     }
 
+    /**
+     * Cộng thêm điểm.
+     *
+     * @param newScore
+     */
     public void addScore(int newScore) {
         this.score += newScore;
     }
 
+    /**
+     * Getter lấy điểm.
+     *
+     * @return điểm.
+     */
     public int getScore() {
         return score;
     }
 
+    /**
+     * Cộng 1 mạng.
+     */
     public void addLife() {
         this.lives++;
     }
 
-
+    /**
+     * Setter cho level cuối cùng.
+     *
+     * @param b
+     */
     public void setLastLevel(boolean b) {
         isLastLevel = true;
     }
 
+    /**
+     * Getter cho list bóng.
+     *
+     * @return list bóng.
+     */
     public ArrayList<Ball> getBalls() {
         return balls;
     }
