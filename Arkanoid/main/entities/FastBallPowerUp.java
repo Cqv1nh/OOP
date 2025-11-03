@@ -1,24 +1,32 @@
 package entities;
 
+import java.util.ArrayList;
 import managers.LevelState2;
 import util.Constants;
 
-import java.util.ArrayList;
-
 public class FastBallPowerUp extends PowerUp {
-    private static final double SPEED_MULTIPLIER = 1.25; //Tốc độ bóng sẽ tăng 1.25 lần.
+    private static final double SPEED_MULTIPLIER = 1.25;
 
-    //Construtor có tham số.
+    /**
+     * Construtor 5 tham số.
+     *
+     * @param x
+     * @param y
+     * @param width
+     * @param height
+     * @param duration thời gian hiệu lực.
+     */
     public FastBallPowerUp(double x, double y, double width, double height, double duration) {
         super(x, y, Constants.POWERUP_WIDTH, Constants.POWERUP_HEIGHT,
-                "FAST_BALL", Constants.POWERUP_DURATION); //Truyền type cố định rồi.
-        // Gian gia tri ban dau bang gia tri thoi gian vua bat dau
+                "FAST_BALL", Constants.POWERUP_DURATION);
         this.initialDuration = duration;
-        // Chi dung cho cac class co thoi gian
     }
 
-
-    //V2.
+    /**
+     * Áp dụng hiệu ứng.
+     *
+     * @param game
+     */
     @Override
     public void applyEffect(LevelState2 game) {
         game.getActivePowerUpEffects().add(this);
@@ -31,6 +39,11 @@ public class FastBallPowerUp extends PowerUp {
         }
     }
 
+    /**
+     * Xóa bỏ hiệu ứng.
+     *
+     * @param game
+     */
     @Override
     public void removeEffect(LevelState2 game) {
         ArrayList<Ball> balls = game.getBalls();

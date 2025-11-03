@@ -23,6 +23,18 @@ public class Button {
     private BufferedImage buttonHover;
     private BufferedImage buttonNormal;
 
+    /**
+     * Constructor 8 tham số.
+     *
+     * @param x
+     * @param y
+     * @param width
+     * @param height
+     * @param text
+     * @param color
+     * @param textColor
+     * @param font
+     */
     public Button(int x, int y, int width, int height, String text,
                   Color color, Color textColor, Font font) {
         this.x = x;
@@ -35,7 +47,15 @@ public class Button {
         this.font = font;
     }
 
-    // Su dung constructor nay cho gon
+    /**
+     * Constructor 5 tham số.
+     *
+     * @param x
+     * @param y
+     * @param width
+     * @param height
+     * @param text
+     */
     public Button(int x, int y, int width, int height, String text) {
         this.x = x;
         this.y = y;
@@ -47,6 +67,18 @@ public class Button {
         this.font = new Font("Arial", Font.BOLD, 16);
     }
 
+    /**
+     * Constructor 8 tham số.
+     *
+     * @param x
+     * @param y
+     * @param width
+     * @param height
+     * @param text
+     * @param function
+     * @param buttonNormal
+     * @param buttonHover
+     */
     public Button(int x, int y, int width, int height, String text, String function,
                   BufferedImage buttonNormal,
                   BufferedImage buttonHover) {
@@ -63,12 +95,18 @@ public class Button {
         this.buttonHover = buttonHover;
     }
 
+    /**
+     * Method vẽ nút bấm ra màn hình.
+     *
+     * @param g
+     * @param mouseX
+     * @param mouseY
+     */
     public void drawFlag(Graphics2D g, int mouseX, int mouseY) {
         if (!isHovering(mouseX, mouseY)) {
             g.drawImage(buttonNormal, x, y, width, height, null);
         }
         else {
-
             Color shadowColor = new Color(0, 0, 0, 100);
             g.setColor(shadowColor);
 
@@ -77,11 +115,14 @@ public class Button {
 
             int lift = 2;
             g.drawImage(buttonNormal, x, y - lift, width, height, null);
-
         }
     }
 
-    
+    /**
+     * Method hiển thị trực quan của Button.
+     *
+     * @param g2d
+     */
     public void draw(Graphics2D g2d) {
         BufferedImage currentButtonImage = null;
         // Kiem tra nhan va khong nhan
@@ -105,66 +146,141 @@ public class Button {
         g2d.drawString(this.text, textX, textY);
     }
 
-    // Button khong the tu check xem la chuot da nhan hay chua
+    /**
+     * Kiểm tra con trỏ chuột có nằm trong vùng Button không.
+     *
+     * @param mouseX
+     * @param mouseY
+     * @return
+     */
     public boolean isHovering(int mouseX, int mouseY) {
         return mouseX >= this.x && mouseX <= this.x + this.width &&
                mouseY >= this.y && mouseY <= this.y + this.height;
     }
 
-    // Setter mới để cập nhật trạng thái hover từ bên ngoài (MenuState, v.v.)
+    /**
+     * Setter để cập nhật trạng thái hover từ bên ngoài (MenuState, v.v.).
+     *
+     * @param isHoveringState
+     */
     public void setHoveringState(boolean isHoveringState) {
         this.isHoveringState = isHoveringState;
     }
 
+    /**
+     * Getter cho kí tự.
+     *
+     * @return kí tự.
+     */
     public String getText() {
         return text;
     }
 
+    /**
+     * Setter cho kí tự.
+     *
+     * @param text kí tự.
+     */
     public void setText(String text) {
         this.text = text;
     }
 
+    /**
+     * Getter cho màu sắc.
+     *
+     * @return màu sắc.
+     */
     public Color getColor() {
         return color;
     }
 
+    /**
+     * Setter cho màu sắc.
+     *
+     * @param color màu sắc.
+     */
     public void setColor(Color color) {
         this.color = color;
     }
 
 
+    /**
+     * Getter cho X.
+     *
+     * @return x.
+     */
     public int getX() {
         return x;
     }
 
+    /**
+     * Getter cho Y.
+     *
+     * @return y.
+     */
     public int getY() {
         return y;
     }
 
+    /**
+     * Getter cho độ rộng.
+     *
+     * @return rộng.
+     */
     public int getWidth() {
         return width;
     }
 
+    /**
+     * Getter cho độ cao.
+     *
+     * @return độ cao.
+     */
     public int getHeight() {
         return height;
     }
 
+    /**
+     * Getter cho nút bình thường.
+     *
+     * @return buttonnormal.
+     */
     public BufferedImage getButtonNormal() {
         return buttonNormal;
     }
 
+    /**
+     * Setter cho nút bình thường.
+     *
+     * @param buttonNormal nút bình thường.
+     */
     public void setButtonNormal(BufferedImage buttonNormal) {
         this.buttonNormal = buttonNormal;
     }
 
+    /**
+     * Getter cho nút khi người dùng di chuột vào.
+     *
+     * @return buttonhover.
+     */
     public BufferedImage getButtonHover() {
         return buttonHover;
     }
 
+    /**
+     * Setter cho nút khi người dùng di chuột vào.
+     *
+     * @param buttonHover nút khi người dùng di chuột vào.
+     */
     public void setButtonHover(BufferedImage buttonHover) {
         this.buttonHover = buttonHover;
     }
 
+    /**
+     * Getter cho function.
+     *
+     * @return chức năng.
+     */
     public String getFunction() {
         return function;
     }
