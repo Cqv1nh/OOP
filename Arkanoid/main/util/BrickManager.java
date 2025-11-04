@@ -1,8 +1,7 @@
-package ui;
+package util;
 
 import entities.*;
-import util.Constants;
-import util.LevelData;
+
 import java.awt.Point;
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -81,7 +80,7 @@ public class BrickManager {
     }
 
     /**
-     * Constructor mặc định nếu cần (ví dụ, nếu LevelState2 vẫn gọi new BrickManager()).
+     * Constructor mặc định nếu cần (ví dụ, nếu LevelState vẫn gọi new BrickManager()).
      */
     public BrickManager() {
     }

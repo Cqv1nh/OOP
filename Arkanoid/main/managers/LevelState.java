@@ -13,7 +13,7 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.HashSet;
 import java.util.Properties;
-import ui.BrickManager;
+
 import util.*;
 
 public class LevelState extends GameState{
