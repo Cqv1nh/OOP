@@ -15,8 +15,9 @@ Trọng:
     - Áp dụng cơ chế thêm điểm khi phá hủy Brick.
     - Tìm hình ảnh về các PowerUp.
     - Fix 1 số lỗi tồn đọng trong các code sẵn có.
-
-
+Vinh:
+    - Tạo lớp LevelState là lớp quản lý trạng thái màn chơi.
+    
 Công việc tuần 6 (13/10- 19/10)
 
 Thịnh
@@ -38,7 +39,7 @@ Trọng:
 
 Vinh:
     - Tạo class GameStateManager là lớp quản lý trạng thái trò chơi, lớp GameState là lớp trừu tượng cho một trạng thái game.
-    - Dựa vào GameState thêm các lớp LevelState2, MenuState, PauseState, TransitionState, GameOverState và VictoryState biễu diễn các trạng thái khác nhau của trò chơi
+    - Dựa vào GameState thêm các lớp LevelState2, MenuState, PauseState, TransitionState, GameOverState và VictoryState biễu diễn các trạng thái khác nhau của trò chơi. Thay thế chức năng lớp LevelState bằng lớp LevelState2.
     - Sửa đổi game loop chính trong class Game để sử dụng GameStateManager và GameState.
     - Tạo thêm class Button đại diện cho một nút nhấn.
     - Thêm class MouseManager và KeyBroadManager để xử bàn phím và chuột.
