@@ -6,7 +6,6 @@ import java.util.Map;
 public class LevelData {
     // Sử dụng Map để lưu trữ các màn chơi, dễ dàng truy cập bằng số level
     private static final Map<Integer, int[][]> levels = new HashMap<>();
-
     // Sử dụng khối static để khởi tạo dữ liệu ngay khi lớp được tải
     static {
         // 0: Rỗng, 1: Normal, 2: Strong, 3: Explosive, 4: Unbreakable
@@ -17,14 +16,6 @@ public class LevelData {
             {1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1}
             // {1, 0, 0}
         }); 
-
-        // LEVEL 1: Giới thiệu cơ bản
-        // levels.put(1, new int[][]{
-        //     {0, 0, 1, 1, 2, 2, 2, 1, 1, 0, 0},
-        //     {0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0},
-        //     {1, 1, 3, 1, 1, 3, 1, 1, 3, 1, 1}
-        //     // {1, 0, 0}
-        // });
 
         // LEVEL 2: Thêm gạch Unbreakable và Strong
         levels.put(2, new int[][]{
@@ -65,11 +56,22 @@ public class LevelData {
             // {1, 0 ,0}
         });
     }
-    // Lấy layout (mảng 2D) cho một level cụ thể.
+
+    /**
+     * Lấy layout (mảng 2D) cho một level cụ thể.
+     * 
+     * @param levelNumber level được chọn.
+     * @return mảng 2D.
+     */
     public static int[][] getLayoutForLevel(int levelNumber) {
         return levels.get(levelNumber);
     }
-    // Lấy tổng số level hiện có.
+
+    /**
+     * Lấy tổng số level hiện có.
+     * 
+     * @return tổng số level.
+     */
     public static int getTotalLevels() {
         return levels.size();
     }

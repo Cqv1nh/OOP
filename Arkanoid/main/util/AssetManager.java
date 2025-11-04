@@ -7,11 +7,8 @@ import java.io.InputStream;
 import java.util.HashMap;
 import java.util.Map;
 
-// 31/10 them phan hinh anh cho menu
 public class AssetManager {
-
     // Khai bao bien luu tru hinh anh
-    // LEVEL
     public static BufferedImage  extraLife, expandPaddle, multiBall, increaseSpeed;
     // Dung map de luu tru cac anh nen , key = so level
     public static Map<Integer, BufferedImage> levelBackgrounds = new HashMap<>();
@@ -23,9 +20,8 @@ public class AssetManager {
     public static Map<Integer, BufferedImage> explosiveBrick = new HashMap<>();
     public static Map<Integer, BufferedImage> unbreakableBrick = new HashMap<>();
 
-    // 28-10-25
     // HIEU UNG NO CUA EXPLOSIVE BRICK
-    public static Map<Integer, BufferedImage> explosionFrames = new HashMap<>(); // Dùng Map để lưu 10 frame
+    public static Map<Integer, BufferedImage> explosionFrames = new HashMap<>();
     
     // Xu ly thanh truot cho phan settings
     public static BufferedImage trackImg, handleImg, fillImg;
@@ -38,7 +34,6 @@ public class AssetManager {
 
     // TRANSITION
     public static BufferedImage transitionBackground;
-    // Them cac powerUp khac neu can
 
     public static BufferedImage UkFlag;
     public static BufferedImage vietnamFlag;
@@ -56,7 +51,6 @@ public class AssetManager {
      * Phương thức này nên được gọi một lần duy nhất khi game khởi động.
      */
     public static void loadImages() {
-
         UkFlag = loadImage("/resources/flag/Flag_of_the_United_Kingdom.png");
         vietnamFlag = loadImage("/resources/flag/Flag_of_Vietnam.png");
         germanyFlag = loadImage("/resources/flag/Flag_of_Germany.png");
@@ -108,7 +102,6 @@ public class AssetManager {
         strongBrick.put(4, loadImage("/resources/images/Level4/StrongBrick1Level4.png"));
         strongBrick.put(5, loadImage("/resources/images/Level5/StrongBrick1Level5.png"));
 
-
         strongBrick_1hit.put(1, loadImage("/resources/images/Level1/StrongBrick2Level1.png"));
         strongBrick_1hit.put(2, loadImage("/resources/images/Level2/StrongBrick2Level2.png"));
         strongBrick_1hit.put(3, loadImage("/resources/images/Level3/StrongBrick2Level3.png"));
@@ -126,8 +119,6 @@ public class AssetManager {
         unbreakableBrick.put(4, loadImage("/resources/images/Level4/UnbreakableBrickLevel4.png"));
         unbreakableBrick.put(5, loadImage("/resources/images/Level5/UnbreakableBrickLevel5.png"));
 
-
-        // 28-10-25
         for (int i = 0; i < 10; i++) {
             explosionFrames.put(i, loadImage("/resources/images/explosion/explosion_" + i + ".png"));
         }
@@ -147,6 +138,7 @@ public class AssetManager {
 
     /**
      * Phương thức trợ giúp để tải một tệp hình ảnh từ đường dẫn bên trong resources.
+     * 
      * @param path Đường dẫn đến tệp, bắt đầu bằng dấu "/".
      * @return Một đối tượng BufferedImage hoặc null nếu không tìm thấy.
      */
