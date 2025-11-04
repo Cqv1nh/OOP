@@ -16,6 +16,7 @@ Trọng:
     - Áp dụng cơ chế thêm điểm khi phá hủy Brick.
     - Tìm hình ảnh về các PowerUp.
     - Fix 1 số lỗi tồn đọng trong các code sẵn có.
+    
 Vinh:
     - Tạo lớp LevelState là lớp quản lý trạng thái màn chơi.
     
