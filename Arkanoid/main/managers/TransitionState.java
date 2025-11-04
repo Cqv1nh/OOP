@@ -11,7 +11,7 @@ public class TransitionState extends GameState {
     /**
      * Constructor chuyển trạng thái giữa 2 màn game.
      *
-     * @param manager
+     * @param manager Đối tượng quản lý trạng thái game chính.
      */
     public TransitionState(GameStateManager manager) {
         super(manager);
@@ -47,7 +47,7 @@ public class TransitionState extends GameState {
     /**
      * Method vẽ ra màn hình.
      *
-     * @param g
+     * @param g đối tượng đồ họa.
      */
     @Override
     public void render(Graphics2D g) {

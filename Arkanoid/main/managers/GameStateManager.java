@@ -36,8 +36,8 @@ public class GameStateManager {
     /**
      * Constructor khởi tạo về mọi thứ, tải các file âm thanh, setting, trạng thái.
      *
-     * @param km
-     * @param mm
+     * @param km quản lý bàn phím.
+     * @param mm quản lý chuột.
      */
     public GameStateManager(KeyboardManager km, MouseManager mm) {
         states = new HashMap<>();
@@ -195,7 +195,7 @@ public class GameStateManager {
     /**
      * Method loadLevel cho New Game / Next Level (truyền null cho brick indices).
      *
-     * @param levelNum
+     * @param levelNum số level hiện tại.
      */
     public void loadLevel(int levelNum) {
         // Lấy score và lives hiện tại nếu là next level
@@ -387,7 +387,7 @@ public class GameStateManager {
     /**
      * Setter thời gian bắt đầu chơi game.
      *
-     * @param time
+     * @param time thời gian.
      */
     public void setGameRunStartTime(long time) {
          this.gameRunStartTime = time;
@@ -423,7 +423,7 @@ public class GameStateManager {
     /**
      * Setter file văn bản đã dịch.
      *
-     * @param languageProps
+     * @param languageProps file văn bản.
      */
     public void setLanguageProps(Properties languageProps) {
         this.languageProps = languageProps;

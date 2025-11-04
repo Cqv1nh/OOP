@@ -19,7 +19,7 @@ public class MenuState extends GameState {
     /**
      * Khởi tạo màn hình menu, lấy trình quản lý phím/chuột, và tạo 5 nút bấm (New Game, Load Game, Settings, High Scores, Quit).
      *
-     * @param manager
+     * @param manager Đối tượng quản lý trạng thái game chính.
      */
     public MenuState(GameStateManager manager) {
         super(manager);
@@ -81,7 +81,7 @@ public class MenuState extends GameState {
     /**
      * Vẽ ra màn hình.
      *
-     * @param g
+     * @param g Đối tượng đồ họa Java.
      */
     @Override
     public void render(Graphics2D g) {
@@ -147,7 +147,7 @@ public class MenuState extends GameState {
     /**
      * Đọc file ngôn ngữ .properties (dựa trên mã langCode), lấy văn bản đã dịch, cập nhật lại ngôn ngữ.
      *
-     * @param langCode
+     * @param langCode mã langcode.
      */
     private void loadLanguage(String langCode) {
         Properties Props = manager.getLanguageProps();

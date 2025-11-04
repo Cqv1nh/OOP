@@ -26,7 +26,7 @@ public class PauseState extends GameState {
     /**
      * Khởi tạo màn hình tạm dừng, tạo ra 5 nút bấm (Resume, 3 ô Save, và Quay lại Menu).
      *
-     * @param manager
+     * @param manager Đối tượng quản lý trạng thái game chính.
      */
     public PauseState(GameStateManager manager) {
         super(manager);
@@ -115,7 +115,7 @@ public class PauseState extends GameState {
     /**
      * Vẽ màn hình game hiện tại ở phía sau (nền mờ), sau đó vẽ menu tạm dừng (tiêu đề, các nút, hướng dẫn) đè lên trên.
      *
-     * @param g
+     * @param g Đối tượng đồ họa Java.
      */
     @Override
     public void render(Graphics2D g) {
@@ -184,7 +184,7 @@ public class PauseState extends GameState {
      * Thu thập toàn bộ dữ liệu game hiện tại (màn, điểm, mạng, và chỉ số của các viên gạch còn lại)
      * và ghi (lưu) tất cả thông tin này vào một file
      *
-     * @param slotNumber
+     * @param slotNumber chỗ được chọn.
      */
     private void saveGame(int slotNumber) {
         LevelState lastActiveLevelState = manager.getLastLevelStateInstance(); // Lấy state level hiện tại

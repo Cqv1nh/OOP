@@ -82,7 +82,7 @@ public class Settings {
     /**
      * Getter cho âm thanh background.
      *
-     * @return
+     * @return âm thanh background.
      */
     public int getBackGroundMusic() {
         return backGroundMusic;
@@ -118,7 +118,7 @@ public class Settings {
     /**
      * Getter cho phím di chuyển trái chính.
      *
-     * @return
+     * @return phím di chuyển trái chính.
      */
     public int getMoveLeftPrimary() {
         return moveLeftPrimary;
@@ -127,7 +127,7 @@ public class Settings {
     /**
      * Setter cho phím di chuyển trái chính.
      *
-     * @param moveLeftPrimary
+     * @param moveLeftPrimary phím di chuyển trái chính.
      */
     public void setMoveLeftPrimary(int moveLeftPrimary) {
         this.moveLeftPrimary = moveLeftPrimary;
@@ -136,7 +136,7 @@ public class Settings {
     /**
      * Getter cho phím di chuyển trái phụ.
      *
-     * @return
+     * @return phím di chuyển trái phụ.
      */
     public int getMoveLeftSecondary() {
         return moveLeftSecondary;
@@ -145,7 +145,7 @@ public class Settings {
     /**
      * Setter cho phím di chuyển trái phụ.
      *
-     * @param moveLeftSecondary
+     * @param moveLeftSecondary phím di chuyển trái phụ.
      */
     public void setMoveLeftSecondary(int moveLeftSecondary) {
         this.moveLeftSecondary = moveLeftSecondary;
@@ -154,7 +154,7 @@ public class Settings {
     /**
      * Getter cho phím di chuyển phải chính.
      *
-     * @return
+     * @return phím di chuyển phải chính.
      */
     public int getMoveRightPrimary() {
         return moveRightPrimary;
@@ -163,7 +163,7 @@ public class Settings {
     /**
      * Setter cho phím di chuyển phải chính.
      *
-     * @param moveRightPrimary
+     * @param moveRightPrimary phím di chuyển phải chính.
      */
     public void setMoveRightPrimary(int moveRightPrimary) {
         this.moveRightPrimary = moveRightPrimary;
@@ -172,7 +172,7 @@ public class Settings {
     /**
      * Getter cho phím di chuyển phải phụ.
      *
-     * @return
+     * @return phím di chuyển phải phụ.
      */
     public int getMoveRightSecondary() {
         return moveRightSecondary;
@@ -181,7 +181,7 @@ public class Settings {
     /**
      * Setter cho phím di chuyển phải phụ.
      *
-     * @param moveRightSecondary
+     * @param moveRightSecondary phím di chuyển phải phụ.
      */
     public void setMoveRightSecondary(int moveRightSecondary) {
         this.moveRightSecondary = moveRightSecondary;
