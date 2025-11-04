@@ -3,6 +3,7 @@ Lap trinh huong doi tuong
 Một cách để tìm xem phương thức đc khai báo có đc sử dụng ở nơi khác không: 
 Nhấn bôi đen phương thức đó xong rồi ấn chuột phải chọn Go to Reference
 
+
 Công việc tuần 5 (6/10 - 12/10)
 Thịnh: 
     - 
@@ -13,9 +14,19 @@ Trọng:
     - Tìm hình ảnh về các PowerUp.
     - Fix 1 số lỗi tồn đọng trong các code sẵn có.
 
-Công việc tuần 6 (13/10 - 19/10)
-Thịnh: 
+
+Công việc tuần 6 (13/10- 19/10)
+Thịnh
     - 
+    - Thêm lớp AssetManager thực hiện các hành động xử lý hình ảnh, GameWindow chỉ cần gọi loadImages trong AssetManager để sử dụng.
+    - Sửa hàm logic di chuyển bóng trong Ball
+    - Thay thế logic chồng lặp AABB không chính xác bằng thuật toán dựa trên khoảng cách hình tròn-hình chữ nhật
+    - Kiến trúc V1: Tách khối GameLoop thực hiện đa chức năng thành các lớp nhỏ hơn: EntityManager, CollisionHandler, PowerUpManager, GameStateManager, mỗi lớp thực hiện 1 chức năng.
+    - Tạo lớp LevelData quản lý dữ liệu gạch của trò chơi. Sử dụng các số từ 1 đến 4 để biểu thị lên màn hình.
+    - Xây dựng thanh đồng hồ hiển thị thời gian PowerUp có hiệu lực.
+    - Sửa lỗi thanh thời gian không hiển thị khi ăn PowerUp increaseSpeed.
+    - Thêm lớp util/AudioManager quản lý âm thanh nhạc nền và âm thanh va chạm.
+    - Chỉnh sửa AssetManager để hỗ trợ đồ họa riêng cho từng cấp độ.(sử dụng Map).
 Trọng:
     - Tìm thêm các hình ảnh về các vật thể: Paddle, Brick, Ball, PowerUp.
     - Tìm nhạc nền ở sảnh chờ và âm thanh va chạm ban đầu chung chung giữa bóng và vật thể khác.
@@ -23,10 +34,12 @@ Trọng:
     - Fix code 6 class liên quan gamewindow, entitymanager, multiballpowerup, collisionhandler, gamepanel, fastball để tác động lên nhiều bóng.
     - Fix lỗi tốc độ bóng không ổn định.
     - Fix 1 số lỗi tồn đọng trong các code sẵn có.
-
 Công việc tuần 7 (20/10 - 26/10)
-Thịnh: 
-    - 
+Thịnh:
+    - Thiết kế hình ảnh và background dành riêng cho từng 5 màn chơi.
+    - Tiếp nhận kiến trúc V2: GameStateManager từ Vinh, sửa code và xóa bỏ hoàn toàn kiến trúc V1: GameLoop, GameWindow.
+    - Xây dựng hệ thống save/load game sử dụng 1 file.
+    - Dọn dẹp thư viện hình ảnh: Xóa các hình ảnh không dùng đến.
 Trọng:
     - Thêm hiệu ứng làm mờ khi phá hủy PowerUp.
     - Thay đổi hành vi va chạm để phù hợp hơn với animation làm mờ.
@@ -41,6 +54,7 @@ Thịnh:
     - Chuyển đổi cơ chế save 1 game thành save 3 game, người chơi có thể tùy ý chọn màn chơi đã chơi mong muốn.
     - Cải tiến giao diện các trạng thái game cho đẹp hơn.
     - Sửa lỗi điểm số HUD kkhông cập nhật tức thời.
+
 Trọng:
     - Làm thêm animation liên quan đến gạch nổ Explosive.
     - Đa dạng thêm âm thanh va chạm giữa bóng - paddle, bóng - brick, và hiệu ứng khi ăn powerup.
@@ -50,4 +64,4 @@ Công việc tuần 9 (3/11 - 5/11)
 Trọng:
     - Cập nhật toàn bộ chú thích (Javadoc) cho tất cả các class của code game Arkanoid.
     - Fix 1 số lỗi tồn đọng trong các code sẵn có.
-    
+    - Dọn dẹp các phương thức và thuộc tính không sử dụng.
