@@ -34,6 +34,14 @@ Trọng:
     - Fix code 6 class liên quan gamewindow, entitymanager, multiballpowerup, collisionhandler, gamepanel, fastball để tác động lên nhiều bóng.
     - Fix lỗi tốc độ bóng không ổn định.
     - Fix 1 số lỗi tồn đọng trong các code sẵn có.
+
+Vinh:
+    - Tạo class GameStateManager là lớp quản lý trạng thái trò chơi, lớp GameState là lớp trừu tượng cho một trạng thái game.
+    - Dựa vào GameState thêm các lớp LevelState2, MenuState, PauseState, TransitionState, GameOverState và VictoryState biễu diễn các trạng thái khác nhau của trò chơi
+    - Sửa đổi game loop chính trong class Game để sử dụng GameStateManager và GameState.
+    - Tạo thêm class Button đại diện cho một nút nhấn.
+    - Thêm class MouseManager và KeyBroadManager để xử bàn phím và chuột.
+
 Công việc tuần 7 (20/10 - 26/10)
 Thịnh:
     - Thiết kế hình ảnh và background dành riêng cho từng 5 màn chơi.
@@ -45,7 +53,11 @@ Trọng:
     - Thay đổi hành vi va chạm để phù hợp hơn với animation làm mờ.
     - Thay đổi vòng lặp game với cập nhật phương thức render().
     - Fix 1 số lỗi tồn đọng trong các code sẵn có.
-
+Vinh:
+    - Tạo thêm class Slider tượng trưng cho thanh trượt.
+    - Tạo thêm Class Settings để lưu cấu hình tùy chọn.
+    - Sử dụng class Slider thêm chức năng điều khiển âm lượng tại SettingsState và các phương thức để lưu và tải cấu hình sử dụng file .json.
+    - Sửa đổi các class liên quan để có thể sử dụng chức năng mới.
 Công việc tuần 8 (27/10 - 2/11)
 Thịnh: 
     - Sửa lỗi logic liên quan đến 2 PowerUp có thời gian hiệu lực.
@@ -59,9 +71,15 @@ Trọng:
     - Làm thêm animation liên quan đến gạch nổ Explosive.
     - Đa dạng thêm âm thanh va chạm giữa bóng - paddle, bóng - brick, và hiệu ứng khi ăn powerup.
     - Fix 1 số lỗi tồn đọng trong các code sẵn có.
-
+Vinh: 
+    - Tạo thư mục JUnit để test các chức năng game.
+    - Thêm thư mực chữa các file .properties và ảnh cờ các quốc gia để sử dụng trong tùy chọn ngôn ngữ mới trong SettingsState.
+    - Tạo các methods và chỉnh sửa trong SettingsState, GameStateManager và các GameState còn lại để chúng có thể hiển thị các ngôn ngữ khác nhau.
 Công việc tuần 9 (3/11 - 5/11)
 Trọng:
     - Cập nhật toàn bộ chú thích (Javadoc) cho tất cả các class của code game Arkanoid.
     - Fix 1 số lỗi tồn đọng trong các code sẵn có.
     - Dọn dẹp các phương thức và thuộc tính không sử dụng.
+Vinh: 
+    - Thêm tùy chọn gán nút di chuyển cho Paddle.
+
