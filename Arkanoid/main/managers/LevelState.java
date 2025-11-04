@@ -268,7 +268,7 @@ public class LevelState extends GameState{
             
                         if (frameImg != null) {
                             // Kích thước nổ to hơn 50% so với gạch
-                            final int PADDING = (int)(b.getWidth() * 0.5); 
+                            
 
                             final double SCALE_FACTOR = 1.5; // Kích thước gấp rưỡi (150%)
                             int newWidth = (int)(b.getWidth() * SCALE_FACTOR);
@@ -418,7 +418,7 @@ public class LevelState extends GameState{
         final int ICON_SIZE = 25; // Hinh vuong
         final int BAR_HEIGHT = 15; // Cao
         final int BAR_WIDTH = 100; // Rong
-        final int PADDING = 8;
+        final int PADDING = 10;
 
         int yPos = 25; // Vị trí Y ban đầu, ngay dưới HUD
 
