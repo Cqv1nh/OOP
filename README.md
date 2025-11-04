@@ -1,15 +1,14 @@
 # OOP
 Lap trinh huong doi tuong
-Một cách để tìm xem phương thức đc khai báo có đc sử dụng ở nơi khác không: 
-Nhấn bôi đen phương thức đó xong rồi ấn chuột phải chọn Go to Reference
-
 
 Công việc tuần 5 (6/10 - 12/10)
+
 Thịnh: 
     - Tạo các lớp cơ sở: GameObject, MovableObject.
     - Tạo lớp Paddle đầu tiên kế thừa từ MovableObject.
     - Triển khai 4 loại gạch: NormalBrick, StrongBrick, ExplosiveBrick, UnbreakableBrick, thêm lớp BrickType định nghĩa các loại gạch.
     - Triển khai hệ thống lives và logic đặt lại bóng.
+    
 Trọng:
     - Viết code sơ khai cho class Ball, PowerUp tổng quát và 4 PowerUp: + 1 bóng, tăng tốc độ, + 1 mạng, + độ dài thanh
     - Fix lỗi class Ball.
@@ -19,6 +18,7 @@ Trọng:
 
 
 Công việc tuần 6 (13/10- 19/10)
+
 Thịnh
     - Triển khai hệ thống theo dõi và hiển thị điểm số của game.
     - Sửa hàm logic di chuyển bóng trong Ball
@@ -44,16 +44,19 @@ Vinh:
     - Thêm class MouseManager và KeyBroadManager để xử bàn phím và chuột.
 
 Công việc tuần 7 (20/10 - 26/10)
+
 Thịnh:
     - Thiết kế hình ảnh và background dành riêng cho từng 5 màn chơi.
     - Tiếp nhận kiến trúc V2: GameStateManager từ Vinh, sửa code và xóa bỏ hoàn toàn kiến trúc V1: GameLoop, GameWindow.
     - Xây dựng hệ thống save/load game sử dụng 1 file.
     - Dọn dẹp thư viện hình ảnh: Xóa các hình ảnh không dùng đến.
+    
 Trọng:
     - Thêm hiệu ứng làm mờ khi phá hủy PowerUp.
     - Thay đổi hành vi va chạm để phù hợp hơn với animation làm mờ.
     - Thay đổi vòng lặp game với cập nhật phương thức render().
     - Fix 1 số lỗi tồn đọng trong các code sẵn có.
+    
 Vinh:
     - Tạo thêm class Slider tượng trưng cho thanh trượt.
     - Tạo thêm Class Settings để lưu cấu hình tùy chọn.
@@ -74,17 +77,22 @@ Trọng:
     - Làm thêm animation liên quan đến gạch nổ Explosive.
     - Đa dạng thêm âm thanh va chạm giữa bóng - paddle, bóng - brick, và hiệu ứng khi ăn powerup.
     - Fix 1 số lỗi tồn đọng trong các code sẵn có.
+    
 Vinh: 
     - Tạo thư mục JUnit để test các chức năng game.
     - Thêm thư mực chữa các file .properties và ảnh cờ các quốc gia để sử dụng trong tùy chọn ngôn ngữ mới trong SettingsState.
     - Tạo các methods và chỉnh sửa trong SettingsState, GameStateManager và các GameState còn lại để chúng có thể hiển thị các ngôn ngữ khác nhau.
+    
 Công việc tuần 9 (3/11 - 5/11)
+
 Thịnh: 
     - Đổi tên lớp và di chuyển các class về đúng thư mục cho hợp lý.
+    
 Trọng:
     - Cập nhật toàn bộ chú thích (Javadoc) cho tất cả các class của code game Arkanoid.
     - Fix 1 số lỗi tồn đọng trong các code sẵn có.
     - Dọn dẹp các phương thức và thuộc tính không sử dụng.
+    
 Vinh: 
     - Thêm tùy chọn gán nút di chuyển cho Paddle.
 
