@@ -9,11 +9,9 @@ import java.util.Map;
 // Âm thanh: Lớp AudioManager đã tự động chạy trên các luồng ngầm (background threads) của riêng Java. 
 // Không cần tạo luồng riêng cho nó.
 public class AudioManager {
-
     // Dùng Map để lưu trữ các Clip âm thanh, key là tên file (hoặc một định danh)
     private static Map<String, Clip> sounds = new HashMap<>();
     private static Clip backgroundMusicClip; // Clip riêng cho nhạc nền để dễ quản lý
-
     private static float masterVolume = 1.0f;
     private static float soundFxVolume = 1.0f;
     private static float backgroundMusicVolume = 1.0f;
@@ -62,6 +60,7 @@ public class AudioManager {
 
     /**
      * Phát một âm thanh một lần.
+     * 
      * @param name Tên của âm thanh đã tải.
      */
     public static void playSound(String name) {
@@ -79,6 +78,7 @@ public class AudioManager {
 
     /**
      * Phát nhạc nền, lặp lại vô hạn.
+     * 
      * @param name Tên của âm thanh nhạc nền đã tải.
      */
     public static void playBackgroundMusic(String name) {
@@ -95,21 +95,39 @@ public class AudioManager {
         }
     }
 
+    /**
+     * Đặt âm lượng tổng (Master).
+     * 
+     * @param volume âm lượng.
+     */
     public static void setMasterVolume(float volume) {
         masterVolume = Math.max(0f, Math.min(1f, volume));
         updateAllVolumes();
     }
 
+    /**
+     * Đặt âm lượng riêng cho Hiệu ứng Âm thanh (FX).
+     * 
+     * @param volume âm lượng.
+     */
     public static void setSoundFxVolume(float volume) {
         soundFxVolume = Math.max(0f, Math.min(1f, volume));
         updateAllVolumes();
     }
 
+    /**
+     * Đặt âm lượng riêng cho Nhạc nền.
+     * 
+     * @param volume âm lượng.
+     */
     public static void setBackgroundMusicVolume(float volume) {
         backgroundMusicVolume = Math.max(0f, Math.min(1f, volume));
         updateAllVolumes();
     }
 
+    /**
+     * Áp dụng mức âm lượng đã cài đặt.
+     */
     private static void updateAllVolumes() {
         float fxFinal = masterVolume * soundFxVolume;
         float bgFinal = masterVolume * backgroundMusicVolume;
@@ -120,12 +138,17 @@ public class AudioManager {
             setClipVolume(entry.getValue(), fxFinal);
         }
 
-
         if (backgroundMusicClip != null) {
             setClipVolume(backgroundMusicClip, bgFinal);
         }
     }
 
+    /**
+     * Điều chỉnh gain (độ lợi) của một clip cụ thể.
+     * 
+     * @param clip interface của Java sound API.
+     * @param volume âm lượng.
+     */
     private static void setClipVolume(Clip clip, float volume) {
         if (clip == null) return;
         try {

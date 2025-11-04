@@ -1,6 +1,5 @@
 package util;
 
-// game swing
 public final class Constants {
     public static final int SCREEN_WIDTH = 800;
     public static final int SCREEN_HEIGHT = 600;
@@ -14,8 +13,7 @@ public final class Constants {
     public static final int INIT_PADDLE_Y = 500;
 
     public static final int BALL_DIAMETER = 20;
-    // Toc do bong qua cao thanh ra gay la loi xuyen ham
-    // Giam toc do dang ke 
+ 
     public static final double BALL_SPEED = 5.0;
     public static final int INIT_BALL_X = INIT_PADDLE_X + (PADDLE_WIDTH - BALL_DIAMETER) / 2;
     public static final int INIT_BALL_Y = INIT_PADDLE_Y - BALL_DIAMETER;
@@ -26,7 +24,6 @@ public final class Constants {
     public static final int POWERUP_WIDTH = 20;
     public static final int POWERUP_HEIGHT = 20;
 
-    //Bổ sung thêm 2 hằng số: Độ dài tăng thêm thanh + Thời gian 7s hiệu lực PowerUp.
-    public static final int PADDLE_EXPAND_AMOUNT = 20;
-    public static final int POWERUP_DURATION = 7000; //7000 milis.
+    public static final int PADDLE_EXPAND_AMOUNT = 20; // Độ dài tăng thêm thanh.
+    public static final int POWERUP_DURATION = 7000; // 7000 milis.
 }

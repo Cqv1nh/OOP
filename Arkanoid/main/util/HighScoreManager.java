@@ -2,40 +2,44 @@ package util;
 
 import java.io.*;
 import java.util.ArrayList;
-import java.util.Collections; // them s
+import java.util.Collections; 
 
 // Lớp này sẽ xử lý việc đọc và ghi danh sách điểm cao vào một tệp riêng.
 public class HighScoreManager {
     private static final String HIGHSCORE_FILE = "highscores.dat";
-    private static final int MAX_SCORES_TO_KEEP = 5; // Chỉ lưu Top 5
+    private static final int MAX_SCORES_TO_KEEP = 5; 
 
-    // Tải danh sách điểm cao
+    /**
+     * Tải danh sách điểm cao.
+     * 
+     * @return danh sách điểm cao.
+     */
     @SuppressWarnings("unchecked") // Bỏ qua cảnh báo khi ép kiểu (cast)
     public static ArrayList<ScoreEntry> loadHighScores() {
         ArrayList<ScoreEntry> scores = new ArrayList<>();
         File saveFile = new File(HIGHSCORE_FILE);
-
         if (saveFile.exists()) {
             // lay noi dung tu file dung inputstream 
             try (FileInputStream fis = new FileInputStream(saveFile); 
                 ObjectInputStream ois = new ObjectInputStream(fis)) {
-
                 scores = (ArrayList<ScoreEntry>) ois.readObject();
                 System.out.println("High scores loaded successfully.");
             } catch (IOException | ClassNotFoundException e) {
                 System.err.println("Error loading high scores:" + e.getMessage());
-                // Có thể file bị hỏng, tạo mới danh sach score
                 scores = new ArrayList<>();
             }
         }
         return scores;
     }
 
-    // Lưu danh sách điểm cao
+    /**
+     * Lưu danh sách điểm cao.
+     * 
+     * @param scores danh sách điểm.
+     */
     public static void saveHighScores(ArrayList<ScoreEntry> scores) {
         try (FileOutputStream fos = new FileOutputStream(HIGHSCORE_FILE);
             ObjectOutputStream oos = new ObjectOutputStream(fos)) {
-
                 oos.writeObject(scores);
                 System.out.println("High scores saved successfully.");
         } catch (IOException e) {
@@ -43,15 +47,15 @@ public class HighScoreManager {
         }
     }
 
-    // Thêm một điểm mới, sắp xếp, cắt bớt, và lưu
     /**
-     * Chỉ cần nhận điểm và level, thời gian sẽ tự lấy
+     * Thêm một điểm mới, sắp xếp, và cập nhật danh sách điểm cao.
+     * 
+     * @param newScore điểm cao mới.
      */
     public static void addScore(ScoreEntry newScore) {
         if(newScore.getScore() <= 0) {
             return; // Không lưu điểm 0
         }
-
         // Tai danh sach diem so cu
         ArrayList<ScoreEntry> scores = loadHighScores();
         scores.add(newScore);   

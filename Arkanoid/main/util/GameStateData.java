@@ -8,14 +8,20 @@ import java.util.HashSet; // Dùng HashSet để lưu trữ hiệu quả và ki�
 public class GameStateData implements Serializable {
     // Cần có serialVersionUID để đảm bảo tương thích khi đọc file lưu cũ (nếu lớp thay đổi)
     private static final long serialVersionUID = 1L;
-
     public int currentLevel;
     public int score;
     public int lives;
-    // Co the them
     // Ví dụ: vị trí bóng, trạng thái power-up, ...
     public HashSet<Point> remainingBrickIndices;
-    // Constructor
+
+    /**
+     * Constructor 4 tham số.
+     * 
+     * @param currentLevel level hiện tại.
+     * @param score điểm.
+     * @param lives số mạng.
+     * @param remainingBrickIndices vị trí gạch chưa được phá.
+     */
     public GameStateData(int currentLevel, int score, int lives, HashSet<Point> remainingBrickIndices) {
         this.currentLevel = currentLevel;
         this.score = score;
