@@ -72,7 +72,7 @@ public class MouseManager implements MouseListener, MouseMotionListener {
     /**
      * Method được gọi khi nhấn chuột xuống.
      *
-     * @param e the event to be processed
+     * @param e the event to be processed.
      */
     @Override
     public void mousePressed(MouseEvent e) {
@@ -86,7 +86,7 @@ public class MouseManager implements MouseListener, MouseMotionListener {
     /**
      * Method được gọi khi thả nút chuột ra.
      *
-     * @param e the event to be processed
+     * @param e the event to be processed.
      */
     @Override
     public void mouseReleased(MouseEvent e) {
@@ -100,7 +100,7 @@ public class MouseManager implements MouseListener, MouseMotionListener {
     /**
      * Method được gọi khi click chuột.
      *
-     * @param e the event to be processed
+     * @param e the event to be processed.
      */
     @Override
     public void mouseClicked(MouseEvent e) {
@@ -109,7 +109,7 @@ public class MouseManager implements MouseListener, MouseMotionListener {
     /**
      * Method được gọi khi chuột đi vào cửa số game.
      *
-     * @param e the event to be processed
+     * @param e the event to be processed.
      */
     @Override
     public void mouseEntered(MouseEvent e) {
@@ -118,7 +118,7 @@ public class MouseManager implements MouseListener, MouseMotionListener {
     /**
      * Method được gọi khi chuột đi ra cửa sổ game.
      *
-     * @param e the event to be processed
+     * @param e the event to be processed.
      */
     @Override
     public void mouseExited(MouseEvent e) {
@@ -127,7 +127,7 @@ public class MouseManager implements MouseListener, MouseMotionListener {
     /**
      * Method được gọi khi di chuyển chuột (trong lúc đang nhấn giữ).
      *
-     * @param e the event to be processed
+     * @param e the event to be processed.
      */
     @Override
     public void mouseDragged(MouseEvent e) {
@@ -138,7 +138,7 @@ public class MouseManager implements MouseListener, MouseMotionListener {
     /**
      * Method được gọi khi di chuyển chuột (mà không nhấn giữ).
      *
-     * @param e the event to be processed
+     * @param e the event to be processed.
      */
     @Override
     public void mouseMoved(MouseEvent e) {

@@ -22,7 +22,7 @@ public class CollisionHandler {
     /**
      * Method điều phồi tổng cho va chạm.
      *
-     * @param game
+     * @param game Trạng thái game hiện tại.
      * @param panelWidth độ rộng màn hình.
      * @param panelHeight độ cao màn hình.
      */
@@ -43,7 +43,7 @@ public class CollisionHandler {
     /**
      * Method xử lý va chạm bóng với tường.
      *
-     * @param ball bóng
+     * @param ball bóng.
      * @param panelWidth độ rộng màn hình.
      */
     public void handleBallWallCollision(Ball ball, int panelWidth) {
@@ -66,7 +66,7 @@ public class CollisionHandler {
     /**
      * Method xử lý bóng va chạm với thanh.
      *
-     * @param ball bóng
+     * @param ball bóng.
      * @param paddle thanh.
      */
     private void handleBallPaddleCollision(Ball ball, Paddle paddle) {
@@ -104,7 +104,7 @@ public class CollisionHandler {
     /**
      * Method va chạm bóng với tường, trả về T, F.
      *
-     * @param ball bóng
+     * @param ball bóng.
      * @return T or F.
      */
     public boolean handleBallWallCollision(Ball ball) {
@@ -152,7 +152,7 @@ public class CollisionHandler {
     /**
      * Method xử lý va chạm bóng với gạch.
      *
-     * @param game
+     * @param game Trạng thái game, danh sách gạch, các method cộng điểm, tạo PowerUp.
      * @param ball bóng.
      */
     private void handleBallBrickCollision(LevelState game, Ball ball) {
@@ -240,10 +240,10 @@ public class CollisionHandler {
     /**
      * Method tính toán hướng bật lại + xử lý chống kẹt.
      *
-     * @param ball bóng
-     * @param closetX
-     * @param closetY
-     * @param distance khoảng cách
+     * @param ball bóng.
+     * @param closetX tọa độ X trên brick gần tâm bóng nhất.
+     * @param closetY tọa độ Y trên brick gần tâm bóng nhất.
+     * @param distance khoảng cách.
      */
     private void processCollisionPhysics(Ball ball, double closetX, double closetY, double distance) {
         // Tinh tam cua ball

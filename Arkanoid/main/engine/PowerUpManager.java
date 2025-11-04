@@ -12,7 +12,7 @@ public class PowerUpManager {
     /**
      * Method cập nhật trạng thái powerup.
      *
-     * @param game
+     * @param game trạng thái game.
      * @param panelHeight độ cao của màn hình.
      */
     public void update(LevelState game, int panelHeight) {
@@ -24,7 +24,7 @@ public class PowerUpManager {
     /**
      * Method xóa powerup khi nó tự rơi xuống vực.
      *
-     * @param game
+     * @param game trạng thái game.
      * @param panelHeight độ cao của màn hình.
      */
     private void updateFallingPowerUps(LevelState game, int panelHeight) {
@@ -52,7 +52,7 @@ public class PowerUpManager {
     /**
      * Xử lý trong lúc đang áp dụng powerup.
      *
-     * @param game
+     * @param game trạng thái game.
      */
     private void processActivePowerUps(LevelState game) {
         long currentTime = System.currentTimeMillis();
@@ -80,7 +80,7 @@ public class PowerUpManager {
     /**
      * Sinh powerup ngẫu nhiên khi phá hủy brick.
      *
-     * @param game
+     * @param game trạng thái game.
      * @param brick gạch.
      */
     public void spawnPowerUp(LevelState game, Brick brick) {

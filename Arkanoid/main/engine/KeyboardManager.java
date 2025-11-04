@@ -49,8 +49,8 @@ public class KeyboardManager implements KeyListener {
     /**
      * Kiểm tra xem một phím có vừa mới được nhấn trong khung hình này không (chỉ đúng 1 lần).
      *
-     * @param keyCode
-     * @return
+     * @param keyCode Mã số đại diện cho phím.
+     * @return T or F.
      */
     public boolean isKeyJustPressed(int keyCode) {
         if (keyCode >= 0 && keyCode < keys.length) {
@@ -62,8 +62,8 @@ public class KeyboardManager implements KeyListener {
     /**
      * Kiểm tra xem một phím có vừa mới được thả ra trong khung hình này không (chỉ đúng 1 lần).
      *
-     * @param keyCode
-     * @return
+     * @param keyCode mã số đại diện cho phím.
+     * @return T or F.
      */
     public boolean isKeyJustReleased(int keyCode) {
         if (keyCode >= 0 && keyCode < keys.length) {
@@ -75,7 +75,7 @@ public class KeyboardManager implements KeyListener {
     /**
      * Cập nhật vận tốc (Dx) của thanh trượt dựa trên phím di chuyển trái/phải đang được giữ.
      *
-     * @param paddle đang được xét.
+     * @param paddle thanh đang được xét.
      */
     public void updatePaddle(Paddle paddle) {
         if (isKeyDown(moveLeftPrimary) || isKeyDown(moveLeftSecondary)) {
@@ -90,7 +90,7 @@ public class KeyboardManager implements KeyListener {
     /**
      * Kiểm tra phím Space (vừa nhấn), nếu đúng thì phóng quả bóng bay lên (setDy).
      *
-     * @param ball
+     * @param ball bóng đang xét.
      * @return T or F.
      */
     public boolean outFollow(Ball ball) {
@@ -113,7 +113,7 @@ public class KeyboardManager implements KeyListener {
     /**
      * Kiểm tra xem một phím có đang được giữ nhấn hay không.
      *
-     * @param keycode
+     * @param keycode Mã số đại diện cho phím.
      * @return T or F.
      */
     public boolean getKey(int keycode) {
@@ -169,7 +169,7 @@ public class KeyboardManager implements KeyListener {
     /**
      * Kiểm tra xem có bất kỳ phím nào vừa được nhấn trong khung hình này không.
      *
-     * @return
+     * @return T or F.
      */
     public boolean isAnyKeyPressed() {
         return lastKeyPressed > 0;
@@ -187,7 +187,7 @@ public class KeyboardManager implements KeyListener {
     /**
      * Getter cho mã phím sang trái chính.
      *
-     * @return
+     * @return mã phím sang trái chính.
      */
     public int getMoveLeftPrimary() {
         return moveLeftPrimary;
@@ -196,7 +196,7 @@ public class KeyboardManager implements KeyListener {
     /**
      * Setter cho mã phím sang trái chính.
      *
-     * @param moveLeftPrimary
+     * @param moveLeftPrimary mã phím sang trái chính.
      */
     public void setMoveLeftPrimary(int moveLeftPrimary) {
         this.moveLeftPrimary = moveLeftPrimary;
@@ -205,7 +205,7 @@ public class KeyboardManager implements KeyListener {
     /**
      * Getter cho mã phím sang trái phụ.
      *
-     * @return
+     * @return mã phím sang trái phụ.
      */
     public int getMoveLeftSecondary() {
         return moveLeftSecondary;
@@ -214,7 +214,7 @@ public class KeyboardManager implements KeyListener {
     /**
      * Setter cho mã phím sang trái phụ.
      *
-     * @param moveLeftSecondary
+     * @param moveLeftSecondary mã phím sang trái phụ.
      */
     public void setMoveLeftSecondary(int moveLeftSecondary) {
         this.moveLeftSecondary = moveLeftSecondary;
@@ -223,7 +223,7 @@ public class KeyboardManager implements KeyListener {
     /**
      * Getter cho mã phím sang phải chính.
      *
-     * @return
+     * @return mã phím sang phải chính.
      */
     public int getMoveRightPrimary() {
         return moveRightPrimary;
@@ -232,7 +232,7 @@ public class KeyboardManager implements KeyListener {
     /**
      * Setter cho mã phím sang phải chính.
      *
-     * @param moveRightPrimary
+     * @param moveRightPrimary mã phím sang phải chính.
      */
     public void setMoveRightPrimary(int moveRightPrimary) {
         this.moveRightPrimary = moveRightPrimary;
@@ -241,7 +241,7 @@ public class KeyboardManager implements KeyListener {
     /**
      * Getter cho mã phím sang phải phụ.
      *
-     * @return
+     * @return mã phím sang phải phụ.
      */
     public int getMoveRightSecondary() {
         return moveRightSecondary;
@@ -250,7 +250,7 @@ public class KeyboardManager implements KeyListener {
     /**
      * Setter cho mã phím sang phải phụ.
      *
-     * @param moveRightSecondary
+     * @param moveRightSecondary mã phím sang phải phụ.
      */
     public void setMoveRightSecondary(int moveRightSecondary) {
         this.moveRightSecondary = moveRightSecondary;

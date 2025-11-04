@@ -16,8 +16,8 @@ public class EntityManager {
     /**
      * Cập nhật thanh.
      *
-     * @param paddle
-     * @param panelWidth
+     * @param paddle thanh điều khiển.
+     * @param panelWidth độ rộng màn hình.
      */
     public void updatePaddle(Paddle paddle, int panelWidth) {
         paddle.move();
@@ -32,8 +32,8 @@ public class EntityManager {
     /**
      * Cập nhật vật thể.
      *
-     * @param levelState2
-     * @param panelWidth
+     * @param levelState2 trạng thái cấp độ hiện tại.
+     * @param panelWidth độ rộng màn hình.
      */
     public void updateEntities(LevelState levelState2, int panelWidth) {
         updatePaddle(levelState2.getPaddle(), panelWidth);
@@ -43,7 +43,7 @@ public class EntityManager {
     /**
      * Cập nhật các quả bóng.
      *
-     * @param game
+     * @param game Đối tượng trạng thái cấp độ hiện tại.
      */
     public void updateBall(LevelState game) {
         ArrayList<Ball> balls = game.getBalls();
