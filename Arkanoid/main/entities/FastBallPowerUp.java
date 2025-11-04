@@ -10,10 +10,10 @@ public class FastBallPowerUp extends PowerUp {
     /**
      * Construtor 5 tham số.
      *
-     * @param x
-     * @param y
-     * @param width
-     * @param height
+     * @param x tọa độ x trên trái.
+     * @param y tọa độ y trên trái.
+     * @param width rộng.
+     * @param height cao.
      * @param duration thời gian hiệu lực.
      */
     public FastBallPowerUp(double x, double y, double width, double height, double duration) {
@@ -25,7 +25,7 @@ public class FastBallPowerUp extends PowerUp {
     /**
      * Áp dụng hiệu ứng.
      *
-     * @param game
+     * @param game trạng thái game hiện tại.
      */
     @Override
     public void applyEffect(LevelState game) {
@@ -42,7 +42,7 @@ public class FastBallPowerUp extends PowerUp {
     /**
      * Xóa bỏ hiệu ứng.
      *
-     * @param game
+     * @param game trạng thái game hiện tại.
      */
     @Override
     public void removeEffect(LevelState game) {

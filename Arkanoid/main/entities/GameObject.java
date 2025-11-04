@@ -68,7 +68,7 @@ public abstract class GameObject {
     /**
      * Setter cho độ rộng.
      *
-     * @param width
+     * @param width độ rộng.
      */
     public void setWidth(double width) {
         this.width = width;
@@ -77,7 +77,7 @@ public abstract class GameObject {
     /**
      * Getter cho độ cao.
      *
-     * @return độ cao
+     * @return độ cao.
      */
     public double getHeight() {
         return height;
@@ -86,7 +86,7 @@ public abstract class GameObject {
     /**
      * Setter cho độ cao.
      *
-     * @param height
+     * @param height độ cao.
      */
     public void setHeight(double height) {
         this.height = height;

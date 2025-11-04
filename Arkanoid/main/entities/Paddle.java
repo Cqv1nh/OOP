@@ -28,12 +28,12 @@ public class Paddle extends MovableObject {
     /**
      * Constructor 7 tham số.
      *
-     * @param x
-     * @param y
-     * @param width
-     * @param height
-     * @param dx
-     * @param dy
+     * @param x tọa độ x trên trái.
+     * @param y tọa độ y trên trái.
+     * @param width rộng.
+     * @param height cao.
+     * @param dx tốc độ di chuyển theo x.
+     * @param dy tốc độ di chuyển theo y.
      * @param currentPowerUp powerup đang áp dụng.
      */
     public Paddle(double x, double y, double width, double height ,

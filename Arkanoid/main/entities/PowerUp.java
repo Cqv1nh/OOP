@@ -95,14 +95,14 @@ public abstract class PowerUp extends GameObject {
     /**
      * Áp dụng powerup (sẽ được lớp con Override).
      *
-     * @param game
+     * @param game trạng thái game hiện tại.
      */
     public abstract void applyEffect(LevelState game);
 
     /**
      * Loại bỏ powerup (sẽ được lớp con Override).
      *
-     * @param game
+     * @param game trạng thái game hiện tại.
      */
     public abstract void removeEffect(LevelState game);
 }

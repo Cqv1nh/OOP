@@ -117,7 +117,7 @@ public class Slider {
     /**
      * Xử lý thao tác chuột để kéo và thay đổi giá trị của thanh trượt.
      *
-     * @param mouseManager
+     * @param mouseManager quản lý chuột.
      */
     public void handleMouseEvent(MouseManager mouseManager) {
         int mouseX = mouseManager.getMouseX();
@@ -193,7 +193,7 @@ public class Slider {
     /**
      * Setter cho phần track của thanh trượt.
      *
-     * @param trackImage
+     * @param trackImage hình ảnh track.
      */
     public void setTrackImage(BufferedImage trackImage) {
         this.trackImage = trackImage;
@@ -202,7 +202,7 @@ public class Slider {
     /**
      * Setter cho núm kéo (handle).
      *
-     * @param handleImage
+     * @param handleImage hình ảnh handle.
      */
     public void setHandleImage(BufferedImage handleImage) {
         this.handleImage = handleImage;
@@ -211,7 +211,7 @@ public class Slider {
     /**
      * Setter cho phần track đã được kéo (fill).
      *
-     * @param trackFillImage
+     * @param trackFillImage hình ảnh trackfill.
      */
     public void setTrackFillImage(BufferedImage trackFillImage) {
         this.trackFillImage = trackFillImage;
@@ -220,7 +220,7 @@ public class Slider {
     /**
      * Setter cho màu chữ hiển thị giá trị của thanh trượt.
      *
-     * @param valueTextColor
+     * @param valueTextColor giá trị màu chữ.
      */
     public void setValueTextColor(Color valueTextColor) {
         this.valueTextColor = valueTextColor;

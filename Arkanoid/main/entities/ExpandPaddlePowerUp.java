@@ -21,7 +21,7 @@ public class ExpandPaddlePowerUp extends PowerUp {
     /**
      * Áp dụng powerup.
      *
-     * @param game
+     * @param game trạng thái game hiện tại.
      */
     @Override
     public void applyEffect(LevelState game) {
@@ -33,7 +33,7 @@ public class ExpandPaddlePowerUp extends PowerUp {
     /**
      * Xóa bỏ hiệu ứng.
      *
-     * @param game
+     * @param game trạng thái game hiện tại.
      */
     @Override
     public void removeEffect(LevelState game) {

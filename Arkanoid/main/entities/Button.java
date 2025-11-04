@@ -26,14 +26,14 @@ public class Button {
     /**
      * Constructor 8 tham số.
      *
-     * @param x
-     * @param y
-     * @param width
-     * @param height
-     * @param text
-     * @param color
-     * @param textColor
-     * @param font
+     * @param x tọa độ x trên trái.
+     * @param y tọa độ y trên trái.
+     * @param width chiều rộng nút.
+     * @param height chiều cao nút.
+     * @param text chuỗi văn bản hiển thị trên nút.
+     * @param color màu nền mặc định nút.
+     * @param textColor màu văn bản.
+     * @param font phông chữ.
      */
     public Button(int x, int y, int width, int height, String text,
                   Color color, Color textColor, Font font) {
@@ -50,11 +50,11 @@ public class Button {
     /**
      * Constructor 5 tham số.
      *
-     * @param x
-     * @param y
-     * @param width
-     * @param height
-     * @param text
+     * @param x tọa độ x trên trái.
+     * @param y tọa độ y trên trái.
+     * @param width chiều rộng nút.
+     * @param height chiều cao nút.
+     * @param text chuỗi văn bản hiển thị trên nút.
      */
     public Button(int x, int y, int width, int height, String text) {
         this.x = x;
@@ -70,14 +70,14 @@ public class Button {
     /**
      * Constructor 8 tham số.
      *
-     * @param x
-     * @param y
-     * @param width
-     * @param height
-     * @param text
-     * @param function
-     * @param buttonNormal
-     * @param buttonHover
+     * @param x tọa độ x trên trái.
+     * @param y tọa độ y trên trái.
+     * @param width chiều rộng nút.
+     * @param height chiều cao nút.
+     * @param text chuỗi văn bản hiển thị trên nút.
+     * @param function Tên hàm hoặc lệnh mà nút này kích hoạt khi được nhấn.
+     * @param buttonNormal Hình ảnh của nút khi ở trạng thái bình thường.
+     * @param buttonHover Hình ảnh của nút khi chuột đang di chuyển qua.
      */
     public Button(int x, int y, int width, int height, String text, String function,
                   BufferedImage buttonNormal,
@@ -98,9 +98,9 @@ public class Button {
     /**
      * Method vẽ nút bấm ra màn hình.
      *
-     * @param g
-     * @param mouseX
-     * @param mouseY
+     * @param g đối tượng đồ họa java.
+     * @param mouseX tọa độ x con trỏ chuột.
+     * @param mouseY tọa độ y con trỏ chuột.
      */
     public void draw(Graphics2D g2d, int mouseX, int mouseY) {
         if (g2d.getFontMetrics(defaultFont).stringWidth(this.text) < this.width - 40) {
@@ -132,9 +132,9 @@ public class Button {
     /**
      * Method vẽ button có hiệu ứng nổi lên.
      * 
-     * @param g
-     * @param mouseX
-     * @param mouseY
+     * @param g Đối tượng đồ họa được dùng để vẽ nút.
+     * @param mouseX Tọa độ X hiện tại của con trỏ chuột.
+     * @param mouseY Tọa độ Y hiện tại của con trỏ chuột.
      */
     public void drawFlag(Graphics2D g, int mouseX, int mouseY) {
         if (!isHovering(mouseX, mouseY) && !isHoveringState) {
@@ -156,7 +156,7 @@ public class Button {
     /**
      * Method hiển thị trực quan của Button.
      *
-     * @param g2d
+     * @param g2d Đối tượng đồ họa được dùng để vẽ nút.
      */
     public void draw(Graphics2D g2d) {
         BufferedImage currentButtonImage = null;
@@ -173,7 +173,7 @@ public class Button {
         g2d.setColor(isHoveringState ? Color.YELLOW : this.textColor);
         g2d.setFont(this.font);
 
-        // // Center the text in the button
+        // Center the text in the button
         FontMetrics metrics = g2d.getFontMetrics(this.font);
         int textX = this.x + (this.width - metrics.stringWidth(this.text)) / 2;
         int textY = this.y + ((this.height - metrics.getHeight()) / 2) + metrics.getAscent();
@@ -184,9 +184,9 @@ public class Button {
     /**
      * Kiểm tra con trỏ chuột có nằm trong vùng Button không.
      *
-     * @param mouseX
-     * @param mouseY
-     * @return
+     * @param mouseX Tọa độ X hiện tại của con trỏ chuột.
+     * @param mouseY Tọa độ Y hiện tại của con trỏ chuột.
+     * @return T or F.
      */
     public boolean isHovering(int mouseX, int mouseY) {
         return mouseX >= this.x && mouseX <= this.x + this.width &&
@@ -196,7 +196,7 @@ public class Button {
     /**
      * Setter để cập nhật trạng thái hover từ bên ngoài (MenuState, v.v.).
      *
-     * @param isHoveringState
+     * @param isHoveringState trạng thái hover.
      */
     public void setHoveringState(boolean isHoveringState) {
         this.isHoveringState = isHoveringState;

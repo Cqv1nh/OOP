@@ -9,10 +9,10 @@ public class ExtraLifePowerUp extends PowerUp {
     /**
      * Constructor 5 tham số.
      *
-     * @param x
-     * @param y
-     * @param width
-     * @param height
+     * @param x tọa độ x trên trái.
+     * @param y tọa độ y trên trái.
+     * @param width chiều rộng.
+     * @param height chiều cao.
      * @param duration thời gian hiệu lực.
      */
     public ExtraLifePowerUp(double x, double y, double width, double height, double duration) {
@@ -22,7 +22,7 @@ public class ExtraLifePowerUp extends PowerUp {
     /**
      * Áp dụng hiệu ứng thêm 1 mạng.
      *
-     * @param game
+     * @param game trạng thái game hiện tại.
      */
     @Override
     public void applyEffect(LevelState game) {
@@ -32,7 +32,7 @@ public class ExtraLifePowerUp extends PowerUp {
     /**
      * Xóa bỏ hiệu ứng (không áp dụng cho powerup này).
      *
-     * @param game
+     * @param game trạng thái game hiện tại.
      */
     @Override
     public void removeEffect(LevelState game) {

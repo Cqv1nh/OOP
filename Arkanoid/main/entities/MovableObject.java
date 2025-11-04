@@ -7,10 +7,10 @@ public abstract class MovableObject extends GameObject {
     /**
      * Constructor 4 tham số.
      *
-     * @param x
-     * @param y
-     * @param width
-     * @param height
+     * @param x tọa độ x trên trái.
+     * @param y tọa độ y trên trái.
+     * @param width rộng.
+     * @param height cao.
      */
     public MovableObject(double x, double y, double width, double height) {
         super(x, y, width, height);
@@ -21,12 +21,12 @@ public abstract class MovableObject extends GameObject {
     /**
      * Constructor 6 tham số (thêm tốc độ di chuyển).
      *
-     * @param x
-     * @param y
-     * @param width
-     * @param height
-     * @param dx
-     * @param dy
+     * @param x tọa độ x trên trái.
+     * @param y tọa độ y trên trái.
+     * @param width rộng.
+     * @param height cao.
+     * @param dx tốc độ di chuyển theo x.
+     * @param dy tốc độ di chuyển theo y.
      */
     public MovableObject(double x, double y, double width, double height, double dx, double dy) {
         super(x, y, width, height);

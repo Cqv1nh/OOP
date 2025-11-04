@@ -10,11 +10,11 @@ public class MultiBallPowerUp extends PowerUp {
     /**
      * Constructor 5 tham số.
      *
-     * @param x
-     * @param y
-     * @param width
-     * @param height
-     * @param duration
+     * @param x tọa độ x trên trái.
+     * @param y tọa độ y trên trái.
+     * @param width rộng.
+     * @param height cao.
+     * @param duration thời gian hiệu lực.
      */
     public MultiBallPowerUp(double x, double y, double width, double height, double duration) {
         super(x, y, Constants.POWERUP_WIDTH, Constants.POWERUP_HEIGHT, "MULTI_BALL", INSTANT_DURATION);
@@ -23,7 +23,7 @@ public class MultiBallPowerUp extends PowerUp {
     /**
      * Áp dụng hiệu ứng.
      *
-     * @param game
+     * @param game trạng thái game.
      */
     @Override
     public void applyEffect(LevelState game) {
@@ -56,7 +56,7 @@ public class MultiBallPowerUp extends PowerUp {
     /**
      * Xóa bỏ hiệu ứng.
      *
-     * @param game
+     * @param game trạng thái game.
      */
     @Override
     public void removeEffect(LevelState game) {
