@@ -22,8 +22,7 @@ public class PauseState extends GameState {
     private final int FRAME_X = 200;
     private final int FRAME_Y = 100;
     private final int FRAME_WIDTH = 400;
-    private final int FRAME_HEIGHT = 450; // Tăng chiều cao khung để chứa nhiều nút hơn
-
+    
     /**
      * Khởi tạo màn hình tạm dừng, tạo ra 5 nút bấm (Resume, 3 ô Save, và Quay lại Menu).
      *

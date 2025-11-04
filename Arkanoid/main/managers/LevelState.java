@@ -286,12 +286,6 @@ public class LevelState extends GameState{
                                 newWidth,                     // Chiều rộng mới
                                 newHeight,                    // Chiều cao mới
                             null
-                                /*frameImg, 
-                                (int)b.getX() - PADDING/2,    // X: Dịch về bên trái để căn giữa
-                                (int)b.getY() - PADDING/2,    // Y: Dịch lên trên để căn giữa
-                                (int)b.getWidth() + PADDING,  // Chiều rộng mới
-                                (int)b.getHeight() + PADDING, // Chiều cao mới
-                                null */
                             );
                             // SAU KHI VẼ NỔ, CHUYỂN SANG GẠCH KẾ TIẾP
                             continue; 

@@ -21,7 +21,7 @@ import util.AudioManager;
 import util.Constants;
 
 public class SettingsState extends GameState {
-    private ArrayList<Slider> sliders =  new ArrayList<>();
+    
     private ArrayList<Button> flagButtons = new ArrayList<>();
     private Button selectedFlagButton;
     private Properties languageProps = new Properties();
