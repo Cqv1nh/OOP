@@ -1,5 +1,5 @@
 # OOP
-Lap trinh huong doi tuong
+Lập trình hướng đối tượng
 
 Công việc tuần 5 (6/10 - 12/10)
 
