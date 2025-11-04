@@ -16,7 +16,7 @@ import java.util.Properties;
 import ui.BrickManager;
 import util.*;
 
-public class LevelState2 extends GameState{
+public class LevelState extends GameState{
     private Paddle paddle; // Thanh truot
     private ArrayList<Brick> brickList; // Danh sach gach
     private ArrayList<PowerUp> powerUps; // Danh sach luu cac powerUp dang roi
@@ -39,7 +39,7 @@ public class LevelState2 extends GameState{
      *
      * @param manager
      */
-    public LevelState2(GameStateManager manager) {
+    public LevelState(GameStateManager manager) {
         super(manager);
         km = manager.getKm();
         mm = manager.getMm();

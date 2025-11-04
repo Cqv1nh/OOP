@@ -6,7 +6,7 @@ import entities.ExplosiveBrick;
 import entities.Paddle;
 import java.util.ArrayList;
 import java.util.List;
-import managers.LevelState2;
+import managers.LevelState;
 import util.BrickType;
 import util.Constants;
 import util.AudioManager;
@@ -26,7 +26,7 @@ public class CollisionHandler {
      * @param panelWidth độ rộng màn hình.
      * @param panelHeight độ cao màn hình.
      */
-    public void handleCollisions(LevelState2 game, int panelWidth, int panelHeight) {
+    public void handleCollisions(LevelState game, int panelWidth, int panelHeight) {
         // Neu bong van con tren paddle, khong thuc hien tinh toan va cham
         if (!game.isBallLaunched()) {
             return;
@@ -155,7 +155,7 @@ public class CollisionHandler {
      * @param game
      * @param ball bóng.
      */
-    private void handleBallBrickCollision(LevelState2 game, Ball ball) {
+    private void handleBallBrickCollision(LevelState game, Ball ball) {
         ArrayList<Brick> brickList = game.getBricks();
         for (Brick b : brickList) {
             // Tinh tam cua ball

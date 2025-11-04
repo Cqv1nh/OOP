@@ -1,6 +1,6 @@
 package entities;
 
-import managers.LevelState2;
+import managers.LevelState;
 
 public abstract class PowerUp extends GameObject {
     private double duration; // Thời gian hiệu lực.
@@ -97,12 +97,12 @@ public abstract class PowerUp extends GameObject {
      *
      * @param game
      */
-    public abstract void applyEffect(LevelState2 game);
+    public abstract void applyEffect(LevelState game);
 
     /**
      * Loại bỏ powerup (sẽ được lớp con Override).
      *
      * @param game
      */
-    public abstract void removeEffect(LevelState2 game);
+    public abstract void removeEffect(LevelState game);
 }

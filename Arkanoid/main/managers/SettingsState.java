@@ -19,7 +19,6 @@ import java.util.Properties;
 import util.AssetManager;
 import util.AudioManager;
 import util.Constants;
-import util.RenderUtil;
 
 public class SettingsState extends GameState {
     private ArrayList<Slider> sliders =  new ArrayList<>();
