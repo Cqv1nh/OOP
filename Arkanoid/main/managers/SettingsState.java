@@ -60,7 +60,7 @@ public class SettingsState extends GameState {
     /**
      * Thiết lập các cài đặt mặc định.
      *
-     * @param manager
+     * @param manager Đối tượng quản lý trạng thái game chính.
      */
     public SettingsState(GameStateManager manager) {
         super(manager);
@@ -316,7 +316,7 @@ public class SettingsState extends GameState {
     /**
      * Vẽ các đối tượng ra màn hình.
      *
-     * @param g
+     * @param g đối tượng đồ họa.
      */
     @Override
     public void render(Graphics2D g) {
@@ -376,9 +376,9 @@ public class SettingsState extends GameState {
     /**
      * Vẽ nút bấm.
      *
-     * @param g
+     * @param g đối tượng đồ họa.
      * @param button nút bấm.
-     * @param keyCode
+     * @param keyCode mã keycode.
      */
     private void drawKeyButton(Graphics2D g, Button button, int keyCode) {
         button.draw(g, mm.getMouseX(), mm.getMouseY());
@@ -452,8 +452,8 @@ public class SettingsState extends GameState {
     /**
      * Lưu vào file json.
      *
-     * @param settings
-     * @return
+     * @param settings cài đặt.
+     * @return file json.
      */
     private String settingsToJson(Settings settings) {
         Gson gson = new GsonBuilder()

@@ -29,7 +29,7 @@ public class LoadGameState extends GameState {
     /**
      * Khởi tạo màn hình "Load Game", tạo 3 đối tượng Button (cho 3 ô lưu) và nút "Back" (Quay lại).
      *
-     * @param manager
+     * @param manager Đối tượng quản lý trạng thái game chính.
      */
     public LoadGameState(GameStateManager manager) {
         super(manager);
@@ -101,7 +101,7 @@ public class LoadGameState extends GameState {
     /**
      * Vẽ nền, tiêu đề "LOAD GAME", và lặp qua 3 ô lưu để vẽ.
      *
-     * @param g
+     * @param g Đối tượng đồ họa Java.
      */
     public void render(Graphics2D g) {
         // Ve nen 
@@ -214,7 +214,7 @@ public class LoadGameState extends GameState {
     /**
      * Method thực hiện logic load game.
      *
-     * @param loadedData du dieu da dc xem qua trong ham previewSaveFile
+     * @param loadedData du dieu da dc xem qua trong ham previewSaveFile.
      */
     public void loadGame(GameStateData loadedData) {
         if (loadedData == null) {

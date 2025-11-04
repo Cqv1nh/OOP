@@ -37,7 +37,7 @@ public class LevelState extends GameState{
     /**
      * Constructor không có tham số.
      *
-     * @param manager
+     * @param manager Đối tượng quản lý trạng thái game chính.
      */
     public LevelState(GameStateManager manager) {
         super(manager);
@@ -48,10 +48,10 @@ public class LevelState extends GameState{
     /**
      * Level khởi đầu.
      *
-     * @param levelNum
-     * @param score
-     * @param lives
-     * @param remainingBrickIndices
+     * @param levelNum màn chơi.
+     * @param score điểm.
+     * @param lives mạng.
+     * @param remainingBrickIndices gạch còn lại.
      */
     public void initLevel(int levelNum, int score, int lives, HashSet<Point> remainingBrickIndices) {
         this.levelNum = levelNum;
@@ -198,7 +198,7 @@ public class LevelState extends GameState{
     /**
      * Vẽ mọi thứ ra màn hình.
      *
-     * @param g
+     * @param g Đối tượng đồ họa Java.
      */
     @Override
     public void render(Graphics2D g) {
@@ -334,7 +334,8 @@ public class LevelState extends GameState{
 
     /**
      * Vẽ HUD.
-     * @param g
+     * 
+     * @param g Đối tượng đồ họa Java.
      */
     private void drawHUD(Graphics2D g) {
         Properties languageProps = manager.getLanguageProps();
@@ -361,8 +362,8 @@ public class LevelState extends GameState{
     /**
      * Vẽ hình ảnh gạch.
      *
-     * @param b
-     * @return
+     * @param b danh sách gạch.
+     * @return hình ảnh gạch.
      */
     private BufferedImage getBrickImage(Brick b) {
         int currentLevel = levelNum;
@@ -387,8 +388,8 @@ public class LevelState extends GameState{
     /**
      * Vẽ hình ảnh PowerUp.
      *
-     * @param p
-     * @return
+     * @param p danh sách powerup.
+     * @return hình ảnh powerup.
      */
     private BufferedImage getPowerUpImage(PowerUp p) {
         switch (p.getType()) {
@@ -409,7 +410,7 @@ public class LevelState extends GameState{
     /**
      * Vẽ đếm ngược PowerUp.
      *
-     * @param g
+     * @param g Đối tượng đồ họa Java.
      */
     private void drawPowerUpTimers(Graphics2D g) {
         ArrayList<PowerUp> activeEffects = activePowerUpsEffects;
@@ -592,7 +593,7 @@ public class LevelState extends GameState{
     /**
      * Getter cho lấy bóng.
      *
-     * @return
+     * @return ballLaunched.
      */
     public boolean isBallLaunched() {
         return ballLaunched;
@@ -633,7 +634,7 @@ public class LevelState extends GameState{
     /**
      * Getter cho list powerup đang áp dụng.
      *
-     * @return
+     * @return listpowerup.
      */
     public ArrayList<PowerUp> getActivePowerUpEffects() {
         return activePowerUpsEffects;
@@ -642,7 +643,7 @@ public class LevelState extends GameState{
     /**
      * Cộng thêm điểm.
      *
-     * @param newScore
+     * @param newScore điểm mới.
      */
     public void addScore(int newScore) {
         this.score += newScore;

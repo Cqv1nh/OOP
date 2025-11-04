@@ -26,7 +26,7 @@ public class HighScoreState extends GameState {
     /**
      * Constructor.
      *
-     * @param manager
+     * @param manager Đối tượng quản lý trạng thái game chính.
      */
     public HighScoreState(GameStateManager manager) {
         super(manager);
@@ -73,7 +73,7 @@ public class HighScoreState extends GameState {
     /**
      * Vẽ ra màn hình.
      *
-     * @param g
+     * @param g Đối tượng đồ họa Java.
      */
     @Override
     public void render(Graphics2D g) {

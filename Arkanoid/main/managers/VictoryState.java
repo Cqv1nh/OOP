@@ -11,7 +11,7 @@ public class VictoryState extends GameState {
     /**
      * Constructor trạng thái chiến thắng.
      *
-     * @param manager
+     * @param manager Đối tượng quản lý trạng thái game chính.
      */
     public VictoryState(GameStateManager manager) {
         super(manager);
@@ -46,7 +46,7 @@ public class VictoryState extends GameState {
     /**
      * Method vẽ ra màn hình.
      *
-     * @param g
+     * @param g đối tượng đồ họa.
      */
     @Override
     public void render(Graphics2D g) {
