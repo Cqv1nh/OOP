@@ -1,6 +1,6 @@
 package entities;
 
-import managers.LevelState2;
+import managers.LevelState;
 import util.Constants;
 
 public class ExtraLifePowerUp extends PowerUp {
@@ -25,7 +25,7 @@ public class ExtraLifePowerUp extends PowerUp {
      * @param game
      */
     @Override
-    public void applyEffect(LevelState2 game) {
+    public void applyEffect(LevelState game) {
         game.addLife();
     }
 
@@ -35,7 +35,7 @@ public class ExtraLifePowerUp extends PowerUp {
      * @param game
      */
     @Override
-    public void removeEffect(LevelState2 game) {
+    public void removeEffect(LevelState game) {
     }
 }
 

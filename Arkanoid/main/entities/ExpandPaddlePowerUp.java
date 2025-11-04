@@ -1,6 +1,6 @@
 package entities;
 
-import managers.LevelState2;
+import managers.LevelState;
 import util.Constants;
 
 public class ExpandPaddlePowerUp extends PowerUp {
@@ -24,7 +24,7 @@ public class ExpandPaddlePowerUp extends PowerUp {
      * @param game
      */
     @Override
-    public void applyEffect(LevelState2 game) {
+    public void applyEffect(LevelState game) {
         // Lưu PowerUp này vào danh sách active để xử lý duration
         game.getActivePowerUpEffects().add(this);
         game.expandPaddle(Constants.PADDLE_EXPAND_AMOUNT);
@@ -36,7 +36,7 @@ public class ExpandPaddlePowerUp extends PowerUp {
      * @param game
      */
     @Override
-    public void removeEffect(LevelState2 game) {
+    public void removeEffect(LevelState game) {
         game.shrinkPaddle(Constants.PADDLE_EXPAND_AMOUNT);
     }
 }

@@ -2,7 +2,7 @@ package engine;
 
 import entities.*;
 import java.util.Iterator;
-import managers.LevelState2;
+import managers.LevelState;
 import util.AudioManager;
 import util.Constants;
 
@@ -15,7 +15,7 @@ public class PowerUpManager {
      * @param game
      * @param panelHeight độ cao của màn hình.
      */
-    public void update(LevelState2 game, int panelHeight) {
+    public void update(LevelState game, int panelHeight) {
         // Truyen panelHeight xuong tiep
         updateFallingPowerUps(game, panelHeight);
         processActivePowerUps(game);
@@ -27,7 +27,7 @@ public class PowerUpManager {
      * @param game
      * @param panelHeight độ cao của màn hình.
      */
-    private void updateFallingPowerUps(LevelState2 game, int panelHeight) {
+    private void updateFallingPowerUps(LevelState game, int panelHeight) {
         // Dung itertator de xoa an toan
         Paddle paddle = game.getPaddle();
         Iterator<PowerUp> iterator = game.getPowerUps().iterator();
@@ -54,7 +54,7 @@ public class PowerUpManager {
      *
      * @param game
      */
-    private void processActivePowerUps(LevelState2 game) {
+    private void processActivePowerUps(LevelState game) {
         long currentTime = System.currentTimeMillis();
         // Lượng thời gian đã trôi qua kể từ lần update cuối cùng (tính bằng ms)
         long elapsedTime = currentTime - lastUpdateTime;
@@ -83,7 +83,7 @@ public class PowerUpManager {
      * @param game
      * @param brick gạch.
      */
-    public void spawnPowerUp(LevelState2 game, Brick brick) {
+    public void spawnPowerUp(LevelState game, Brick brick) {
         String type = brick.getPowerUpType();
         // Chi sinh 1 powerUp tại 1 thời điểm
         PowerUp newPowerUp = null;

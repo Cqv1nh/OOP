@@ -1,7 +1,7 @@
 package entities;
 
 import java.util.ArrayList;
-import managers.LevelState2;
+import managers.LevelState;
 import util.Constants;
 
 public class FastBallPowerUp extends PowerUp {
@@ -28,7 +28,7 @@ public class FastBallPowerUp extends PowerUp {
      * @param game
      */
     @Override
-    public void applyEffect(LevelState2 game) {
+    public void applyEffect(LevelState game) {
         game.getActivePowerUpEffects().add(this);
         ArrayList<Ball> balls = game.getBalls();
         //Lặp qua tất cả Balls và tăng tốc độ
@@ -45,7 +45,7 @@ public class FastBallPowerUp extends PowerUp {
      * @param game
      */
     @Override
-    public void removeEffect(LevelState2 game) {
+    public void removeEffect(LevelState game) {
         ArrayList<Ball> balls = game.getBalls();
         // Lặp qua tất cả Balls và giảm tốc độ về ban đầu
         for (Ball ball : balls) {

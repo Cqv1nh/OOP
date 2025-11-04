@@ -1,7 +1,7 @@
 package entities;
 
 import java.util.ArrayList;
-import managers.LevelState2;
+import managers.LevelState;
 import util.Constants;
 
 public class MultiBallPowerUp extends PowerUp {
@@ -26,7 +26,7 @@ public class MultiBallPowerUp extends PowerUp {
      * @param game
      */
     @Override
-    public void applyEffect(LevelState2 game) {
+    public void applyEffect(LevelState game) {
         ArrayList<Ball> currentBalls = game.getBalls();
 
         // Tạo thêm 1 bóng.
@@ -59,6 +59,6 @@ public class MultiBallPowerUp extends PowerUp {
      * @param game
      */
     @Override
-    public void removeEffect(LevelState2 game) {
+    public void removeEffect(LevelState game) {
     }
 }

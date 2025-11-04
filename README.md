@@ -6,7 +6,10 @@ Nhấn bôi đen phương thức đó xong rồi ấn chuột phải chọn Go t
 
 Công việc tuần 5 (6/10 - 12/10)
 Thịnh: 
-    - 
+    - Tạo các lớp cơ sở: GameObject, MovableObject.
+    - Tạo lớp Paddle đầu tiên kế thừa từ MovableObject.
+    - Triển khai 4 loại gạch: NormalBrick, StrongBrick, ExplosiveBrick, UnbreakableBrick, thêm lớp BrickType định nghĩa các loại gạch.
+    - Triển khai hệ thống lives và logic đặt lại bóng.
 Trọng:
     - Viết code sơ khai cho class Ball, PowerUp tổng quát và 4 PowerUp: + 1 bóng, tăng tốc độ, + 1 mạng, + độ dài thanh
     - Fix lỗi class Ball.
@@ -17,16 +20,14 @@ Trọng:
 
 Công việc tuần 6 (13/10- 19/10)
 Thịnh
-    - 
-    - Thêm lớp AssetManager thực hiện các hành động xử lý hình ảnh, GameWindow chỉ cần gọi loadImages trong AssetManager để sử dụng.
+    - Triển khai hệ thống theo dõi và hiển thị điểm số của game.
     - Sửa hàm logic di chuyển bóng trong Ball
-    - Thay thế logic chồng lặp AABB không chính xác bằng thuật toán dựa trên khoảng cách hình tròn-hình chữ nhật
-    - Kiến trúc V1: Tách khối GameLoop thực hiện đa chức năng thành các lớp nhỏ hơn: EntityManager, CollisionHandler, PowerUpManager, GameStateManager, mỗi lớp thực hiện 1 chức năng.
-    - Tạo lớp LevelData quản lý dữ liệu gạch của trò chơi. Sử dụng các số từ 1 đến 4 để biểu thị lên màn hình.
+    - Thay thế logic va chạm chồng lặp AABB không chính xác bằng thuật toán dựa trên khoảng cách hình tròn-hình chữ nhật.
+    - Triển khai Kiến trúc V1: Tách khối GameLoop thực hiện đa chức năng thành các lớp nhỏ hơn: EntityManager, CollisionHandler, PowerUpManager, GameStateManager, mỗi lớp thực hiện 1 chức năng.
+    - Quản lý dữ liệu gạch của từng level chơi.
     - Xây dựng thanh đồng hồ hiển thị thời gian PowerUp có hiệu lực.
-    - Sửa lỗi thanh thời gian không hiển thị khi ăn PowerUp increaseSpeed.
-    - Thêm lớp util/AudioManager quản lý âm thanh nhạc nền và âm thanh va chạm.
-    - Chỉnh sửa AssetManager để hỗ trợ đồ họa riêng cho từng cấp độ.(sử dụng Map).
+    - Quản lý âm thanh nhạc nền và âm thanh va chạm.
+
 Trọng:
     - Tìm thêm các hình ảnh về các vật thể: Paddle, Brick, Ball, PowerUp.
     - Tìm nhạc nền ở sảnh chờ và âm thanh va chạm ban đầu chung chung giữa bóng và vật thể khác.
@@ -58,7 +59,9 @@ Vinh:
     - Tạo thêm Class Settings để lưu cấu hình tùy chọn.
     - Sử dụng class Slider thêm chức năng điều khiển âm lượng tại SettingsState và các phương thức để lưu và tải cấu hình sử dụng file .json.
     - Sửa đổi các class liên quan để có thể sử dụng chức năng mới.
+
 Công việc tuần 8 (27/10 - 2/11)
+
 Thịnh: 
     - Sửa lỗi logic liên quan đến 2 PowerUp có thời gian hiệu lực.
     - Xây dựng UML hoàn chỉnh cho dự án.
@@ -76,6 +79,8 @@ Vinh:
     - Thêm thư mực chữa các file .properties và ảnh cờ các quốc gia để sử dụng trong tùy chọn ngôn ngữ mới trong SettingsState.
     - Tạo các methods và chỉnh sửa trong SettingsState, GameStateManager và các GameState còn lại để chúng có thể hiển thị các ngôn ngữ khác nhau.
 Công việc tuần 9 (3/11 - 5/11)
+Thịnh: 
+    - Đổi tên lớp và di chuyển các class về đúng thư mục cho hợp lý.
 Trọng:
     - Cập nhật toàn bộ chú thích (Javadoc) cho tất cả các class của code game Arkanoid.
     - Fix 1 số lỗi tồn đọng trong các code sẵn có.

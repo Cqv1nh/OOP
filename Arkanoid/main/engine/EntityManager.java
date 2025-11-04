@@ -3,7 +3,7 @@ package engine;
 import entities.Ball;
 import entities.Paddle;
 import java.util.ArrayList;
-import managers.LevelState2;
+import managers.LevelState;
 import util.Constants;
 
 public class EntityManager {
@@ -35,7 +35,7 @@ public class EntityManager {
      * @param levelState2
      * @param panelWidth
      */
-    public void updateEntities(LevelState2 levelState2, int panelWidth) {
+    public void updateEntities(LevelState levelState2, int panelWidth) {
         updatePaddle(levelState2.getPaddle(), panelWidth);
         updateBall(levelState2);
     }
@@ -45,7 +45,7 @@ public class EntityManager {
      *
      * @param game
      */
-    public void updateBall(LevelState2 game) {
+    public void updateBall(LevelState game) {
         ArrayList<Ball> balls = game.getBalls();
         Paddle paddle = game.getPaddle();
         balls.removeIf(ball -> ball.getY() > Constants.SCREEN_HEIGHT);

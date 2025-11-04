@@ -123,7 +123,7 @@ public class PauseState extends GameState {
         Properties languageProps = manager.getLanguageProps();
 
         // Lấy state level hiện tại để vẽ nó phía sau (nếu muốn hiệu ứng mờ)
-        LevelState2 levelState = manager.getCurrentLevelState();
+        LevelState levelState = manager.getCurrentLevelState();
         if (levelState != null) {
             levelState.render(g); // Vẽ lại màn hình game
         }
@@ -188,7 +188,7 @@ public class PauseState extends GameState {
      * @param slotNumber
      */
     private void saveGame(int slotNumber) {
-        LevelState2 lastActiveLevelState = manager.getLastLevelStateInstance(); // Lấy state level hiện tại
+        LevelState lastActiveLevelState = manager.getLastLevelStateInstance(); // Lấy state level hiện tại
         if (lastActiveLevelState != null) {
             int level = manager.getCurrentLevel();
             int score = lastActiveLevelState.getScore(); // <-- LẤY TỪ lastActiveLevelState
